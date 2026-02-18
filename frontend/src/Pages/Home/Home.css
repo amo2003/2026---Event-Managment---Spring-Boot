@@ -1,0 +1,354 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* ===== ROOT ===== */
+.home {
+  font-family: 'Poppins', sans-serif;
+  background: #000;
+  color: white;
+}
+
+/* ===== HERO SECTION ===== */
+.hero {
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.hero-image {
+  width: 100%;
+  height: 110%;
+  object-fit: cover;
+  transition: transform 0.2s ease-out;
+  will-change: transform;
+}
+
+/* 🔥 Dark cinematic overlay */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.4),
+    rgba(0,0,0,0.6),
+    rgba(0,0,0,0.9)
+  );
+
+  /* no text now, just darkening layer */
+}
+
+/* ===== EVENTS SECTION ===== */
+.events {
+  padding: 140px 60px;
+  background: #000;
+  position: relative;
+  z-index: 2;
+
+  opacity: 0;
+  transform: translateY(150px);
+  transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.events.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.events h2 {
+  font-size: 42px;
+  margin-bottom: 60px;
+  text-align: center;
+}
+
+/* ===== GRID ===== */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+}
+
+/* ===== CARD ===== */
+.portfolio-card {
+  border-radius: 25px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.4s ease;
+}
+
+.portfolio-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 35px 80px rgba(0,0,0,0.9);
+}
+
+.portfolio-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 380px;
+}
+
+.portfolio-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%) brightness(0.7);
+  transition: 0.5s ease;
+}
+
+.portfolio-card:hover img {
+  filter: grayscale(0%) brightness(1);
+  transform: scale(1.05);
+}
+
+/* ===== CARD OVERLAY ===== */
+.portfolio-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.9),
+    rgba(0,0,0,0.4),
+    transparent 60%
+  );
+  padding: 25px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.portfolio-overlay h3 {
+  font-size: 24px;
+}
+
+/* ===== FIXED SITE NAME (TOP-LEFT) ===== */
+.site-mark {
+  position: fixed;
+  top: 150px;
+  left: 140px;
+  z-index: 50;
+  pointer-events: none; /* isolate from clicks while scrolling */
+}
+
+.site-mark-main {
+  font-size: 40px;
+  font-weight: 700;
+  font-family:Arial, Helvetica, sans-serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-style: italic;
+}
+
+/* ===== HAMBURGER MENU (TOP-RIGHT) ===== */
+.menu-toggle {
+  position: fixed;
+  top: 150px;
+  right: 100px;
+  z-index: 60;
+  width: 36px;
+  height: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.menu-toggle span {
+  display: block;
+  height: 3px;
+  border-radius: 999px;
+  background: #ffffff;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.menu-toggle.open span:nth-child(1) {
+  transform: translateY(12px) rotate(45deg);
+}
+
+.menu-toggle.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.open span:nth-child(3) {
+  transform: translateY(-12px) rotate(-45deg);
+}
+
+.menu-dropdown {
+  position: fixed;
+  top: 64px;
+  right: 24px;
+  z-index: 55;
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 16px;
+  padding: 12px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.menu-dropdown a {
+  color: #ffffff;
+  font-size: 13px;
+  text-decoration: none;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* Cloud Animation */
+.cloud-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cloud {
+  position: absolute;
+  width: 140vw;
+  height: 140vh;
+  background: radial-gradient(circle at center, #000 45%, transparent 70%);
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.cloud-transition.active .cloud {
+  animation: cloudMerge 1s cubic-bezier(0.77,0,0.18,1) forwards;
+}
+
+.c1 { top: -50%; left: -40%; animation-delay: 0s; }
+.c2 { top: -50%; right: -40%; animation-delay: 0.1s; }
+.c3 { bottom: -50%; left: -40%; animation-delay: 0.2s; }
+.c4 { bottom: -50%; right: -40%; animation-delay: 0.3s; }
+
+@keyframes cloudMerge {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+}
+
+/* Fullscreen Menu */
+.menu-fullscreen {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 101;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  animation: menuReveal 1.2s ease forwards;
+}
+
+.menu-link {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 48px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+.menu-link:hover {
+  transform: scale(1.1);
+  text-shadow: 0 0 25px rgba(255,255,255,0.8);
+}
+
+.menu-close {
+  position: absolute;
+  top: 24px;
+  right: 28px;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: transparent;
+  color: #fff;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.menu-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+@keyframes menuReveal {
+  from { opacity: 0; letter-spacing: 0.6em; }
+  to { opacity: 1; letter-spacing: 0.2em; }
+}
+
+/* ===== EVENTS DROPDOWN ===== */
+
+.menu-events {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dropdown {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: dropdownFade 0.4s ease forwards;
+}
+
+.dropdown-item {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  font-size: 22px;
+  padding: 12px 40px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  letter-spacing: 0.15em;
+}
+
+.dropdown-item:hover {
+  background: white;
+  color: black;
+  transform: scale(1.05);
+}
+
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

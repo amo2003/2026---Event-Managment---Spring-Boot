@@ -1,0 +1,199 @@
+/* ===== PAGE BACKGROUND ===== */
+
+.register-page {
+  min-height: 100vh;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  padding: 40px;
+}
+
+/* ===== GLASS CONTAINER ===== */
+
+.register-container {
+  width: 100%;
+  max-width: 600px;
+  padding: 50px 40px;
+  border-radius: 30px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 60px rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+}
+
+/* 🔥 Animated Gradient Border */
+
+.register-container::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 30px;
+  background: linear-gradient(45deg, #ffffff, #888888, #ffffff);
+  z-index: -1;
+  animation: borderGlow 4s linear infinite;
+}
+
+@keyframes borderGlow {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+/* ===== TITLE ===== */
+
+.register-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 32px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: white;
+}
+
+/* ===== FORM ===== */
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.register-form input {
+  padding: 14px 18px;
+  border-radius: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.404);
+  background: transparent;
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.register-form input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.register-form input:focus {
+  border-color: white;
+  box-shadow: 0 0 15px rgba(255,255,255,0.4);
+}
+
+/* ===== BUTTONS ===== */
+
+.register-btn,
+.login-btn {
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: 30px;
+  border: none;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.register-btn {
+  background: white;
+  color: black;
+}
+
+.register-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(255,255,255,0.7);
+}
+
+.login-btn {
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.397);
+  color: rgb(0, 0, 0);
+}
+
+.login-btn:hover {
+  background: white;
+  color: black;
+}
+
+/* ===== SUCCESS & ERROR ===== */
+
+.errorr-msg {
+  color: #ff4d4d;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.successr-msg {
+  color: #000000;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* ===== PIN BOX ===== */
+
+.pin-box {
+  text-align: center;
+  margin: 25px 0;
+  padding: 20px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.pin-box h2 {
+  font-size: 28px;
+  margin: 10px 0;
+  letter-spacing: 0.2em;
+}
+
+.pin-box span {
+  font-size: 15px;
+  opacity: 0.7;
+}
+
+/* ===== SELECT DROPDOWN ===== */
+
+.select-wrapper {
+  position: relative;
+}
+
+.select-wrapper select {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.462);
+  background: transparent;
+  color: rgba(0, 0, 0, 0.508);
+  font-size: 14px;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+/* Dropdown text color */
+.select-wrapper select option {
+  background: #000;
+  color: white;
+}
+
+/* Focus effect */
+.select-wrapper select:focus {
+  border-color: white;
+  box-shadow: 0 0 15px rgba(255,255,255,0.4);
+}
+
+/* Custom arrow */
+.select-wrapper::after {
+  content: "▼";
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgb(0, 0, 0);
+  font-size: 12px;
+  pointer-events: none;
+  opacity: 0.7;
+}
