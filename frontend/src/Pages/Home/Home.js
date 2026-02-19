@@ -1,31 +1,45 @@
-// src/Pages/Home/Home.js
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import "./Home.css";
-import heroImg from "../../assets/p1.png";
-import event1 from "../../assets/p2.png";
-import event2 from "../../assets/p3.jpg";
-import event3 from "../../assets/p4.jpg";
-import event4 from "../../assets/uni.jpg";
+
+import heroImg from "../../assets/m4.jpg";
+
+// Events
+import event1 from "../../assets/v2.jpg";
+import event2 from "../../assets/get.jpg";
+import event3 from "../../assets/pongal.jpg";
+import event4 from "../../assets/wasantha.jpg";
+import event5 from "../../assets/aura.jpg";
+import event6 from "../../assets/handaw.jpg";
+import event7 from "../../assets/ganthera.jpg";
+import event8 from "../../assets/lantha.jpg";
 
 const Home = () => {
   const { user, logout } = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuAnimating, setMenuAnimating] = useState(false);
   const [eventsDropdown, setEventsDropdown] = useState(false);
+  const [showUpcoming, setShowUpcoming] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
       const heroImgEl = document.querySelector(".hero-image");
+      const heroTextEl = document.querySelector(".hero-text");
       const eventsEl = document.querySelector(".events");
       const scrollY = window.scrollY;
 
       if (heroImgEl) {
         const scale = 1 - scrollY * 0.0004;
         const translate = scrollY * -0.3;
+
         heroImgEl.style.transform = `translateY(${translate}px) scale(${scale})`;
+
+        if (heroTextEl) {
+          heroTextEl.style.transform = `translate(-50%, calc(-50% + ${translate}px)) scale(${scale})`;
+          heroTextEl.style.opacity = 1 - scrollY * 0.0012;
+        }
       }
 
       if (eventsEl) {
@@ -58,6 +72,20 @@ const Home = () => {
     navigate(path);
   };
 
+  const upcomingEvents = [
+    { img: event1, title: "Wiramaya - විරාමය" },
+    { img: event2, title: "SLIIT - Get Together" },
+    { img: event3, title: "Pongal Festival" },
+    { img: event4, title: "SLIIT - වසන්ත මුවදොර" },
+  ];
+
+  const pastEvents = [
+    { img: event5, title: "AURA Event" },
+    { img: event6, title: "SLIIT - හැන්දෑව" },
+    { img: event7, title: "ගංතෙර" },
+    { img: event8, title: "ලන්තෑරුම" },
+  ];
+
   return (
     <div className="home">
       <div className="site-mark">
@@ -85,10 +113,7 @@ const Home = () => {
       {/* Fullscreen Navigation */}
       {menuOpen && (
         <div className="menu-fullscreen">
-          <button className="menu-close" onClick={handleMenuToggle} aria-label="Close navigation">
-            ✕
-          </button>
-
+          <button className="menu-close" onClick={handleMenuToggle}>✕</button>
           <button className="menu-link" onClick={() => handleNavigate("/")}>Home</button>
 
           <div className="menu-events">
@@ -103,18 +128,23 @@ const Home = () => {
             )}
           </div>
 
-          {/* Dynamic navigation based on login */}
           {user ? (
             <>
               <span className="menu-user">Faculty: {user.faculty}</span>
 
               {user.role === "Society" && (
-                <button
-                  className="menu-link"
-                  onClick={() => handleNavigate("/society-dashboard")}
-                >
-                  Dashboard
-                </button>
+                <>
+                  {/* Navigate directly to logged-in society's unique page using ID */}
+                  <button
+                    className="menu-link"
+                    onClick={() => handleNavigate(`/society/${user.id}`)}
+                  >
+                    Profile
+                  </button>
+                  <button className="menu-link" onClick={() => handleNavigate("/dashboard")}>
+                    Dashboard
+                  </button>
+                </>
               )}
 
               <button
@@ -128,9 +158,7 @@ const Home = () => {
               </button>
             </>
           ) : (
-            <>
-              <button className="menu-link" onClick={() => handleNavigate("/login")}>Login</button>
-            </>
+            <button className="menu-link" onClick={() => handleNavigate("/login")}>Login</button>
           )}
 
           <button className="menu-link" onClick={() => handleNavigate("/about")}>About</button>
@@ -138,30 +166,41 @@ const Home = () => {
         </div>
       )}
 
-      {/* Hero Section */}
+      {/* HERO SECTION */}
       <section className="hero">
         <div className="hero-image-wrapper">
           <img src={heroImg} alt="Hero" className="hero-image" />
-          <div className="hero-overlay" />
+          <div className="hero-text">
+            Welcome
+            <span className="hero-tagline">Build Your Dream With Us.</span>
+          </div>
         </div>
       </section>
 
-      {/* Events Section */}
+      {/* EVENTS SECTION WITH BUTTON TOGGLE */}
       <section className="events">
-        <h2>Upcoming Events</h2>
+        <div className="event-buttons">
+          <button
+            className={`toggle-btn ${showUpcoming ? "active-btn" : ""}`}
+            onClick={() => setShowUpcoming(true)}
+          >
+            Upcoming Events
+          </button>
+          <button
+            className={`toggle-btn ${!showUpcoming ? "active-btn" : ""}`}
+            onClick={() => setShowUpcoming(false)}
+          >
+            Past Events
+          </button>
+        </div>
+
         <div className="portfolio-grid">
-          {[event1, event2, event3, event4].map((img, index) => (
-            <div
-              key={index}
-              className="portfolio-card"
-              onClick={() => navigate(`/events/${index + 1}`)}
-            >
+          {(showUpcoming ? upcomingEvents : pastEvents).map((event, index) => (
+            <div key={index} className="portfolio-card" onClick={() => navigate(`/events/${index + 1}`)}>
               <div className="portfolio-image-wrapper">
-                <img src={img} alt={`Event ${index + 1}`} />
+                <img src={event.img} alt={event.title} />
                 <div className="portfolio-overlay">
-                  <h3>
-                    {["Tech Summit", "Cultural Night", "Sports Meet", "Innovation Expo"][index]}
-                  </h3>
+                  <h3>{event.title}</h3>
                 </div>
               </div>
             </div>

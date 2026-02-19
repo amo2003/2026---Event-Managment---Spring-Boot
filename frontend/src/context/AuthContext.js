@@ -7,17 +7,19 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    const id = localStorage.getItem("id")
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
     const faculty = localStorage.getItem("faculty");
     const email = localStorage.getItem("email");
 
     if (token && role && faculty && email) {
-      setUser({ token, role, faculty, email });
+      setUser({ token, role, faculty, email, id });
     }
   }, []);
 
   const login = (userData) => {
+    localStorage.setItem("id", userData.id);
     localStorage.setItem("token", userData.token);
     localStorage.setItem("role", userData.role);
     localStorage.setItem("faculty", userData.faculty);

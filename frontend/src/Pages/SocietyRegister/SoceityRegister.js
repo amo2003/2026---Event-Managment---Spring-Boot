@@ -24,9 +24,10 @@ function SoceityRegister() {
     "Faculty of Computing",
     "Faculty of Engineering",
     "Faculty of Business",
-    "Faculty of Science",
-    "Faculty of Humanities",
-    "Faculty of Medicine"
+    "Faculty of Humanities & Science",
+    "School of Architecture",
+    "William Anglis Institute",
+    "Faculty of Graduate Studies"
   ];
 
   const handleChange = (e) => {
@@ -83,7 +84,7 @@ function SoceityRegister() {
           <form className="register-form" onSubmit={handleSubmit}>
             <input type="text" name="name" placeholder="Society Name" onChange={handleChange} required />
 
-            {/* 🔥 Faculty Dropdown */}
+            {/*Faculty Dropdown */}
             <div className="select-wrapper">
               <select
                 name="faculty"

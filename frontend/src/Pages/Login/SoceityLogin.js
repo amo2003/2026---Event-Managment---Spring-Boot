@@ -35,6 +35,7 @@ function SoceityLogin() {
 
       // save user info in context & localStorage
       const userData = {
+        id: response.data.id, 
         token: response.data.token,
         role: response.data.role,
         faculty: response.data.faculty, // important!
