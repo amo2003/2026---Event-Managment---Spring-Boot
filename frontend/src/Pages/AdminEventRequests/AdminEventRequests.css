@@ -1,0 +1,130 @@
+
+
+.admin-events-scope {
+  min-height: 100vh;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Glass Container */
+
+.admin-events-scope .admin-events-container {
+  width: 100%;
+  max-width: 900px;
+  padding: 50px;
+  border-radius: 30px;
+  position: relative;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 0 60px rgba(255,255,255,0.05);
+  overflow: hidden;
+}
+
+/* Animated Border Glow */
+
+.admin-events-scope .admin-events-container::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 30px;
+  background: linear-gradient(45deg, #ffffff, #666, #ffffff);
+  z-index: -1;
+  animation: adminGlow 6s linear infinite;
+}
+
+@keyframes adminGlow {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+/* Title */
+
+.admin-events-scope .admin-events-title {
+  text-align: center;
+  color: white;
+  font-size: 30px;
+  letter-spacing: 0.15em;
+  margin-bottom: 35px;
+  text-transform: uppercase;
+}
+
+/* Event Card */
+
+.admin-events-scope .admin-event-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(0, 0, 0, 0.734);
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 20px;
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  transition: 0.3s ease;
+}
+
+.admin-events-scope .admin-event-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 25px rgba(255,255,255,0.2);
+}
+
+/* Buttons Row */
+
+.admin-events-scope .admin-event-actions {
+  margin-top: 15px;
+  display: flex;
+  gap: 12px;
+}
+
+/* Approve Button */
+
+.admin-events-scope .approve-btn {
+  padding: 10px 22px;
+  border-radius: 25px;
+  border: none;
+  border: 0.5px solid black;
+  background: white;
+  color: black;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.admin-events-scope .approve-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+    border: 0.5px solid black;
+    background: #03bc00;
+
+}
+
+/* Reject Button */
+
+.admin-events-scope .reject-btn {
+  padding: 10px 22px;
+  border-radius: 25px;
+  border: 1px solid rgba(0, 0, 0, 0.853);
+  background: white;
+  font-size: 16px;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.admin-events-scope .reject-btn:hover {
+  background: rgb(207, 1, 1);
+  color: black;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+
+}
+
+/* Empty Text */
+
+.admin-events-scope .no-events {
+  text-align: center;
+  color: rgba(255,255,255,0.6);
+  margin-top: 20px;
+}

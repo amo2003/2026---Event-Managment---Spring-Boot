@@ -54,55 +54,63 @@ const CreateEvent = () => {
   };
 
   return (
-    <div className="event-form-page">
-      <h2>Apply to Conduct Event</h2>
+  <div className="event-create-scope">
+    <div className="event-create-container">
 
-      <form onSubmit={handleSubmit}>
+      <h2 className="event-create-title">Apply to Conduct Event</h2>
+
+      <form className="event-create-form" onSubmit={handleSubmit}>
+
         <input
+          className="event-input"
           placeholder="Event Name"
           value={form.eventName}
           onChange={(e) => setForm({ ...form, eventName: e.target.value })}
-          required
         />
 
         <input
+          className="event-input"
           placeholder="Venue"
           value={form.venue}
           onChange={(e) => setForm({ ...form, venue: e.target.value })}
-          required
         />
 
         <input
+          className="event-input"
           type="date"
           value={form.eventDate}
           onChange={(e) => setForm({ ...form, eventDate: e.target.value })}
-          required
         />
 
         <input
+          className="event-input"
           type="time"
           value={form.startTime}
           onChange={(e) => setForm({ ...form, startTime: e.target.value })}
-          required
         />
 
         <input
+          className="event-input"
           type="time"
           value={form.endTime}
           onChange={(e) => setForm({ ...form, endTime: e.target.value })}
-          required
         />
 
         <textarea
+          className="event-textarea"
           placeholder="Description"
           value={form.description}
           onChange={(e) => setForm({ ...form, description: e.target.value })}
         />
 
-        <button type="submit">Submit Application</button>
+        <button className="event-submit-btn" type="submit">
+          Submit Application
+        </button>
+
       </form>
     </div>
-  );
+  </div>
+);
 };
 
 export default CreateEvent;

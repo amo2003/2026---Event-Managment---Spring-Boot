@@ -1,0 +1,112 @@
+
+.event-create-scope {
+  min-height: 100vh;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ===== GLASS CARD ===== */
+
+.event-create-scope .event-create-container {
+  width: 100%;
+  max-width: 600px;
+  padding: 50px 40px;
+  border-radius: 30px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 60px rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+}
+
+/* Animated Border Glow */
+.event-create-scope .event-create-container::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 30px;
+  background: linear-gradient(45deg, #ffffff, #777, #ffffff);
+  z-index: -1;
+  animation: eventBorderGlow 5s linear infinite;
+}
+
+@keyframes eventBorderGlow {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+/* ===== TITLE ===== */
+
+.event-create-scope .event-create-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 30px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: white;
+}
+
+/* ===== FORM ===== */
+
+.event-create-scope .event-create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Inputs */
+.event-create-scope .event-input,
+.event-create-scope .event-textarea {
+  padding: 14px 18px;
+  border-radius: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.597);
+  background: transparent;
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.event-create-scope .event-input::placeholder,
+.event-create-scope .event-textarea::placeholder {
+  color: rgb(0, 0, 0);
+}
+
+/* Focus Glow */
+.event-create-scope .event-input:focus,
+.event-create-scope .event-textarea:focus {
+  border-color: white;
+  box-shadow: 0 0 18px rgba(255,255,255,0.6);
+}
+
+/* Textarea */
+.event-create-scope .event-textarea {
+  resize: none;
+  height: 100px;
+}
+
+/* ===== BUTTON ===== */
+
+.event-create-scope .event-submit-btn {
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: 30px;
+  border: none;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: white;
+  color: black;
+  transition: 0.3s ease;
+}
+
+.event-create-scope .event-submit-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(255,255,255,0.8);
+}

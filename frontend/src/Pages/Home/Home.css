@@ -460,7 +460,7 @@ html, body {
 }
 
 .active-btn {
-  background: #ff00ff; /* Festival gradient effect could be added */
+  background: #ff00ff; 
   color: #fff;
   border-color: #ff00ff;
   box-shadow: 0 0 20px #ff00ff;

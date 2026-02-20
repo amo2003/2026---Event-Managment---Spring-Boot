@@ -1,6 +1,7 @@
 // src/pages/AdminPendingEvents.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import './AdminEventRequests.css'
 
 const AdminPendingEvents = () => {
   const [events, setEvents] = useState([]);
@@ -26,19 +27,42 @@ const AdminPendingEvents = () => {
   };
 
   return (
-    <div className="admin-events-page">
-      <h2>Pending Event Requests</h2>
+  <div className="admin-events-scope">
+    <div className="admin-events-container">
+      <h2 className="admin-events-title">Pending Event Requests</h2>
+
       {events.map(event => (
-        <div key={event.id} className="event-card">
-          <h3>{event.eventName}</h3>
-          <p>{event.eventDate} | {event.venue}</p>
-          <button onClick={() => approve(event.id)}>Approve</button>
-          <button onClick={() => reject(event.id)}>Reject</button>
-        </div>
-      ))}
-      {events.length === 0 && <p>No pending events</p>}
+  <div key={event.id} className="admin-event-card">
+
+    <h3>{event.eventName}</h3>
+
+    <p><strong>Date:</strong> {event.eventDate}</p>
+    <p><strong>Time:</strong> {event.startTime} - {event.endTime}</p>
+    <p><strong>Venue:</strong> {event.venue}</p>
+
+    {event.description && (
+      <p><strong>Description:</strong> {event.description}</p>
+    )}
+
+    <p><strong>Society ID:</strong> {event.societyId}</p>
+
+    <div className="admin-event-actions">
+      <button onClick={() => approve(event.id)} className="approve-btn">
+        Approve
+      </button>
+
+      <button onClick={() => reject(event.id)} className="reject-btn">
+        Reject
+      </button>
     </div>
-  );
+
+  </div>
+))}
+
+      {events.length === 0 && <p className="no-events">No pending events</p>}
+    </div>
+  </div>
+);
 };
 
 export default AdminPendingEvents;

@@ -168,40 +168,61 @@ const SocietyProfile = () => {
       </div>
 
       {/* ✅ EVENTS SECTION */}
-      <div className="society-events-section">
-        <h2>My Created Events</h2>
+<div className="society-events-section">
+  <h2>My Created Events</h2>
 
-        {events.length === 0 ? (
-          <p>No events created yet.</p>
-        ) : (
-          events.map((event) => (
-            <div key={event.id} className="event-card">
-              <h3>{event.eventName}</h3>
-              <p>
-                {event.eventDate} | {event.venue}
-              </p>
+  {events.length === 0 ? (
+    <p>No events created yet.</p>
+  ) : (
+    events.map((event) => (
+      <div key={event.id} className="event-card">
+        <h3>{event.eventName}</h3>
+        <p>
+          {event.eventDate} | {event.venue}
+        </p>
 
-              {event.status === "PENDING" && (
-                <span className="status pending">
-                  🟡 Pending Approval
-                </span>
-              )}
+        {/* PENDING */}
+        {event.status === "PENDING" && (
+          <span className="status pending">
+            🟡 Waiting for Admin Approval
+          </span>
+        )}
 
-              {event.status === "APPROVED" && (
-                <span className="status approved">
-                  🟢 Approved
-                </span>
-              )}
+        {/* REJECTED */}
+        {event.status === "REJECTED" && (
+          <span className="status rejected">
+            🔴 Rejected - {event.adminMessage}
+          </span>
+        )}
 
-              {event.status === "REJECTED" && (
-                <span className="status rejected">
-                  🔴 Rejected - {event.adminMessage}
-                </span>
-              )}
-            </div>
-          ))
+        {/* APPROVED (No Payment Required) */}
+        {event.status === "APPROVED" && (
+          <span className="status approved">
+            🟢 Approved
+          </span>
+        )}
+
+        {/* APPROVED - PAYMENT REQUIRED */}
+        {event.status === "APPROVED_PAYMENT_PENDING" && (
+          <button
+            className="payment-btn"
+            onClick={() => navigate(`/event-payment/${event.id}`)}
+          >
+            💳 Proceed to Payment
+          </button>
+        )}
+
+        {/* CONFIRMED */}
+        {event.status === "CONFIRMED" && (
+          <span className="status confirmed">
+            Payment Completed
+          </span>
         )}
       </div>
+    ))
+  )}
+</div>
+
     </div>
   );
 };
