@@ -1,3 +1,4 @@
+// src/pages/SocietyProfile.js
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
@@ -7,7 +8,7 @@ import "./SocietyProfile.css";
 const SocietyProfile = () => {
   const { user, logout } = useContext(AuthContext);
   const [profile, setProfile] = useState(null);
-  const [events, setEvents] = useState([]); // ✅ Added
+  const [events, setEvents] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const navigate = useNavigate();
 
@@ -19,7 +20,7 @@ const SocietyProfile = () => {
 
     const token = localStorage.getItem("token");
 
-    // ✅ Fetch Profile
+    // Fetch profile
     axios
       .get(`http://localhost:8080/api/society/profile/${user.id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -32,17 +33,15 @@ const SocietyProfile = () => {
         navigate("/login");
       });
 
-    // ✅ Fetch Society Events
+    // Fetch society events
     axios
       .get(`http://localhost:8080/api/society/events/my/${user.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setEvents(res.data))
       .catch((err) => console.error(err));
-
   }, [user, navigate, logout]);
 
-  // ✅ Handle profile update
   const handleUpdate = () => {
     const token = localStorage.getItem("token");
     axios
@@ -57,10 +56,8 @@ const SocietyProfile = () => {
       .catch((err) => console.error(err));
   };
 
-  // ✅ Handle profile deletion
   const handleDelete = () => {
     if (!window.confirm("Are you sure you want to delete your profile?")) return;
-
     const token = localStorage.getItem("token");
     axios
       .delete(`http://localhost:8080/api/society/delete/${profile.id}`, {
@@ -79,68 +76,31 @@ const SocietyProfile = () => {
   return (
     <div className="society-profile-page">
       <h1>Society Profile</h1>
-
-      <button className="back-btn" onClick={() => navigate(-1)}>
-        ✕
-      </button>
+      <button className="back-btn" onClick={() => navigate(-1)}>✕</button>
 
       <div className="profile-card">
         {editMode ? (
           <div className="edit-form">
             <label>Society Name:</label>
-            <input
-              value={profile.name || ""}
-              onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-            />
+            <input value={profile.name || ""} onChange={(e) => setProfile({ ...profile, name: e.target.value })} />
 
             <label>Faculty:</label>
-            <input
-              value={profile.faculty || ""}
-              onChange={(e) =>
-                setProfile({ ...profile, faculty: e.target.value })
-              }
-            />
+            <input value={profile.faculty || ""} onChange={(e) => setProfile({ ...profile, faculty: e.target.value })} />
 
             <label>President Name:</label>
-            <input
-              value={profile.presidentName || ""}
-              onChange={(e) =>
-                setProfile({ ...profile, presidentName: e.target.value })
-              }
-            />
+            <input value={profile.presidentName || ""} onChange={(e) => setProfile({ ...profile, presidentName: e.target.value })} />
 
             <label>Email:</label>
-            <input
-              value={profile.email || ""}
-              onChange={(e) =>
-                setProfile({ ...profile, email: e.target.value })
-              }
-            />
+            <input value={profile.email || ""} onChange={(e) => setProfile({ ...profile, email: e.target.value })} />
 
             <label>Password:</label>
-            <input
-              type="password"
-              value={profile.password || ""}
-              onChange={(e) =>
-                setProfile({ ...profile, password: e.target.value })
-              }
-            />
+            <input type="password" value={profile.password || ""} onChange={(e) => setProfile({ ...profile, password: e.target.value })} />
 
             <label>Contact Number:</label>
-            <input
-              value={profile.contactNumber || ""}
-              onChange={(e) =>
-                setProfile({ ...profile, contactNumber: e.target.value })
-              }
-            />
+            <input value={profile.contactNumber || ""} onChange={(e) => setProfile({ ...profile, contactNumber: e.target.value })} />
 
             <label>Advisor Name:</label>
-            <input
-              value={profile.advisorName || ""}
-              onChange={(e) =>
-                setProfile({ ...profile, advisorName: e.target.value })
-              }
-            />
+            <input value={profile.advisorName || ""} onChange={(e) => setProfile({ ...profile, advisorName: e.target.value })} />
 
             <div className="profile-buttons">
               <button onClick={handleUpdate}>Save</button>
@@ -158,71 +118,47 @@ const SocietyProfile = () => {
             <p><strong>PIN:</strong> {profile.pinCode}</p>
 
             <div className="profile-buttons">
-              <button className="edit" onClick={() => setEditMode(true)}>
-                Edit Profile
-              </button>
+              <button className="edit" onClick={() => setEditMode(true)}>Edit Profile</button>
               <button onClick={handleDelete}>Delete Profile</button>
             </div>
           </div>
         )}
       </div>
 
-      {/* ✅ EVENTS SECTION */}
-<div className="society-events-section">
-  <h2>My Created Events</h2>
+      {/* EVENTS SECTION */}
+      <div className="society-events-section">
+        <h2>My Created Events</h2>
 
-  {events.length === 0 ? (
-    <p>No events created yet.</p>
-  ) : (
-    events.map((event) => (
-      <div key={event.id} className="event-card">
-        <h3>{event.eventName}</h3>
-        <p>
-          {event.eventDate} | {event.venue}
-        </p>
+        {events.length === 0 ? (
+          <p>No events created yet.</p>
+        ) : (
+          events.map(event => (
+            <div key={event.id} className="event-card">
 
-        {/* PENDING */}
-        {event.status === "PENDING" && (
-          <span className="status pending">
-            🟡 Waiting for Admin Approval
-          </span>
-        )}
+              {/* FULL DETAILS */}
+              <p><strong>Event Name:</strong> {event.eventName}</p>
+              <p><strong>Date:</strong> {event.eventDate}</p>
+              <p><strong>Time:</strong> {event.startTime} - {event.endTime}</p>
+              <p><strong>Venue:</strong> {event.venue}</p>
+              {event.description && <p><strong>Description:</strong> {event.description}</p>}
+              <p><strong>Society ID:</strong> {event.societyId}</p>
+              <p><strong>Status:</strong> {event.status}</p>
 
-        {/* REJECTED */}
-        {event.status === "REJECTED" && (
-          <span className="status rejected">
-            🔴 Rejected - {event.adminMessage}
-          </span>
-        )}
+              {/* ACTIONS */}
+              <div className="event-actions">
+                {event.status === "PENDING" && <span className="status pending">🟡 Waiting for Admin Approval</span>}
+                {event.status === "REJECTED" && <span className="status rejected">🔴 Rejected - {event.adminMessage}</span>}
+                {event.status === "APPROVED" && <span className="status approved">🟢 Approved</span>}
+                {event.status === "APPROVED_PAYMENT_PENDING" && (
+                  <button className="payment-btn" onClick={() => navigate(`/event-payment/${event.id}`)}>💳 Proceed to Payment</button>
+                )}
+                {event.status === "CONFIRMED" && <span className="status confirmed">✅ Payment Completed</span>}
+              </div>
 
-        {/* APPROVED (No Payment Required) */}
-        {event.status === "APPROVED" && (
-          <span className="status approved">
-            🟢 Approved
-          </span>
-        )}
-
-        {/* APPROVED - PAYMENT REQUIRED */}
-        {event.status === "APPROVED_PAYMENT_PENDING" && (
-          <button
-            className="payment-btn"
-            onClick={() => navigate(`/event-payment/${event.id}`)}
-          >
-            💳 Proceed to Payment
-          </button>
-        )}
-
-        {/* CONFIRMED */}
-        {event.status === "CONFIRMED" && (
-          <span className="status confirmed">
-            Payment Completed
-          </span>
+            </div>
+          ))
         )}
       </div>
-    ))
-  )}
-</div>
-
     </div>
   );
 };

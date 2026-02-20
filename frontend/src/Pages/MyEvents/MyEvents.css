@@ -13,12 +13,13 @@
   position: absolute;
   top: 25px;
   right: 25px;
-  background: #ffffff;
+  background: #000000;
   border: none;
-  color: rgb(0, 0, 0);
-  font-size: 18px;
-  padding: 8px 14px;
-  border-radius: 8px;
+  color: rgb(255, 255, 255);
+  font-size: 15px;
+  padding: 8px 12px;
+  border-radius: 50px;
+  border: 1px solid white;
   cursor: pointer;
   transition: 0.3s ease;
 }
@@ -45,9 +46,9 @@
   border-radius: 18px;
 
   /* Glass effect */
-  background: rgba(255, 255, 255, 0.841);
+  background: rgba(0, 0, 0, 0.841);
   backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgb(255, 255, 255);
 
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
   transition: 0.3s ease;
@@ -62,20 +63,20 @@
 .my-events-page .event-card h3 {
   font-size: 22px;
   margin-bottom: 12px;
-  color: #38bdf8;
+  color: #ffee00;
 }
 
 /* Details text */
 .my-events-page .event-card p {
   margin: 6px 0;
   color: #e2e8f0;
-  font-size: 15px;
+  font-size: 19px;
   
 }
 
 /* Status text */
 .my-events-page .event-card strong {
-  color: #94a3b8;
+  color: #b0b894;
 }
 
 /* Buttons */
@@ -91,14 +92,14 @@
 
 /* Disabled waiting button */
 .my-events-page .event-card button:disabled {
-  background: #64748b;
-  color: #fff;
+  background: #e1da00;
+  color: #000000;
   cursor: not-allowed;
 }
 
 /* Payment button */
 .my-events-page .event-card button:not(:disabled) {
-  background: #22c55e;
+  background: #009938;
   color: #fff;
 }
 

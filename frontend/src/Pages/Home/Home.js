@@ -161,6 +161,7 @@ const Home = () => {
             <button className="menu-link" onClick={() => handleNavigate("/login")}>Login</button>
           )}
 
+          <button className="menu-link" onClick={() => handleNavigate("/calendar")}>Event Calendar</button>
           <button className="menu-link" onClick={() => handleNavigate("/about")}>About</button>
           <button className="menu-link" onClick={() => handleNavigate("/contact")}>Contact</button>
         </div>

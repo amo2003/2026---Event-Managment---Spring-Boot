@@ -1,0 +1,124 @@
+.calendar-page {
+  min-height: 100vh;
+  padding: 50px 20px;
+  background: #0d0d0d;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  justify-content: center;
+  color: #000000;
+}
+
+.calendar-container {
+  width: 100%;
+  max-width: 900px;
+  background: rgba(186, 22, 22, 0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 30px;
+  padding: 40px;
+  border: 1px solid rgba(143, 22, 22, 0.15);
+  box-shadow: 0 0 60px rgba(172, 13, 13, 0.05);
+  position: relative;
+}
+
+.calendar-container::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 30px;
+  background: linear-gradient(45deg, #5fa28d, #888888, #ffffff);
+  z-index: -1;
+  animation: borderGlow 6s linear infinite;
+}
+
+@keyframes borderGlow {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+.calendar-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.month-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.month-nav button {
+  padding: 8px 14px;
+  border-radius: 25px;
+  border: none;
+  background: #03bc00;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s ease;
+}
+
+.month-nav button:hover {
+  background: #028a00;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-bottom: 30px;
+}
+
+.week-day {
+  text-align: center;
+  font-weight: bold;
+  padding: 8px 0;
+}
+
+.calendar-day {
+  height: 60px;
+  text-align: center;
+  line-height: 60px;
+  font-size: 18px;
+  border-radius: 15px;
+  background: rgba(88, 88, 88, 0.255);
+  transition: 0.3s ease;
+}
+
+.calendar-day.event-day {
+  background: rgba(2, 101, 129, 0.562);
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.calendar-day:hover {
+  background: rgba(255,255,255,0.1);
+  cursor: pointer;
+}
+
+/* Event cards below calendar */
+.event-list {
+  margin-top: 20px;
+}
+
+.event-card {
+  padding: 15px 20px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.05);
+  margin-bottom: 15px;
+  border: 1px solid black;
+  box-shadow: 0 0 25px rgba(255,255,255,0.05);
+}
+
+.event-card h4 {
+    font-size: 1.2px;
+  margin-bottom: 5px;
+}
+
+.event-card p {
+  font-size: 1.1rem;
+  color: #ffffff;
+  margin: 2px 0;
+}
