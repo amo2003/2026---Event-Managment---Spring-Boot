@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./SoceityRegister.css";
 
 function SoceityRegister() {
   const navigate = useNavigate();
+
+  /* ---------------- NEW: Society List State ---------------- */
+  const [societyList, setSocietyList] = useState([]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -16,6 +19,7 @@ function SoceityRegister() {
     password: "",
   });
 
+  /* KEEP PIN LOGIC */
   const [generatedPin, setGeneratedPin] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -29,6 +33,19 @@ function SoceityRegister() {
     "William Anglis Institute",
     "Faculty of Graduate Studies"
   ];
+
+  useEffect(() => {
+    fetchSocieties();
+  }, []);
+
+  const fetchSocieties = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/society-list");
+      setSocietyList(res.data);
+    } catch (err) {
+      console.error("Failed to fetch societies");
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -72,6 +89,7 @@ function SoceityRegister() {
         {error && <p className="errorr-msg">{error}</p>}
         {success && <p className="successr-msg">{success}</p>}
 
+        {/* KEEP PIN DISPLAY */}
         {generatedPin && (
           <div className="pin-box">
             <p>Your Society PIN</p>
@@ -82,9 +100,35 @@ function SoceityRegister() {
 
         {!success && (
           <form className="register-form" onSubmit={handleSubmit}>
-            <input type="text" name="name" placeholder="Society Name" onChange={handleChange} required />
 
-            {/*Faculty Dropdown */}
+            {/* ----------- NEW DROPDOWN FOR SOCIETY NAME ----------- */}
+            <div className="select-wrapper">
+              <select
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Society</option>
+
+                {societyList.map((society) => (
+                  <option key={society.id} value={society.name}>
+                    {society.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* LINK TO ADD PAGE */}
+            <p
+              className="add-society-link"
+              onClick={() => navigate("/addsocieties")}
+              style={{ cursor: "pointer", fontSize: "13px", marginBottom: "10px" }}
+            >
+              If society name not in list, add your society name
+            </p>
+
+            {/* FACULTY DROPDOWN (UNCHANGED) */}
             <div className="select-wrapper">
               <select
                 name="faculty"

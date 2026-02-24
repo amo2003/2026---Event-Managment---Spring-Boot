@@ -1,89 +1,105 @@
 package backend.Service;
 
+import backend.dto.EventDTO;
 import backend.enums.EventStatus;
 import backend.exception.EventNotFoundException;
 import backend.exception.SlotUnavailableException;
 import backend.model.EventCalender;
 import backend.model.EventModel;
-import backend.model.EventPayment;
+import backend.model.SocietyModel;
 import backend.repository.EventCalendarRepository;
-import backend.repository.EventPaymentRepository;
 import backend.repository.SocietyEventRepository;
+import backend.repository.SocietyRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EventService {
 
     private final SocietyEventRepository eventRepo;
     private final EventCalendarRepository calendarRepo;
-    private final EventPaymentRepository paymentRepo;
+    private final SocietyRepository societyRepo;
 
     public EventService(SocietyEventRepository eventRepo,
                         EventCalendarRepository calendarRepo,
-                        EventPaymentRepository paymentRepo) {
+                        SocietyRepository societyRepo) {
         this.eventRepo = eventRepo;
         this.calendarRepo = calendarRepo;
-        this.paymentRepo = paymentRepo;
+        this.societyRepo = societyRepo;
     }
 
-    // Create new event
+    // CREATE NEW EVENT (accepts imageUrl if provided)
     public EventModel createEvent(EventModel event) {
+        // Set initial status
         event.setStatus(EventStatus.PENDING);
+
+        // imageUrl is already set in the controller if uploaded
+        // paymentDone defaults to false (handled in EventModel)
         return eventRepo.save(event);
     }
 
-    // Get events of a specific society
+    // GET EVENTS OF A SPECIFIC SOCIETY
     public List<EventModel> getSocietyEvents(Long societyId) {
         return eventRepo.findBySocietyId(societyId);
     }
 
-    // Get all pending events (for admin)
+    // GET ALL PENDING EVENTS (for admin)
     public List<EventModel> getPendingEvents() {
         return eventRepo.findByStatus(EventStatus.PENDING);
     }
 
-    // Get single event by ID
+    // GET ALL EVENTS (admin table)
+    public List<EventModel> getAllEvents() {
+        return eventRepo.findAll();
+    }
+
+    // GET SINGLE EVENT BY ID
     public EventModel getEvent(Long id) {
         return eventRepo.findById(id)
                 .orElseThrow(() -> new EventNotFoundException(id));
     }
 
-    // Approve event and save to calendar
+    // APPROVE EVENT (direct CONFIRMED)
     public EventModel approveEvent(Long id) {
         EventModel event = getEvent(id);
 
-        // Check if the time slot is already booked
+        // Check slot availability
         boolean busy = calendarRepo.existsByEventDateAndStartTimeLessThanEqualAndEndTimeGreaterThanEqual(
                 event.getEventDate(),
-                event.getStartTime(),   // existing start <= new end
-                event.getEndTime()      // existing end   >= new start
+                event.getStartTime(),
+                event.getEndTime()
         );
 
         if (busy) {
             throw new SlotUnavailableException();
         }
 
-        // Update event status
-        event.setStatus(EventStatus.APPROVED_PAYMENT_PENDING);
+        // Update status directly to CONFIRMED
+        event.setStatus(EventStatus.CONFIRMED);
+        event.setAdminMessage("Event Scheduled Successfully");
+
         EventModel updatedEvent = eventRepo.save(event);
 
-        // Add to calendar
+        // Save to calendar
         EventCalender cal = new EventCalender();
         cal.setEventId(updatedEvent.getId());
         cal.setEventDate(updatedEvent.getEventDate());
         cal.setStartTime(updatedEvent.getStartTime());
         cal.setEndTime(updatedEvent.getEndTime());
         cal.setVenue(updatedEvent.getVenue());
+        cal.setContactNumber(updatedEvent.getContactNumber());
         cal.setEventName(updatedEvent.getEventName());
+
         calendarRepo.save(cal);
 
         return updatedEvent;
     }
 
-    // Reject event with admin message
+    // REJECT EVENT
     public EventModel rejectEvent(Long id, String message) {
         EventModel event = getEvent(id);
         event.setStatus(EventStatus.REJECTED);
@@ -91,20 +107,60 @@ public class EventService {
         return eventRepo.save(event);
     }
 
-    // Complete payment for an event
-    public EventModel completePayment(Long eventId, Double amount, String method) {
-        // Save payment details
-        EventPayment payment = new EventPayment();
-        payment.setEventId(eventId);
-        payment.setAmount(amount);
-        payment.setPaymentMethod(method);
-        payment.setPaidAt(LocalDateTime.now());
-        paymentRepo.save(payment);
-
-        // Update event status to CONFIRMED
-        EventModel event = getEvent(eventId);
-        event.setStatus(EventStatus.CONFIRMED);
-        event.setPaymentDone(true);
-        return eventRepo.save(event);
+    // DELETE EVENT
+    @Transactional
+    public void deleteEvent(Long id) {
+        EventModel event = getEvent(id);
+        calendarRepo.deleteByEventId(id);
+        eventRepo.delete(event);
     }
+
+    // ============ PUBLIC EVENTS FOR HOME PAGE ============
+
+    // Get upcoming confirmed events (event date >= today)
+    public List<EventDTO> getUpcomingEvents() {
+        LocalDate today = LocalDate.now();
+        List<EventModel> events = eventRepo.findByStatusAndEventDateGreaterThanEqualOrderByEventDateAsc(
+                EventStatus.CONFIRMED, today);
+        return events.stream()
+                .map(this::toEventDTO)
+                .collect(Collectors.toList());
+    }
+
+    // Get past confirmed events (event date < today)
+    public List<EventDTO> getPastEvents() {
+        LocalDate today = LocalDate.now();
+        List<EventModel> events = eventRepo.findByStatusAndEventDateLessThanOrderByEventDateDesc(
+                EventStatus.CONFIRMED, today);
+        return events.stream()
+                .map(this::toEventDTO)
+                .collect(Collectors.toList());
+    }
+
+    // Get single event with society details (for event detail page)
+    public EventDTO getEventWithSociety(Long id) {
+        EventModel event = getEvent(id);
+        return toEventDTO(event);
+    }
+
+    // Get confirmed events for a specific society (for society profile)
+    public List<EventDTO> getConfirmedEventsBySociety(Long societyId) {
+        List<EventModel> events = eventRepo.findBySocietyIdAndStatus(societyId, EventStatus.CONFIRMED);
+        return events.stream()
+                .map(this::toEventDTO)
+                .collect(Collectors.toList());
+    }
+
+    // Helper: Convert EventModel to EventDTO with society name
+    private EventDTO toEventDTO(EventModel event) {
+        String societyName = "Unknown Society";
+        if (event.getSocietyId() != null) {
+            SocietyModel society = societyRepo.findById(event.getSocietyId()).orElse(null);
+            if (society != null) {
+                societyName = society.getName();
+            }
+        }
+        return new EventDTO(event, societyName);
+    }
+
 }

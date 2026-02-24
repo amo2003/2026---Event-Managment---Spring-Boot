@@ -1,19 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import "./Home.css";
 
 import heroImg from "../../assets/m4.jpg";
-
-// Events
-import event1 from "../../assets/v2.jpg";
-import event2 from "../../assets/get.jpg";
-import event3 from "../../assets/pongal.jpg";
-import event4 from "../../assets/wasantha.jpg";
-import event5 from "../../assets/aura.jpg";
-import event6 from "../../assets/handaw.jpg";
-import event7 from "../../assets/ganthera.jpg";
-import event8 from "../../assets/lantha.jpg";
+import defaultEventImg from "../../assets/m4.jpg"; // fallback image
 
 const Home = () => {
   const { user, logout } = useContext(AuthContext);
@@ -21,7 +13,30 @@ const Home = () => {
   const [menuAnimating, setMenuAnimating] = useState(false);
   const [eventsDropdown, setEventsDropdown] = useState(false);
   const [showUpcoming, setShowUpcoming] = useState(true);
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [pastEvents, setPastEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  // Fetch events from backend
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        setLoading(true);
+        const [upcomingRes, pastRes] = await Promise.all([
+          axios.get("http://localhost:8080/api/public/events/upcoming"),
+          axios.get("http://localhost:8080/api/public/events/past")
+        ]);
+        setUpcomingEvents(upcomingRes.data);
+        setPastEvents(pastRes.data);
+      } catch (err) {
+        console.error("Failed to fetch events:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEvents();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -72,19 +87,16 @@ const Home = () => {
     navigate(path);
   };
 
-  const upcomingEvents = [
-    { img: event1, title: "Wiramaya - විරාමය" },
-    { img: event2, title: "SLIIT - Get Together" },
-    { img: event3, title: "Pongal Festival" },
-    { img: event4, title: "SLIIT - වසන්ත මුවදොර" },
-  ];
+  // Helper to get event image URL
+  const getEventImage = (event) => {
+    if (event.imageUrl) {
+      return `http://localhost:8080/images/events/${event.imageUrl}`;
+    }
+    return defaultEventImg;
+  };
 
-  const pastEvents = [
-    { img: event5, title: "AURA Event" },
-    { img: event6, title: "SLIIT - හැන්දෑව" },
-    { img: event7, title: "ගංතෙර" },
-    { img: event8, title: "ලන්තෑරුම" },
-  ];
+  // Get current events based on toggle
+  const currentEvents = showUpcoming ? upcomingEvents : pastEvents;
 
   return (
     <div className="home">
@@ -195,18 +207,32 @@ const Home = () => {
           </button>
         </div>
 
-        <div className="portfolio-grid">
-          {(showUpcoming ? upcomingEvents : pastEvents).map((event, index) => (
-            <div key={index} className="portfolio-card" onClick={() => navigate(`/events/${index + 1}`)}>
-              <div className="portfolio-image-wrapper">
-                <img src={event.img} alt={event.title} />
-                <div className="portfolio-overlay">
-                  <h3>{event.title}</h3>
+        {loading ? (
+          <div className="loading-events">Loading events...</div>
+        ) : currentEvents.length === 0 ? (
+          <div className="no-events">
+            {showUpcoming ? "No upcoming events at the moment." : "No past events to show."}
+          </div>
+        ) : (
+          <div className="portfolio-grid">
+            {currentEvents.map((event) => (
+              <div 
+                key={event.id} 
+                className="portfolio-card" 
+                onClick={() => navigate(`/events/${event.id}`)}
+              >
+                <div className="portfolio-image-wrapper">
+                  <img src={getEventImage(event)} alt={event.eventName} />
+                  <div className="portfolio-overlay">
+                    <h3>{event.eventName}</h3>
+                    <p className="event-society">{event.societyName}</p>
+                    <p className="event-date">{event.eventDate}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );

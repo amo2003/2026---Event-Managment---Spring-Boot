@@ -14,8 +14,9 @@ import AdminEventRequests from './Pages/AdminEventRequests/AdminEventRequests';
 import EventPayment from './Pages/EventPayment/EventPayment';
 import EventCalendar from './Pages/EventCalendar/EventCalendar';
 import MyEventRequests from './Pages/MyEventRequests/MyEventRequests';
-
-
+import AddSociety from './Pages/AddSociety/AddSoceity';
+import StallApplication from './Pages/StallRegister/StallRegister';
+import StallPayment from './Pages/StallPayment/StallPayment';
 
 function App() {
   return (
@@ -37,6 +38,11 @@ function App() {
 <Route path="/event-payment/:id" element={<EventPayment/>}/>
 <Route path="/calendar" element={<EventCalendar/>}/>
 
+    <Route path="/events/:id" element={<EventDetail />} />
+    <Route path="/addsocieties" element={<AddSociety />} />
+
+    <Route path="/stall-application/:eventId" element={<StallApplication/>} />
+    <Route path="/stall-payment" element={<StallPayment/>} />
 
     </Routes>
   );

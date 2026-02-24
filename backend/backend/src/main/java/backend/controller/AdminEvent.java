@@ -1,14 +1,14 @@
 package backend.controller;
 
-import backend.model.EventModel;
 import backend.Service.EventService;
+import backend.model.EventModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/events")
-@CrossOrigin("http://localhost:3000") // allow React frontend
+@CrossOrigin("http://localhost:3000")
 public class AdminEvent {
 
     private final EventService eventService;
@@ -17,27 +17,24 @@ public class AdminEvent {
         this.eventService = eventService;
     }
 
-    // Get all pending events
     @GetMapping("/pending")
     public List<EventModel> getPendingEvents() {
         return eventService.getPendingEvents();
     }
 
-    // Approve event
+    @GetMapping
+    public List<EventModel> getAllEvents() {
+        return eventService.getAllEvents();
+    }
+
     @PutMapping("/approve/{id}")
     public EventModel approveEvent(@PathVariable Long id) {
-        return eventService.approveEvent(id); // sets status to APPROVED_PAYMENT_PENDING
+        return eventService.approveEvent(id);
     }
 
-    // Reject event
     @PutMapping("/reject/{id}")
-    public EventModel rejectEvent(@PathVariable Long id, @RequestParam String message) {
+    public EventModel rejectEvent(@PathVariable Long id,
+                                  @RequestParam String message) {
         return eventService.rejectEvent(id, message);
-    }
-
-    // Confirm payment
-    @PutMapping("/pay/{id}")
-    public EventModel payEvent(@PathVariable Long id) {
-        return eventService.completePayment(id, 5000.0, "CASH"); // or get amount from body
     }
 }

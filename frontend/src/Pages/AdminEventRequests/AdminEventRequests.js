@@ -1,68 +1,128 @@
-// src/pages/AdminPendingEvents.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import './AdminEventRequests.css'
+import "./AdminEventRequests.css";
 
 const AdminPendingEvents = () => {
   const [events, setEvents] = useState([]);
+  const [modalImage, setModalImage] = useState(null); // Track image for modal
 
   useEffect(() => {
-    axios.get("http://localhost:8080/api/admin/events/pending")
-      .then(res => setEvents(res.data))
-      .catch(err => console.error(err));
+    fetchEvents();
   }, []);
 
+  const fetchEvents = () => {
+    axios
+      .get("http://localhost:8080/api/admin/events")
+      .then((res) => setEvents(res.data))
+      .catch((err) => console.error(err));
+  };
+
   const approve = (id) => {
-    axios.put(`http://localhost:8080/api/admin/events/approve/${id}`)
-      .then(() => setEvents(events.filter(e => e.id !== id)))
-      .catch(err => alert("Slot unavailable or error"));
+    axios
+      .put(`http://localhost:8080/api/admin/events/approve/${id}`)
+      .then(() => fetchEvents())
+      .catch(() => alert("Slot unavailable or error"));
   };
 
   const reject = (id) => {
     const msg = prompt("Enter rejection reason:");
     if (!msg) return;
-    axios.put(`http://localhost:8080/api/admin/events/reject/${id}?message=${encodeURIComponent(msg)}`)
-      .then(() => setEvents(events.filter(e => e.id !== id)))
-      .catch(err => console.error(err));
+
+    axios
+      .put(
+        `http://localhost:8080/api/admin/events/reject/${id}?message=${encodeURIComponent(msg)}`
+      )
+      .then(() => fetchEvents())
+      .catch((err) => console.error(err));
   };
 
   return (
-  <div className="admin-events-scope">
-    <div className="admin-events-container">
-      <h2 className="admin-events-title">Pending Event Requests</h2>
+    <div className="admin-events-scope">
+      <div className="admin-events-container">
+        <h2 className="admin-events-title">All Event Requests</h2>
 
-      {events.map(event => (
-  <div key={event.id} className="admin-event-card">
+        {events.length === 0 ? (
+          <p className="no-events">No events available</p>
+        ) : (
+          <table className="admin-events-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Contact Number</th>
+                <th>Venue</th>
+                <th>Society</th>
+                <th>Status</th>
+                <th>Image</th>
+                <th>Admin Message</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
 
-    <h3>{event.eventName}</h3>
+            <tbody>
+              {events.map((event) => (
+                <tr key={event.id}>
+                  <td>{event.eventName}</td>
+                  <td>{event.eventDate}</td>
+                  <td>{event.startTime} - {event.endTime}</td>
+                  <td>{event.contactNumber}</td>
+                  <td>{event.venue}</td>
+                  <td>{event.societyId}</td>
+                  <td
+                    className={`status-${event.status
+                      ?.toLowerCase()
+                      .replace(/_/g, "-")}`}
+                  >
+                    {event.status}
+                  </td>
 
-    <p><strong>Date:</strong> {event.eventDate}</p>
-    <p><strong>Time:</strong> {event.startTime} - {event.endTime}</p>
-    <p><strong>Venue:</strong> {event.venue}</p>
+                  <td>
+                    {event.imageUrl ? (
+                      <img
+                        src={`http://localhost:8080/images/events/${event.imageUrl}`}
+                        alt={event.eventName}
+                        className="event-image-preview"
+                        onClick={() =>
+                          setModalImage(`http://localhost:8080/images/events/${event.imageUrl}`)
+                        }
+                        style={{ cursor: "pointer" }}
+                      />
+                    ) : (
+                      "-"
+                    )}
+                  </td>
 
-    {event.description && (
-      <p><strong>Description:</strong> {event.description}</p>
-    )}
+                  <td>{event.adminMessage || "-"}</td>
 
-    <p><strong>Society ID:</strong> {event.societyId}</p>
+                  <td>
+                    {event.status === "PENDING" && (
+                      <>
+                        <button onClick={() => approve(event.id)} className="approve-btn">
+                          Approve
+                        </button>
 
-    <div className="admin-event-actions">
-      <button onClick={() => approve(event.id)} className="approve-btn">
-        Approve
-      </button>
+                        <button onClick={() => reject(event.id)} className="reject-btn">
+                          Reject
+                        </button>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
 
-      <button onClick={() => reject(event.id)} className="reject-btn">
-        Reject
-      </button>
+        {/* Image Modal */}
+        {modalImage && (
+          <div className="image-modal" onClick={() => setModalImage(null)}>
+            <img src={modalImage} alt="Preview" />
+          </div>
+        )}
+      </div>
     </div>
-
-  </div>
-))}
-
-      {events.length === 0 && <p className="no-events">No pending events</p>}
-    </div>
-  </div>
-);
+  );
 };
 
 export default AdminPendingEvents;

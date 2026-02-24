@@ -10,30 +10,25 @@ const SocietyProfile = () => {
   const [profile, setProfile] = useState(null);
   const [events, setEvents] = useState([]);
   const [editMode, setEditMode] = useState(false);
+  const [modalImage, setModalImage] = useState(null); // image modal
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user) {
-      navigate("/login");
-      return;
-    }
+    if (!user) return;
 
     const token = localStorage.getItem("token");
 
-    // Fetch profile
     axios
       .get(`http://localhost:8080/api/society/profile/${user.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setProfile(res.data))
-      .catch((err) => {
-        console.error(err);
+      .catch(() => {
         alert("Failed to load profile. Please login again.");
         logout();
         navigate("/login");
       });
 
-    // Fetch society events
     axios
       .get(`http://localhost:8080/api/society/events/my/${user.id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -41,6 +36,9 @@ const SocietyProfile = () => {
       .then((res) => setEvents(res.data))
       .catch((err) => console.error(err));
   }, [user, navigate, logout]);
+
+  if (!user) return <div>Loading user info...</div>;
+  if (!profile) return <div>Loading profile...</div>;
 
   const handleUpdate = () => {
     const token = localStorage.getItem("token");
@@ -66,12 +64,24 @@ const SocietyProfile = () => {
       .then(() => {
         alert("Profile deleted!");
         logout();
-        navigate("/");
+        navigate("/login");
       })
       .catch((err) => console.error(err));
   };
 
-  if (!profile) return <div>Loading profile...</div>;
+  const handleEventDelete = (eventId) => {
+    if (!window.confirm("Are you sure you want to delete this event?")) return;
+    const token = localStorage.getItem("token");
+    axios
+      .delete(`http://localhost:8080/api/society/events/delete/${eventId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(() => {
+        setEvents(events.filter((event) => event.id !== eventId));
+        alert("Event deleted successfully!");
+      })
+      .catch(() => alert("Failed to delete event."));
+  };
 
   return (
     <div className="society-profile-page">
@@ -134,31 +144,45 @@ const SocietyProfile = () => {
         ) : (
           events.map(event => (
             <div key={event.id} className="event-card">
-
-              {/* FULL DETAILS */}
               <p><strong>Event Name:</strong> {event.eventName}</p>
               <p><strong>Date:</strong> {event.eventDate}</p>
               <p><strong>Time:</strong> {event.startTime} - {event.endTime}</p>
               <p><strong>Venue:</strong> {event.venue}</p>
               {event.description && <p><strong>Description:</strong> {event.description}</p>}
-              <p><strong>Society ID:</strong> {event.societyId}</p>
+              {event.imageUrl && (
+                <img
+                  src={`http://localhost:8080/images/events/${event.imageUrl}`}
+                  alt={event.eventName}
+                  className="event-image-preview"
+                  onClick={() => setModalImage(`http://localhost:8080/images/events/${event.imageUrl}`)}
+                  style={{ cursor: "pointer" }}
+                />
+              )}
               <p><strong>Status:</strong> {event.status}</p>
 
-              {/* ACTIONS */}
               <div className="event-actions">
                 {event.status === "PENDING" && <span className="status pending">🟡 Waiting for Admin Approval</span>}
                 {event.status === "REJECTED" && <span className="status rejected">🔴 Rejected - {event.adminMessage}</span>}
-                {event.status === "APPROVED" && <span className="status approved">🟢 Approved</span>}
-                {event.status === "APPROVED_PAYMENT_PENDING" && (
-                  <button className="payment-btn" onClick={() => navigate(`/event-payment/${event.id}`)}>💳 Proceed to Payment</button>
-                )}
-                {event.status === "CONFIRMED" && <span className="status confirmed">✅ Payment Completed</span>}
-              </div>
+                {event.status === "CONFIRMED" && <span className="status confirmed">Event Scheduled Successfully</span>}
 
+                <button
+                  className="delete-event-btn"
+                  onClick={() => handleEventDelete(event.id)}
+                >
+                  🗑 Delete Event
+                </button>
+              </div>
             </div>
           ))
         )}
       </div>
+
+      {/* IMAGE MODAL */}
+      {modalImage && (
+        <div className="image-modal" onClick={() => setModalImage(null)}>
+          <img src={modalImage} alt="Preview" />
+        </div>
+      )}
     </div>
   );
 };

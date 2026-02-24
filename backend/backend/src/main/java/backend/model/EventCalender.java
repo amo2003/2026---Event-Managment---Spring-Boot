@@ -17,6 +17,7 @@ public class EventCalender {
     private LocalTime endTime;
 
     private String venue;
+    private String contactNumber;
     private String eventName;
 
     private Long eventId;
@@ -26,12 +27,13 @@ public class EventCalender {
     }
 
 
-    public EventCalender(Long id, LocalDate eventDate, LocalTime startTime, LocalTime endTime, String venue, String eventName, Long eventId) {
+    public EventCalender(Long id, LocalDate eventDate, LocalTime startTime, LocalTime endTime, String venue, String contactNumber, String eventName, Long eventId) {
         this.id = id;
         this.eventDate = eventDate;
         this.startTime = startTime;
         this.endTime = endTime;
         this.venue = venue;
+        this.contactNumber = contactNumber;
         this.eventName = eventName;
         this.eventId = eventId;
     }
@@ -74,6 +76,14 @@ public class EventCalender {
 
     public void setVenue(String venue) {
         this.venue = venue;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
     }
 
     public String getEventName() {

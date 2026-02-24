@@ -1,48 +1,158 @@
-import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./EventDetail.css";
-
-const EVENT_DATA = {
-  1: {
-    title: "Tech Summit",
-    description: "A full-day summit featuring keynote speakers, workshops, and live demos from leading tech innovators on campus.",
-  },
-  2: {
-    title: "Cultural Night",
-    description: "An immersive evening of music, dance, and performances celebrating the diversity of university life.",
-  },
-  3: {
-    title: "Sports Meet",
-    description: "Inter-faculty athletics and games with live commentary, awards, and after-event highlights.",
-  },
-  4: {
-    title: "Innovation Expo",
-    description: "Showcase of student projects, startups, and cutting-edge research with interactive booths.",
-  },
-};
+import defaultImg from "../../assets/m4.jpg";
 
 const EventDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const event = EVENT_DATA[id] || EVENT_DATA[1];
+  const [event, setEvent] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEvent = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get(`http://localhost:8080/api/public/events/${id}`);
+        setEvent(res.data);
+      } catch (err) {
+        console.error("Failed to fetch event:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEvent();
+  }, [id]);
+
+  const getEventImage = () => {
+    if (event?.imageUrl) {
+      return `http://localhost:8080/images/events/${event.imageUrl}`;
+    }
+    return defaultImg;
+  };
+
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "";
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+  };
+
+  const formatTime = (timeStr) => {
+    if (!timeStr) return "";
+    const [hours, minutes] = timeStr.split(":");
+    const hour = parseInt(hours, 10);
+    const ampm = hour >= 12 ? "PM" : "AM";
+    const hour12 = hour % 12 || 12;
+    return `${hour12}:${minutes} ${ampm}`;
+  };
+
+  if (loading) {
+    return (
+      <div className="event-detail">
+        <button className="event-back" onClick={() => navigate(-1)}>←</button>
+        <div className="event-detail-inner">
+          <p>Loading event details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!event) {
+    return (
+      <div className="event-detail">
+        <button className="event-back" onClick={() => navigate(-1)}>←</button>
+        <div className="event-detail-inner">
+          <p>Event not found.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="event-detail">
-      <button
-        className="event-back"
-        onClick={() => navigate(-1)}
-        aria-label="Back to home"
-      >
-        ✕
-      </button>
+      <button className="event-back" onClick={() => navigate(-1)}>←</button>
+      
+      <div className="event-detail-container">
+        {/* Event Image */}
+        <div className="event-hero-image">
+          <img src={getEventImage()} alt={event.eventName} />
+          <div className="event-hero-overlay">
+            <h1>{event.eventName}</h1>
+            <p className="event-society-name">Organized by: {event.societyName}</p>
+          </div>
+        </div>
 
-      <div className="event-detail-inner">
-        <h1>{event.title}</h1>
-        <p>{event.description}</p>
-        <p className="event-detail-note">
-          This is a demo detail page. You can update this content to match your
-          real event information.
-        </p>
+        {/* Event Details */}
+        <div className="event-info-section">
+          <div className="event-info-card">
+            <h2>📅 Event Details</h2>
+            <div className="event-info-grid">
+              <div className="info-item">
+                <span className="info-label">Date</span>
+                <span className="info-value">{formatDate(event.eventDate)}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-label">Time</span>
+                <span className="info-value">{formatTime(event.startTime)} - {formatTime(event.endTime)}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-label">Venue</span>
+                <span className="info-value">{event.venue}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-label">Status</span>
+                <span className={`info-value status-badgee ${event.status?.toLowerCase()}`}>
+                  {event.status}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Description */}
+          {event.description && (
+            <div className="event-description-card">
+              <h2>📝 About This Event</h2>
+              <p>{event.description}</p>
+            </div>
+          )}
+
+          {/* Stall Owners Section */}
+          <div className="stall-owners-section">
+            <h2>🏪 Stall Opportunities</h2>
+            <p className="stall-info">
+              Interested in setting up a stall at this event? Connect with the organizers!
+            </p>
+            <div className="stall-buttons">
+              <button 
+                className="stall-btn apply-btn"
+                onClick={() => navigate(`/stall-application/${event.id}`)}
+              >
+                Apply for Stall
+              </button>
+              <button 
+                className="stall-btn contact-btn"
+                onClick={() => navigate(`/contact-society/${event.societyId}`)}
+              >
+                Contact Organizer
+              </button>
+            </div>
+          </div>
+
+          {/* Society Info */}
+          <div className="society-info-section">
+            <h2>🎓 About the Organizer</h2>
+            <div className="society-card" onClick={() => navigate(`/society/${event.societyId}`)}>
+              <span className="society-name">{event.societyName}</span>
+              <span className="view-profile">View Profile →</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

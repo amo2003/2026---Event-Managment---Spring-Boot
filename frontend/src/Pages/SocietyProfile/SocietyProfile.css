@@ -262,3 +262,51 @@
   font-size: 14px;
 }
 
+.delete-event-btn {
+  background: #db1310;
+  color: white;
+  border: none;
+  padding: 7px 14px;
+  margin-top: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-left: 2rem;
+}
+
+.delete-event-btn:hover {
+  background: #b71c1c;
+}
+
+/* ===== EVENT IMAGE PREVIEW ===== */
+.event-image-preview {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin: 15px 0;
+  transition: transform 0.3s ease;
+}
+
+.event-image-preview:hover {
+  transform: scale(1.02);
+}
+
+/* ===== IMAGE MODAL ===== */
+.image-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.image-modal img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}

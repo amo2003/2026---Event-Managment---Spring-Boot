@@ -1,130 +1,195 @@
 
+/* SCOPE ONLY THIS PAGE */
 
 .admin-events-scope {
   min-height: 100vh;
   background: #000;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   padding: 40px;
   font-family: 'Poppins', sans-serif;
 }
 
-/* Glass Container */
+/* GLASS CONTAINER */
 
-.admin-events-scope .admin-events-container {
+.admin-events-container {
   width: 100%;
-  max-width: 900px;
-  padding: 50px;
+  max-width: 1300px;
+  padding: 40px;
   border-radius: 30px;
   position: relative;
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(18px);
-  border: 1px solid rgba(255,255,255,0.15);
-  box-shadow: 0 0 60px rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 60px rgba(255, 255, 255, 0.05);
   overflow: hidden;
 }
 
-/* Animated Border Glow */
-
-.admin-events-scope .admin-events-container::before {
+/* Animated Border */
+.admin-events-container::before {
   content: "";
   position: absolute;
   inset: -2px;
   border-radius: 30px;
   background: linear-gradient(45deg, #ffffff, #666, #ffffff);
   z-index: -1;
-  animation: adminGlow 6s linear infinite;
+  animation: borderGlow 6s linear infinite;
 }
 
-@keyframes adminGlow {
+@keyframes borderGlow {
   0% { filter: hue-rotate(0deg); }
   100% { filter: hue-rotate(360deg); }
 }
 
-/* Title */
+/* TITLE */
 
-.admin-events-scope .admin-events-title {
+.admin-events-title {
   text-align: center;
-  color: white;
-  font-size: 30px;
+  margin-bottom: 30px;
+  font-size: 28px;
   letter-spacing: 0.15em;
-  margin-bottom: 35px;
   text-transform: uppercase;
+  color: rgb(0, 0, 0);
 }
 
-/* Event Card */
+/* TABLE STYLING */
 
-.admin-events-scope .admin-event-card {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(0, 0, 0, 0.734);
+.admin-events-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: rgba(0, 0, 0, 0.776);
+}
+
+.admin-events-table th {
+  padding: 15px;
+  text-transform: uppercase;
+  font-size: 16px;
+  letter-spacing: 0.1em;
+  color: #001c79;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.823);
+}
+
+.admin-events-table td {
+  padding: 15px;
+  text-align: center;
+  font-size: 18px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.866);
+}
+
+/* Row hover */
+.admin-events-table tbody tr:hover {
+  background: rgba(255,255,255,0.05);
+  transition: 0.3s ease;
+}
+
+/* STATUS COLORS */
+
+
+.status-pending {
+  color: #ffc107;
+  font-weight: 600;
+}
+
+.status-approved {
+  color: #009b53;
+  font-weight: 600;
+}
+
+.status-rejected {
+  color: #ff4d4d;
+  font-weight: 600;
+}
+
+/* ============================= */
+/* BUTTONS */
+/* ============================= */
+
+.approve-btn,
+.reject-btn {
+  padding: 8px 14px;
   border-radius: 20px;
-  padding: 25px;
-  margin-bottom: 20px;
-  color: rgb(0, 0, 0);
-  font-size: 20px;
-  transition: 0.3s ease;
-}
-
-.admin-events-scope .admin-event-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 0 25px rgba(255,255,255,0.2);
-}
-
-/* Buttons Row */
-
-.admin-events-scope .admin-event-actions {
-  margin-top: 15px;
-  display: flex;
-  gap: 12px;
-}
-
-/* Approve Button */
-
-.admin-events-scope .approve-btn {
-  padding: 10px 22px;
-  border-radius: 25px;
   border: none;
-  border: 0.5px solid black;
-  background: white;
-  color: black;
-  font-size: 16px;
+  font-size: 12px;
   cursor: pointer;
   transition: 0.3s ease;
+  margin: 3px;
+  letter-spacing: 0.05em;
 }
 
-.admin-events-scope .approve-btn:hover {
-  transform: scale(1.08);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
-    border: 0.5px solid black;
-    background: #03bc00;
-
+.approve-btn {
+  background: #008748;
+  color: rgb(255, 255, 255);
 }
 
-/* Reject Button */
+.approve-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px #00ff88;
+}
 
-.admin-events-scope .reject-btn {
-  padding: 10px 22px;
-  border-radius: 25px;
-  border: 1px solid rgba(0, 0, 0, 0.853);
-  background: white;
-  font-size: 16px;
-  color: rgb(0, 0, 0);
-  cursor: pointer;
+.reject-btn {
+  background: #ff1e1e;
+  color: white;
+}
+
+.reject-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px #ff4d4d;
+}
+
+/* ============================= */
+/* IMAGE PREVIEW */
+/* ============================= */
+
+.event-image-preview {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 12px;
   transition: 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.2);
 }
 
-.admin-events-scope .reject-btn:hover {
-  background: rgb(207, 1, 1);
-  color: black;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
-
+.event-image-preview:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 20px rgba(255,255,255,0.5);
 }
 
-/* Empty Text */
+/* ============================= */
+/* IMAGE MODAL */
+/* ============================= */
 
-.admin-events-scope .no-events {
+.image-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(10px);
+}
+
+.image-modal img {
+  max-width: 80%;
+  max-height: 80%;
+  border-radius: 20px;
+  box-shadow: 0 0 40px rgba(255,255,255,0.3);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ============================= */
+/* NO EVENTS TEXT */
+/* ============================= */
+
+.no-events {
   text-align: center;
   color: rgba(255,255,255,0.6);
-  margin-top: 20px;
+  font-size: 16px;
+  margin-top: 30px;
 }

@@ -1,0 +1,475 @@
+/* ===== STALL APPLICATION PAGE ===== */
+.stall-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+  color: #fff;
+  padding: 30px 20px 60px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.stall-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ===== BACK BUTTON ===== */
+.stall-page .back-btn {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.3s ease;
+}
+
+.stall-page .back-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
+}
+
+/* ===== EVENT HEADER ===== */
+.stall-event-header {
+  max-width: 1000px;
+  margin: 60px auto 40px;
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 40px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stall-event-image {
+  position: relative;
+  height: 300px;
+}
+
+.stall-event-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.stall-event-overlay {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+}
+
+.stall-badge {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stall-event-info {
+  padding: 30px 30px 30px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.stall-event-info h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.organized-by {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 20px;
+}
+
+.organized-by strong {
+  color: #8b5cf6;
+}
+
+.event-meta-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.meta-icon {
+  font-size: 16px;
+}
+
+.event-desc {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+  margin-top: 10px;
+}
+
+/* ===== FORM SECTION ===== */
+.stall-form-section {
+  max-width: 1000px;
+  margin: 0 auto 40px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 35px;
+}
+
+.stall-form-section h2 {
+  font-size: 22px;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.form-subtitle {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 30px;
+}
+
+.stall-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group.full-width {
+  grid-column: span 2;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.form-group input {
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.form-group input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  background: rgba(139, 92, 246, 0.1);
+}
+
+.form-group input.error {
+  border-color: #ef4444;
+}
+
+.error-text {
+  font-size: 12px;
+  color: #ef4444;
+}
+
+/* ===== PACKAGES SECTION ===== */
+.stall-packages-section {
+  max-width: 1000px;
+  margin: 0 auto 40px;
+}
+
+.stall-packages-section h2 {
+  font-size: 22px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.stall-packages-section .form-subtitle {
+  text-align: center;
+}
+
+.packages-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.package-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.package-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.package-card.selected {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
+}
+
+.package-header {
+  padding: 30px 20px;
+  text-align: center;
+  position: relative;
+}
+
+.package-header h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.package-price {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+  color: #1a1a2e;
+}
+
+.package-price .currency {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.package-price .amount {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.package-features {
+  padding: 25px 20px;
+}
+
+.package-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.package-features li {
+  padding: 8px 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.package-features li:last-child {
+  border-bottom: none;
+}
+
+.select-package-btn {
+  width: calc(100% - 40px);
+  margin: 0 20px 20px;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.package-card:hover .select-package-btn {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+
+.package-card.selected .select-package-btn {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+
+/* ===== PAYMENT SUMMARY ===== */
+.payment-summary-section {
+  max-width: 500px;
+  margin: 0 auto 40px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 35px;
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.payment-summary-section h2 {
+  font-size: 22px;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.summary-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 25px;
+  margin-bottom: 25px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.summary-row span:first-child {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.summary-row .package-name {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+}
+
+.summary-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 10px 0;
+}
+
+.summary-row.total {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.summary-row .total-amount {
+  font-size: 24px;
+  color: #22c55e;
+  font-weight: 700;
+}
+
+.pay-now-btn {
+  width: 100%;
+  padding: 18px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.pay-now-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(34, 197, 94, 0.3);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .stall-event-header {
+    grid-template-columns: 1fr;
+  }
+
+  .stall-event-image {
+    height: 250px;
+  }
+
+  .stall-event-info {
+    padding: 25px;
+  }
+
+  .packages-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .stall-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group.full-width {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .stall-page {
+    padding: 20px 15px 50px;
+  }
+
+  .stall-event-header {
+    margin-top: 70px;
+  }
+
+  .stall-form-section,
+  .payment-summary-section {
+    padding: 25px 20px;
+  }
+
+  .stall-event-info h1 {
+    font-size: 22px;
+  }
+
+  .event-meta-grid {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
