@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from "react-router-dom";
 
 import Register from './Pages/SocietyRegister/SoceityRegister'
@@ -17,8 +17,15 @@ import MyEventRequests from './Pages/MyEventRequests/MyEventRequests';
 import AddSociety from './Pages/AddSociety/AddSoceity';
 import StallApplication from './Pages/StallRegister/StallRegister';
 import StallPayment from './Pages/StallPayment/StallPayment';
+import StallOwnerRegister from './Pages/StallOwnerRegister/StallOwnerRegister';
+import StallOwnerLogin from './Pages/StallOwnerLogin/StallOwnerLogin';
+import StallOwnerProfile from './Pages/StallOwnerProfile/StallOwnerProfile';
+import PendingPayments from './Pages/StallAdminSide/StallAdminSide';
 
 function App() {
+
+    const [owner, setOwner] = useState(null); // logged-in stall owner
+
   return (
     <Routes>
       <Route path="/" element={<Home/>}/>
@@ -41,8 +48,25 @@ function App() {
     <Route path="/events/:id" element={<EventDetail />} />
     <Route path="/addsocieties" element={<AddSociety />} />
 
-    <Route path="/stall-application/:eventId" element={<StallApplication/>} />
-    <Route path="/stall-payment" element={<StallPayment/>} />
+    {/*<Route path="/stall-application/:eventId" element={<StallApplication/>} />*/}
+    {/*<Route path="/stall-payment" element={<StallPayment/>} />*/}
+
+    {/* Stall Owner Auth */}
+        <Route path="/sregister" element={<StallOwnerRegister />} />
+        <Route path="/slogin" element={<StallOwnerLogin setOwner={setOwner} />} />
+
+        {/* Stall Owner Pages */}
+        {owner && (
+          <>
+            <Route path="/owner-profile/:ownerId" element={<StallOwnerProfile />} />
+            <Route path="/stall-application/:ownerId/:eventId" element={<StallApplication />} />
+            <Route path="/stall-payment/:ownerId/:stallId" element={<StallPayment />} />
+          </>
+        )}
+
+        {/* Admin Pages */}
+        <Route path="/admin/pending-payments" element={<PendingPayments />} />
+
 
     </Routes>
   );

@@ -4,8 +4,8 @@ import axios from "axios";
 import "./EventDetail.css";
 import defaultImg from "../../assets/m4.jpg";
 
-const EventDetail = () => {
-  const { id } = useParams();
+const EventDetail = ({ owner }) => { // owner passed from App.js or context
+  const { id } = useParams(); // eventId
   const navigate = useNavigate();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -25,22 +25,14 @@ const EventDetail = () => {
     fetchEvent();
   }, [id]);
 
-  const getEventImage = () => {
-    if (event?.imageUrl) {
-      return `http://localhost:8080/images/events/${event.imageUrl}`;
-    }
-    return defaultImg;
-  };
+  const getEventImage = () => event?.imageUrl
+    ? `http://localhost:8080/images/events/${event.imageUrl}`
+    : defaultImg;
 
   const formatDate = (dateStr) => {
     if (!dateStr) return "";
     const date = new Date(dateStr);
-    return date.toLocaleDateString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    });
+    return date.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
   };
 
   const formatTime = (timeStr) => {
@@ -77,7 +69,7 @@ const EventDetail = () => {
   return (
     <div className="event-detail">
       <button className="event-back" onClick={() => navigate(-1)}>←</button>
-      
+
       <div className="event-detail-container">
         {/* Event Image */}
         <div className="event-hero-image">
@@ -129,13 +121,22 @@ const EventDetail = () => {
               Interested in setting up a stall at this event? Connect with the organizers!
             </p>
             <div className="stall-buttons">
-              <button 
-                className="stall-btn apply-btn"
-                onClick={() => navigate(`/stall-application/${event.id}`)}
-              >
-                Apply for Stall
-              </button>
-              <button 
+              {owner ? (
+                <button
+                  className="stall-btn apply-btn"
+                  onClick={() => navigate(`/stall-application/${owner.id}/${event.id}`)}
+                >
+                  Apply for Stall
+                </button>
+              ) : (
+                <button
+                  className="stall-btn apply-btn"
+                  onClick={() => navigate("/slogin")}
+                >
+                  Login to Apply
+                </button>
+              )}
+              <button
                 className="stall-btn contact-btn"
                 onClick={() => navigate(`/contact-society/${event.societyId}`)}
               >

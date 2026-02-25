@@ -9,7 +9,11 @@ public interface StallRegistrationRepository extends JpaRepository<StallRegistra
 
     List<StallRegistration> findByEventId(Long eventId);
 
-    List<StallRegistration> findByEmail(String email);
+    List<StallRegistration> findByOwnerId(Long ownerId);
 
     List<StallRegistration> findByPaymentStatus(String paymentStatus);
+
+    List<StallRegistration> findByPaymentStatusAndPaymentMethod(String paymentStatus, String paymentMethod);
+
+    List<StallRegistration> findByOwnerIdAndEventId(Long ownerId, Long eventId);
 }
