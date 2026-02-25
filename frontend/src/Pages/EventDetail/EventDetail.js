@@ -121,21 +121,12 @@ const EventDetail = ({ owner }) => { // owner passed from App.js or context
               Interested in setting up a stall at this event? Connect with the organizers!
             </p>
             <div className="stall-buttons">
-              {owner ? (
-                <button
-                  className="stall-btn apply-btn"
-                  onClick={() => navigate(`/stall-application/${owner.id}/${event.id}`)}
-                >
-                  Apply for Stall
-                </button>
-              ) : (
-                <button
-                  className="stall-btn apply-btn"
-                  onClick={() => navigate("/slogin")}
-                >
-                  Login to Apply
-                </button>
-              )}
+              <button
+                className="stall-btn apply-btn"
+                onClick={() => navigate("/slogin", { state: { eventId: event.id } })}
+              >
+                {owner ? "Apply for Stall" : "Login to Apply"}
+              </button>
               <button
                 className="stall-btn contact-btn"
                 onClick={() => navigate(`/contact-society/${event.societyId}`)}

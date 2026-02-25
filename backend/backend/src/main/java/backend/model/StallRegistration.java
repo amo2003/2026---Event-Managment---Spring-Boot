@@ -21,6 +21,10 @@ public class StallRegistration {
     private String paymentMethod; // CARD or SLIP
     private String paymentStatus; // NOT_PAID, PENDING, APPROVED, REJECTED
     private String slipUrl;
+    private String slipNote;
+
+    // QR code image URL (generated after successful stall placement)
+    private String qrCodeUrl;
 
     private LocalDateTime registeredAt;
 
@@ -64,6 +68,12 @@ public class StallRegistration {
 
     public String getSlipUrl() { return slipUrl; }
     public void setSlipUrl(String slipUrl) { this.slipUrl = slipUrl; }
+
+    public String getSlipNote() { return slipNote; }
+    public void setSlipNote(String slipNote) { this.slipNote = slipNote; }
+
+    public String getQrCodeUrl() { return qrCodeUrl; }
+    public void setQrCodeUrl(String qrCodeUrl) { this.qrCodeUrl = qrCodeUrl; }
 
     public LocalDateTime getRegisteredAt() { return registeredAt; }
     public void setRegisteredAt(LocalDateTime registeredAt) { this.registeredAt = registeredAt; }

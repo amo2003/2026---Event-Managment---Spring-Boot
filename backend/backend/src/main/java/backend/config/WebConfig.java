@@ -12,5 +12,13 @@ public class WebConfig implements WebMvcConfigurer {
         // Serve files from uploads/events folder under /images/events/** URL
         registry.addResourceHandler("/images/events/**")
                 .addResourceLocations("file:uploads/events/");
+
+        // Serve uploaded slips under /uploads/slips/**
+        registry.addResourceHandler("/uploads/slips/**")
+                .addResourceLocations("file:uploads/slips/");
+
+        // Serve generated QR codes under /uploads/qrcodes/**
+        registry.addResourceHandler("/uploads/qrcodes/**")
+                .addResourceLocations("file:uploads/qrcodes/");
     }
 }

@@ -1,7 +1,8 @@
-
+/* ============================= */
 /* SCOPE ONLY THIS PAGE */
+/* ============================= */
 
-.admin-events-scope {
+.pending-payments-scope {
   min-height: 100vh;
   background: #000;
   display: flex;
@@ -11,9 +12,11 @@
   font-family: 'Poppins', sans-serif;
 }
 
+/* ============================= */
 /* GLASS CONTAINER */
+/* ============================= */
 
-.admin-events-container {
+.pending-payments-container {
   width: 100%;
   max-width: 1300px;
   padding: 40px;
@@ -27,7 +30,7 @@
 }
 
 /* Animated Border */
-.admin-events-container::before {
+.pending-payments-container::before {
   content: "";
   position: absolute;
   inset: -2px;
@@ -42,49 +45,54 @@
   100% { filter: hue-rotate(360deg); }
 }
 
+/* ============================= */
 /* TITLE */
+/* ============================= */
 
-.admin-events-title {
+.pending-payments-container h2 {
   text-align: center;
   margin-bottom: 30px;
   font-size: 28px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
 }
 
+/* ============================= */
 /* TABLE STYLING */
+/* ============================= */
 
-.admin-events-table {
+.pending-payments-table {
   width: 100%;
   border-collapse: collapse;
-  color: rgba(0, 0, 0, 0.776);
+  color: rgba(255, 255, 255, 0.9);
 }
 
-.admin-events-table th {
+.pending-payments-table th {
   padding: 15px;
   text-transform: uppercase;
   font-size: 16px;
   letter-spacing: 0.1em;
-  color: #001c79;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.823);
+  color: #00d4ff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.admin-events-table td {
+.pending-payments-table td {
   padding: 15px;
   text-align: center;
-  font-size: 18px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.866);
+  font-size: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Row hover */
-.admin-events-table tbody tr:hover {
-  background: rgba(255,255,255,0.05);
+.pending-payments-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.05);
   transition: 0.3s ease;
 }
 
+/* ============================= */
 /* STATUS COLORS */
-
+/* ============================= */
 
 .status-pending {
   color: #ffc107;
@@ -92,7 +100,7 @@
 }
 
 .status-approved {
-  color: #009b53;
+  color: #00ff99;
   font-weight: 600;
 }
 
@@ -118,17 +126,17 @@
 }
 
 .approve-btn {
-  background: #008748;
-  color: rgb(255, 255, 255);
+  background: #00ff99;
+  color: #000;
 }
 
 .approve-btn:hover {
   transform: scale(1.1);
-  box-shadow: 0 0 15px #00ff88;
+  box-shadow: 0 0 15px #00ff99;
 }
 
 .reject-btn {
-  background: #ff1e1e;
+  background: #ff4d4d;
   color: white;
 }
 
@@ -138,28 +146,29 @@
 }
 
 /* ============================= */
-/* IMAGE PREVIEW */
+/* SLIP IMAGE THUMBNAIL */
 /* ============================= */
 
-.event-image-preview {
+.slip-img {
   width: 60px;
   height: 60px;
   object-fit: cover;
   border-radius: 12px;
   transition: 0.3s ease;
   border: 1px solid rgba(255,255,255,0.2);
+  cursor: pointer;
 }
 
-.event-image-preview:hover {
+.slip-img:hover {
   transform: scale(1.2);
-  box-shadow: 0 0 20px rgba(255,255,255,0.5);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
 }
 
 /* ============================= */
 /* IMAGE MODAL */
 /* ============================= */
 
-.image-modal {
+.slip-modal {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.85);
@@ -170,11 +179,11 @@
   backdrop-filter: blur(10px);
 }
 
-.image-modal img {
+.slip-modal img {
   max-width: 80%;
   max-height: 80%;
   border-radius: 20px;
-  box-shadow: 0 0 40px rgba(255,255,255,0.3);
+  box-shadow: 0 0 40px rgba(0,255,255,0.3);
   animation: fadeIn 0.3s ease;
 }
 
@@ -184,10 +193,10 @@
 }
 
 /* ============================= */
-/* NO EVENTS TEXT */
+/* NO STALLS TEXT */
 /* ============================= */
 
-.no-events {
+.no-stalls {
   text-align: center;
   color: rgba(255,255,255,0.6);
   font-size: 16px;

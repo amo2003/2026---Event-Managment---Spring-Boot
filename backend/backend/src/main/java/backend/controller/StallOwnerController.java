@@ -1,13 +1,19 @@
 package backend.controller;
 
+import backend.Service.EmailService;
+import backend.Service.QRCodeService;
 import backend.model.StallOwner;
 import backend.model.StallRegistration;
 import backend.repository.StallOwnerRepository;
 import backend.repository.StallRegistrationRepository;
+import com.google.zxing.WriterException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -21,10 +27,14 @@ public class StallOwnerController {
 
     private final StallOwnerRepository ownerRepo;
     private final StallRegistrationRepository stallRepo;
+    private final EmailService emailService;
 
-    public StallOwnerController(StallOwnerRepository ownerRepo, StallRegistrationRepository stallRepo) {
+    public StallOwnerController(StallOwnerRepository ownerRepo,
+                                StallRegistrationRepository stallRepo,
+                                EmailService emailService) {
         this.ownerRepo = ownerRepo;
         this.stallRepo = stallRepo;
+        this.emailService = emailService;
     }
 
     // Register stall owner
@@ -70,15 +80,7 @@ public class StallOwnerController {
         if (owner == null) {
             return ResponseEntity.notFound().build();
         }
-
-        // If already exists for this event, return it (avoid duplicates)
-        if (payload.getEventId() != null) {
-            List<StallRegistration> existing = stallRepo.findByOwnerIdAndEventId(ownerId, payload.getEventId());
-            if (!existing.isEmpty()) {
-                return ResponseEntity.ok(existing.get(0));
-            }
-        }
-
+        // Always create a new stall record so history of all placements is kept
         StallRegistration stall = new StallRegistration();
         stall.setOwner(owner);
         stall.setEventId(payload.getEventId());
@@ -121,7 +123,12 @@ public class StallOwnerController {
 
         stall.setPaymentMethod("CARD");
         stall.setPaymentStatus("APPROVED");
-        return ResponseEntity.ok(stallRepo.save(stall));
+        StallRegistration saved = stallRepo.save(stall);
+
+        // send success email
+        emailService.sendStallPlacedEmail(saved.getOwner(), saved);
+
+        return ResponseEntity.ok(saved);
     }
 
     // Upload payment slip
@@ -129,7 +136,8 @@ public class StallOwnerController {
     public ResponseEntity<StallRegistration> uploadSlip(
             @PathVariable Long ownerId,
             @RequestParam MultipartFile slip,
-            @RequestParam Long stallId
+            @RequestParam Long stallId,
+            @RequestParam(required = false) String note
     ) throws IOException {
         StallRegistration stall = stallRepo.findById(stallId).orElseThrow();
         if(!stall.getOwner().getId().equals(ownerId)) {
@@ -152,8 +160,14 @@ public class StallOwnerController {
         stall.setSlipUrl("/uploads/slips/" + safeName);
         stall.setPaymentMethod("SLIP");
         stall.setPaymentStatus("PENDING");
+        if (note != null && !note.isBlank()) {
+            stall.setSlipNote(note);
+        }
         stallRepo.save(stall);
 
         return ResponseEntity.ok(stall);
     }
+
+
+
 }
