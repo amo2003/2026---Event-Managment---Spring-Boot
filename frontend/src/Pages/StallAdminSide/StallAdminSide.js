@@ -4,12 +4,15 @@ import "./StallAdminSide.css";
 
 const PendingPayments = () => {
   const [stalls, setStalls] = useState([]);
+  const [filteredStalls, setFilteredStalls] = useState([]);
   const [modalImage, setModalImage] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const fetchStalls = useCallback(async () => {
     try {
       const res = await axios.get("http://localhost:8080/api/admin/stalls");
       setStalls(res.data);
+      setFilteredStalls(res.data);
     } catch (err) {
       console.error("Error fetching payments:", err);
     }
@@ -38,6 +41,47 @@ const PendingPayments = () => {
     }
   };
 
+  // Filter stalls based on search term
+  const handleSearch = (value) => {
+    setSearchTerm(value);
+    
+    if (!value.trim()) {
+      setFilteredStalls(stalls);
+      return;
+    }
+
+    const searchLower = value.toLowerCase();
+    const filtered = stalls.filter((stall) => {
+      const paymentMethod = (stall.paymentMethod || "").toLowerCase();
+      const businessName = (stall.businessName || "").toLowerCase();
+      const ownerName = (stall.owner?.ownerName || "").toLowerCase();
+      const status = (stall.paymentStatus || "").toLowerCase();
+      
+      return (
+        paymentMethod.includes(searchLower) ||
+        businessName.includes(searchLower) ||
+        ownerName.includes(searchLower) ||
+        status.includes(searchLower)
+      );
+    });
+    
+    setFilteredStalls(filtered);
+  };
+
+  // Filter by payment method buttons
+  const filterByPaymentMethod = (method) => {
+    if (method === "ALL") {
+      setFilteredStalls(stalls);
+      setSearchTerm("");
+    } else {
+      const filtered = stalls.filter(
+        (stall) => stall.paymentMethod === method
+      );
+      setFilteredStalls(filtered);
+      setSearchTerm(method);
+    }
+  };
+
   useEffect(() => {
     fetchStalls();
 
@@ -46,12 +90,57 @@ const PendingPayments = () => {
     return () => clearInterval(interval);
   }, [fetchStalls]);
 
+  // Update filtered stalls when stalls change
+  useEffect(() => {
+    if (searchTerm) {
+      handleSearch(searchTerm);
+    } else {
+      setFilteredStalls(stalls);
+    }
+  }, [stalls]);
+
   return (
     <div className="pending-payments-scope">
       <div className="pending-payments-container">
         <h2>Stall Payments</h2>
 
-        {stalls.length === 0 ? (
+        {/* Search and Filter Section */}
+        <div className="search-filter-section">
+          <input
+            type="text"
+            placeholder="Search by payment method, business name, owner, or status..."
+            value={searchTerm}
+            onChange={(e) => handleSearch(e.target.value)}
+            className="search-input"
+          />
+          
+          <div className="filter-buttons">
+            <button
+              className={searchTerm === "" ? "filter-btn active" : "filter-btn"}
+              onClick={() => filterByPaymentMethod("ALL")}
+            >
+              All
+            </button>
+            <button
+              className={searchTerm === "CARD" ? "filter-btn active" : "filter-btn"}
+              onClick={() => filterByPaymentMethod("CARD")}
+            >
+              Card
+            </button>
+            <button
+              className={searchTerm === "SLIP" ? "filter-btn active" : "filter-btn"}
+              onClick={() => filterByPaymentMethod("SLIP")}
+            >
+              Slip
+            </button>
+          </div>
+        </div>
+
+        <p className="stall-count">
+          Showing {filteredStalls.length} of {stalls.length} stalls
+        </p>
+
+        {filteredStalls.length === 0 ? (
           <p className="no-stalls">No stalls found</p>
         ) : (
           <table className="pending-payments-table">
@@ -59,6 +148,8 @@ const PendingPayments = () => {
               <tr>
                 <th>Business Name</th>
                 <th>Owner</th>
+                <th>Package</th>
+                <th>Amount</th>
                 <th>Payment Method</th>
                 <th>Slip</th>
                 <th>Note</th>
@@ -67,11 +158,21 @@ const PendingPayments = () => {
               </tr>
             </thead>
             <tbody>
-              {stalls.map((stall) => (
+              {filteredStalls.map((stall) => (
                 <tr key={stall.id}>
                   <td>{stall.businessName}</td>
                   <td>{stall.owner?.ownerName || "-"}</td>
-                  <td>{stall.paymentMethod || "-"}</td>
+                  <td>{stall.packageType || "-"}</td>
+                  <td className="amount-cell">
+                    <span className="amount-value">
+                      Rs. {stall.amount ? stall.amount.toLocaleString() : "0"}
+                    </span>
+                  </td>
+                  <td>
+                    <span className={`payment-method-badge ${stall.paymentMethod?.toLowerCase()}`}>
+                      {stall.paymentMethod || "-"}
+                    </span>
+                  </td>
                   <td>
                     {stall.slipUrl ? (
                       <img
