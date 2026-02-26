@@ -1,20 +1,30 @@
 // src/context/AuthContext.js
 import React, { createContext, useEffect, useState } from "react";
 
-export const AuthContext = createContext(); // named export
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const id = localStorage.getItem("id")
+    const id = localStorage.getItem("id");
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
+    const userType = localStorage.getItem("userType"); // 'society', 'stallOwner', 'admin'
     const faculty = localStorage.getItem("faculty");
     const email = localStorage.getItem("email");
+    const ownerName = localStorage.getItem("ownerName");
 
-    if (token && role && faculty && email) {
-      setUser({ token, role, faculty, email, id });
+    if (token && role && userType) {
+      setUser({ 
+        id, 
+        token, 
+        role, 
+        userType, 
+        faculty, 
+        email, 
+        ownerName 
+      });
     }
   }, []);
 
@@ -22,8 +32,18 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("id", userData.id);
     localStorage.setItem("token", userData.token);
     localStorage.setItem("role", userData.role);
-    localStorage.setItem("faculty", userData.faculty);
-    localStorage.setItem("email", userData.email);
+    localStorage.setItem("userType", userData.userType); // 'society', 'stallOwner', 'admin'
+    
+    if (userData.faculty) {
+      localStorage.setItem("faculty", userData.faculty);
+    }
+    if (userData.email) {
+      localStorage.setItem("email", userData.email);
+    }
+    if (userData.ownerName) {
+      localStorage.setItem("ownerName", userData.ownerName);
+    }
+    
     setUser(userData);
   };
 

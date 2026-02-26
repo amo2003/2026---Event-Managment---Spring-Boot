@@ -38,7 +38,8 @@ function SoceityLogin() {
         id: response.data.id, 
         token: response.data.token,
         role: response.data.role,
-        faculty: response.data.faculty, // important!
+        userType: "society", // Add user type
+        faculty: response.data.faculty,
         email: response.data.email,
       };
 

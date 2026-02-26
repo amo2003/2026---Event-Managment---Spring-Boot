@@ -1,42 +1,66 @@
 // src/pages/stallOwner/Login.jsx
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 import "./StallOwnerLogin.css";
 
-const StallOwnerLogin = ({ setOwner }) => {
+const StallOwnerLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const eventId = location.state?.eventId || 1;
+  const { login } = useContext(AuthContext);
 
   const handleLogin = async () => {
     try {
+      // Check if admin credentials
+      if (email === "admin" && password === "admin123") {
+        const userData = {
+          id: "admin",
+          token: "admin-token-" + Date.now(),
+          role: "ADMIN",
+          userType: "admin",
+          email: "admin@eventmanagement.com",
+        };
+
+        login(userData);
+        navigate("/");
+        return;
+      }
+
+      // Otherwise, try stall owner login
       const res = await axios.post(
         "http://localhost:8080/api/stall-owner/login",
         { email, password }
       );
 
-      console.log("Login response:", res.data); // Debug log
-      setOwner(res.data);
+      console.log("Login response:", res.data);
 
-      // navigate and pass state properly
-      navigate(`/stall-application/${res.data.id}/${eventId}`, {
-        state: {
-          businessName: res.data.businessName || "",
-          productType: res.data.productType || "",
-        },
-      });
+      // Save to AuthContext
+      const userData = {
+        id: res.data.id,
+        token: "stall-owner-token-" + res.data.id,
+        role: "STALL_OWNER",
+        userType: "stallOwner",
+        email: res.data.email,
+        ownerName: res.data.ownerName,
+      };
+
+      login(userData);
+
+      // Navigate to stall owner profile
+      navigate(`/owner-profile/${res.data.id}`);
     } catch (err) {
       console.error(err);
-      alert("Login failed");
+      alert("Login failed. Please check your credentials.");
     }
   };
 
   return (
     <div className="stall-login-container">
+      <button className="back-btn" onClick={() => navigate("/")}>
+        ←
+      </button>
       <div className="stall-login-card">
         <h2>Stall Owner Login</h2>
 
@@ -55,6 +79,11 @@ const StallOwnerLogin = ({ setOwner }) => {
         />
 
         <button onClick={handleLogin}>Login</button>
+
+        <p className="register-link">
+          Don't have an account?{" "}
+          <span onClick={() => navigate("/sregister")}>Register here</span>
+        </p>
       </div>
     </div>
   );

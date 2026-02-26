@@ -8,6 +8,29 @@
   justify-content: center;
   font-family: 'Poppins', sans-serif;
   padding: 40px;
+  position: relative;
+}
+
+/* ===== BACK BUTTON ===== */
+
+.stall-login-container .back-btn {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.stall-login-container .back-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(-5px);
 }
 
 /* ===== GLASS CARD ===== */
@@ -97,4 +120,24 @@
 .stall-login-card button:hover {
   transform: scale(1.05);
   box-shadow: 0 0 25px rgba(255,255,255,0.7);
+}
+
+
+/* ===== REGISTER LINK ===== */
+
+.register-link {
+  margin-top: 20px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.register-link span {
+  color: white;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.register-link span:hover {
+  color: #4caf50;
 }

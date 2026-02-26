@@ -142,11 +142,10 @@ const Home = () => {
 
           {user ? (
             <>
-              <span className="menu-user">Faculty: {user.faculty}</span>
-
-              {user.role === "Society" && (
+              {/* Society User Navigation */}
+              {user.userType === "society" && (
                 <>
-                  {/* Navigate directly to logged-in society's unique page using ID */}
+                  <span className="menu-user">Faculty: {user.faculty}</span>
                   <button
                     className="menu-link"
                     onClick={() => handleNavigate(`/society/${user.id}`)}
@@ -155,6 +154,41 @@ const Home = () => {
                   </button>
                   <button className="menu-link" onClick={() => handleNavigate("/dashboard")}>
                     Dashboard
+                  </button>
+                </>
+              )}
+
+              {/* Stall Owner Navigation */}
+              {user.userType === "stallOwner" && (
+                <>
+                  <span className="menu-user">Welcome, {user.ownerName}</span>
+                  <button
+                    className="menu-link"
+                    onClick={() => handleNavigate(`/owner-profile/${user.id}`)}
+                  >
+                    My Stalls
+                  </button>
+                  <button className="menu-link" onClick={() => handleNavigate("/calendar")}>
+                    Browse Events
+                  </button>
+                </>
+              )}
+
+              {/* Admin Navigation */}
+              {user.userType === "admin" && (
+                <>
+                  <span className="menu-user">Admin Panel</span>
+                  <button
+                    className="menu-link"
+                    onClick={() => handleNavigate("/admin/pending-payments")}
+                  >
+                    Stall Payments
+                  </button>
+                  <button
+                    className="menu-link"
+                    onClick={() => handleNavigate("/ad")}
+                  >
+                    Event Requests
                   </button>
                 </>
               )}
@@ -170,7 +204,10 @@ const Home = () => {
               </button>
             </>
           ) : (
-            <button className="menu-link" onClick={() => handleNavigate("/login")}>Login</button>
+            <>
+              <button className="menu-link" onClick={() => handleNavigate("/login")}>Society Login</button>
+              <button className="menu-link" onClick={() => handleNavigate("/slogin")}>Stall Owner Login</button>
+            </>
           )}
 
           <button className="menu-link" onClick={() => handleNavigate("/calendar")}>Event Calendar</button>
