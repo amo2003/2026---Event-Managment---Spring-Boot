@@ -36,58 +36,116 @@ const StallOwnerProfile = () => {
   }, [fetchStalls]);
 
   const downloadQR = async (stall) => {
-  try {
-    const doc = new jsPDF();
-    doc.setFontSize(18);
-    doc.text("Stall QR Code", 105, 20, { align: "center" });
+    console.log("Starting QR download for stall:", stall);
+    
+    try {
+      if (!stall.qrCodeUrl) {
+        alert("QR Code not available for this stall.");
+        return;
+      }
 
-    autoTable(doc, {
-      startY: 30,
-      head: [["Field", "Details"]],
-      body: [
-        ["Business Name", stall.businessName],
-        ["Product Type", stall.productType],
-        ["Package Type", stall.packageType],
-        ["Amount", `Rs. ${stall.amount}`],
-        ["Payment Status", stall.paymentStatus],
-      ],
-    });
+      // Use the dedicated QR endpoint instead of static file
+      const qrUrl = `http://localhost:8080/api/stall-owner/${ownerId}/stalls/${stall.id}/qr`;
+      console.log("Fetching QR from endpoint:", qrUrl);
 
-    const qrUrl =
-      stall.qrCodeUrl.startsWith("/")
-        ? `http://localhost:8080${stall.qrCodeUrl}`
-        : stall.qrCodeUrl;
+      // Fetch image using axios with blob response type
+      const response = await axios.get(qrUrl, {
+        responseType: "blob",
+      });
+      console.log("QR image fetched successfully, blob size:", response.data.size);
 
-    // Create image
-    const img = new Image();
-    img.crossOrigin = "anonymous"; 
-    img.src = qrUrl;
+      // Create PDF
+      const doc = new jsPDF();
+      doc.setFontSize(18);
+      doc.text("Stall QR Code", 105, 20, { align: "center" });
 
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = img.width;
-      canvas.height = img.height;
+      autoTable(doc, {
+        startY: 30,
+        head: [["Field", "Details"]],
+        body: [
+          ["Business Name", stall.businessName || "N/A"],
+          ["Product Type", stall.productType || "N/A"],
+          ["Package Type", stall.packageType || "N/A"],
+          ["Amount", `Rs. ${stall.amount || 0}`],
+          ["Payment Status", stall.paymentStatus || "N/A"],
+        ],
+      });
 
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(img, 0, 0);
+      // Convert blob to base64 and add to PDF
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        try {
+          console.log("Image converted to base64, adding to PDF...");
+          const imgData = reader.result;
+          const finalY = doc.lastAutoTable.finalY || 40;
+          doc.addImage(imgData, "PNG", 60, finalY + 10, 90, 90);
+          doc.save(`${stall.businessName || "Stall"}-QR.pdf`);
+          console.log("PDF saved successfully!");
+        } catch (pdfErr) {
+          console.error("Error adding image to PDF:", pdfErr);
+          // Fallback: download QR image directly
+          downloadQRImageDirectly(response.data, stall.businessName);
+        }
+      };
+      reader.onerror = (err) => {
+        console.error("FileReader error:", err);
+        // Fallback: download QR image directly
+        downloadQRImageDirectly(response.data, stall.businessName);
+      };
+      reader.readAsDataURL(response.data);
 
-      const imgData = canvas.toDataURL("image/png");
+    } catch (err) {
+      console.error("Failed to generate QR PDF:", err);
+      console.error("Error details:", {
+        message: err.message,
+        response: err.response,
+        request: err.request
+      });
+      
+      if (err.response) {
+        alert(`Failed to load QR image: ${err.response.status} - ${err.response.statusText}`);
+      } else if (err.request) {
+        alert("No response from server. Please check if the backend is running on port 8080.");
+      } else {
+        alert("Failed to download QR. Error: " + err.message);
+      }
+    }
+  };
 
-      const finalY = doc.lastAutoTable.finalY || 40;
-      doc.addImage(imgData, "PNG", 60, finalY + 10, 90, 90);
+  // Fallback function to download QR image directly
+  const downloadQRImageDirectly = (blob, businessName) => {
+    try {
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${businessName || "Stall"}-QR.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      alert("QR Code downloaded as image (PDF generation failed)");
+    } catch (err) {
+      console.error("Direct download failed:", err);
+      alert("Failed to download QR code.");
+    }
+  };
 
-      doc.save(`${stall.businessName}-QR.pdf`);
-    };
+  const deleteStall = async (stallId) => {
+    if (!window.confirm("Are you sure you want to delete this stall registration?")) {
+      return;
+    }
 
-    img.onerror = () => {
-      alert("Failed to load QR image.");
-    };
-
-  } catch (err) {
-    console.error("Failed to generate QR PDF:", err);
-    alert("Failed to download QR PDF.");
-  }
-};
+    try {
+      await axios.delete(
+        `http://localhost:8080/api/stall-owner/${ownerId}/stalls/${stallId}`
+      );
+      alert("Stall deleted successfully");
+      fetchStalls();
+    } catch (err) {
+      console.error("Error deleting stall:", err);
+      alert("Failed to delete stall. Please try again.");
+    }
+  };
 
   return (
     <div className="so-profile-scope">
@@ -146,13 +204,21 @@ const StallOwnerProfile = () => {
                     className="so-qr-img"
                   />
                   <button
-  className="so-download-btn"
-  onClick={() => downloadQR(stall)} // ✅ pass full stall object
->
-  Download QR as PDF
-</button>
+                    className="so-download-btn"
+                    onClick={() => downloadQR(stall)}
+                  >
+                    Download QR as PDF
+                  </button>
                 </div>
               )}
+
+              {/* Delete Button */}
+              <button
+                className="so-delete-btn"
+                onClick={() => deleteStall(stall.id)}
+              >
+                Delete Stall
+              </button>
             </div>
           ))}
         </div>

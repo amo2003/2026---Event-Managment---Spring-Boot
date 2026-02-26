@@ -28,13 +28,16 @@ public class StallOwnerController {
     private final StallOwnerRepository ownerRepo;
     private final StallRegistrationRepository stallRepo;
     private final EmailService emailService;
+    private final QRCodeService qrCodeService;
 
     public StallOwnerController(StallOwnerRepository ownerRepo,
                                 StallRegistrationRepository stallRepo,
-                                EmailService emailService) {
+                                EmailService emailService,
+                                QRCodeService qrCodeService) {
         this.ownerRepo = ownerRepo;
         this.stallRepo = stallRepo;
         this.emailService = emailService;
+        this.qrCodeService = qrCodeService;
     }
 
     // Register stall owner
@@ -63,11 +66,66 @@ public class StallOwnerController {
         return ResponseEntity.status(401).build();
     }
 
+    // Get owner details by ID
+    @GetMapping("/{ownerId}/details")
+    public ResponseEntity<StallOwner> getOwnerDetails(@PathVariable Long ownerId) {
+        StallOwner owner = ownerRepo.findById(ownerId).orElse(null);
+        if (owner == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(owner);
+    }
+
     // StallOwner's stalls
     @GetMapping("/{ownerId}/stalls")
     public ResponseEntity<List<StallRegistration>> getStalls(@PathVariable Long ownerId){
         List<StallRegistration> stalls = stallRepo.findByOwnerId(ownerId);
         return ResponseEntity.ok(stalls);
+    }
+    // Download QR code image
+    @GetMapping("/{ownerId}/stalls/{stallId}/qr")
+    public ResponseEntity<byte[]> downloadQRCode(
+            @PathVariable Long ownerId,
+            @PathVariable Long stallId
+    ) {
+        try {
+            StallRegistration stall = stallRepo.findById(stallId).orElse(null);
+            if (stall == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Verify ownership
+            if (stall.getOwner() == null || !stall.getOwner().getId().equals(ownerId)) {
+                return ResponseEntity.status(403).build();
+            }
+
+            if (stall.getQrCodeUrl() == null || stall.getQrCodeUrl().isBlank()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Read QR code file
+            String projectRoot = new File(".").getCanonicalPath();
+            String qrPath = stall.getQrCodeUrl().replace("/uploads/qrcodes/", "");
+            File qrFile = new File(projectRoot + File.separator + "uploads" + File.separator + "qrcodes" + File.separator + qrPath);
+
+            if (!qrFile.exists()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            BufferedImage qrImage = ImageIO.read(qrFile);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(qrImage, "PNG", baos);
+            byte[] imageBytes = baos.toByteArray();
+
+            return ResponseEntity.ok()
+                    .header("Content-Type", "image/png")
+                    .header("Content-Disposition", "inline; filename=\"qr-code.png\"")
+                    .body(imageBytes);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     // Create a stall registration for an event (before payment)
@@ -123,6 +181,17 @@ public class StallOwnerController {
 
         stall.setPaymentMethod("CARD");
         stall.setPaymentStatus("APPROVED");
+        
+        // Generate QR code for card payment
+        if (stall.getQrCodeUrl() == null || stall.getQrCodeUrl().isBlank()) {
+            try {
+                generateAndAttachQrCode(stall);
+            } catch (IOException | WriterException e) {
+                e.printStackTrace();
+                // Continue without QR code if generation fails
+            }
+        }
+        
         StallRegistration saved = stallRepo.save(stall);
 
         // send success email
@@ -168,6 +237,50 @@ public class StallOwnerController {
         return ResponseEntity.ok(stall);
     }
 
+    // Delete stall registration
+    @DeleteMapping("/{ownerId}/stalls/{stallId}")
+    public ResponseEntity<Map<String, String>> deleteStall(
+            @PathVariable Long ownerId,
+            @PathVariable Long stallId
+    ) {
+        StallRegistration stall = stallRepo.findById(stallId).orElse(null);
+        if (stall == null) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        // Verify ownership
+        if (stall.getOwner() == null || !stall.getOwner().getId().equals(ownerId)) {
+            return ResponseEntity.status(403).build();
+        }
 
+        // Delete the stall
+        stallRepo.delete(stall);
+        
+        return ResponseEntity.ok(Map.of("message", "Stall deleted successfully"));
+    }
+
+    // Helper to generate and save QR code image file for a stall
+    private void generateAndAttachQrCode(StallRegistration stall) throws IOException, WriterException {
+        String projectRoot = new File(".").getCanonicalPath();
+        String qrDirPath = projectRoot + File.separator + "uploads" + File.separator + "qrcodes";
+        File qrDir = new File(qrDirPath);
+        if (!qrDir.exists()) qrDir.mkdirs();
+
+        String text = "Event Stall QR\n"
+                + "Business: " + stall.getBusinessName() + "\n"
+                + "Product: " + stall.getProductType() + "\n"
+                + "Package: " + stall.getPackageType() + "\n"
+                + "Amount: Rs. " + (stall.getAmount() != null ? stall.getAmount() : "") + "\n"
+                + "Event ID: " + stall.getEventId();
+
+        BufferedImage qrImage = qrCodeService.generateQRCodeImage(text, 300, 300);
+
+        String fileName = UUID.randomUUID() + "_stall_" + stall.getId() + ".png";
+        File outFile = new File(qrDir, fileName);
+        ImageIO.write(qrImage, "PNG", outFile);
+
+        // public URL for frontend
+        stall.setQrCodeUrl("/uploads/qrcodes/" + fileName);
+    }
 
 }

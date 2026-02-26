@@ -13,26 +13,27 @@ const StallOwnerLogin = ({ setOwner }) => {
   const eventId = location.state?.eventId || 1;
 
   const handleLogin = async () => {
-  try {
-    const res = await axios.post(
-      "http://localhost:8080/api/stall-owner/login",
-      { email, password }
-    );
+    try {
+      const res = await axios.post(
+        "http://localhost:8080/api/stall-owner/login",
+        { email, password }
+      );
 
-    setOwner(res.data);
+      console.log("Login response:", res.data); // Debug log
+      setOwner(res.data);
 
-    // navigate and pass state properly
-    navigate(`/stall-application/${res.data.id}/${eventId}`, {
-      state: {
-        businessName: res.data.businessName || "",
-        productType: res.data.productType || "",
-      },
-    });
-  } catch (err) {
-    console.error(err);
-    alert("Login failed");
-  }
-};
+      // navigate and pass state properly
+      navigate(`/stall-application/${res.data.id}/${eventId}`, {
+        state: {
+          businessName: res.data.businessName || "",
+          productType: res.data.productType || "",
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      alert("Login failed");
+    }
+  };
 
   return (
     <div className="stall-login-container">

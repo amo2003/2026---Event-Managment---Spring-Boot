@@ -8,7 +8,7 @@ const StallOwnerRegister = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    name: "",
+    ownerName: "",
     email: "",
     password: "",
     contactNumber: "",
@@ -30,7 +30,7 @@ const StallOwnerRegister = () => {
     setSuccess("");
 
     // Basic validation
-    if (!formData.name || !formData.email || !formData.password) {
+    if (!formData.ownerName || !formData.email || !formData.password) {
       setError("Name, Email, and Password are required");
       return;
     }
@@ -56,9 +56,9 @@ const StallOwnerRegister = () => {
         <form onSubmit={handleRegister} className="stall-register-form">
           <input
             type="text"
-            name="name"
+            name="ownerName"
             placeholder="Full Name"
-            value={formData.name}
+            value={formData.ownerName}
             onChange={handleChange}
             required
           />
