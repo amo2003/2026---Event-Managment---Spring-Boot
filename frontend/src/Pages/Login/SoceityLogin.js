@@ -61,6 +61,9 @@ function SoceityLogin() {
 
   return (
     <div className="login-page">
+      <button className="back-btnn" onClick={() => navigate(-1)}>
+    ← 
+  </button>
       <div className="login-container">
         <h1 className="login-title">Society Login</h1>
 

@@ -2,31 +2,122 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./StallOwnerRegister.css";
 
 const StallOwnerRegister = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
   const navigate = useNavigate();
 
-  const handleRegister = async () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    contactNumber: "",
+    businessName: "",
+    productType: "",
+    address: "",
+  });
+
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    // Basic validation
+    if (!formData.name || !formData.email || !formData.password) {
+      setError("Name, Email, and Password are required");
+      return;
+    }
+
     try {
-      const res = await axios.post("http://localhost:8080/api/stall-owner/register", { email, password, name });
-      alert("Registered successfully!");
-      navigate("/login");
+      await axios.post("http://localhost:8080/api/stall-owner/register", formData);
+      setSuccess("Registered successfully!");
+      setTimeout(() => navigate("/slogin"), 1500);
     } catch (err) {
       console.error(err);
-      alert("Failed to register");
+      setError(err.response?.data?.message || "Failed to register");
     }
   };
 
   return (
-    <div>
-      <h2>Stall Owner Register</h2>
-      <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
-      <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-      <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
-      <button onClick={handleRegister}>Register</button>
+    <div className="stall-register-page">
+      <div className="stall-register-card">
+        <h2>Stall Owner Registration</h2>
+
+        {error && <p className="error-msg">{error}</p>}
+        {success && <p className="success-msg">{success}</p>}
+
+        <form onSubmit={handleRegister} className="stall-register-form">
+          <input
+            type="text"
+            name="name"
+            placeholder="Full Name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            type="text"
+            name="contactNumber"
+            placeholder="Contact Number"
+            value={formData.contactNumber}
+            onChange={handleChange}
+          />
+
+          <input
+            type="text"
+            name="businessName"
+            placeholder="Business Name"
+            value={formData.businessName}
+            onChange={handleChange}
+          />
+
+          <input
+            type="text"
+            name="productType"
+            placeholder="Product Type"
+            value={formData.productType}
+            onChange={handleChange}
+          />
+
+          <input
+            type="text"
+            name="address"
+            placeholder="Address"
+            value={formData.address}
+            onChange={handleChange}
+          />
+
+          <button type="submit" className="register-btn">
+            Register Stall Owner
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

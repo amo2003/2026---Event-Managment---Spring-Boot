@@ -1,30 +1,72 @@
 // src/pages/stallOwner/StallApplication.jsx
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import "./StallRegister.css";
 
 const StallApplication = () => {
   const { ownerId, eventId } = useParams();
   const navigate = useNavigate();
+
+  const location = useLocation();
+const { businessName, productType } = location.state || {};
+
   const [stallData, setStallData] = useState({
-    businessName: "",
-    productType: "",
-    packageType: "",
+    businessName: businessName || "",
+  productType: productType || "",
     amount: 0,
   });
 
-  // Static three area options: Gold, Platinum, Silver
   const packages = [
-    { name: "Gold", price: 5000 },
-    { name: "Platinum", price: 8000 },
-    { name: "Silver", price: 3000 },
+    {
+      name: "Gold",
+      price: 5000,
+      color: "#FFD700",
+      features: [
+        "Prime location near entrance",
+        "Large stall space (10x10)",
+        "Free electricity connection",
+        "1 Promotional banner space",
+      ],
+    },
+    {
+      name: "Platinum",
+      price: 8000,
+      color: "#00E5FF",
+      features: [
+        "Premium central location",
+        "Extra large stall space (15x15)",
+        "Free electricity + lighting",
+        "2 Promotional banner spaces",
+        "Social media promotion",
+      ],
+    },
+    {
+      name: "Silver",
+      price: 3000,
+      color: "#C0C0C0",
+      features: [
+        "Standard location",
+        "Medium stall space (8x8)",
+        "Shared electricity",
+        "Basic listing in event guide",
+      ],
+    },
   ];
 
   const handleSubmit = async () => {
+    if (!stallData.packageType) {
+      alert("Please select a package");
+      return;
+    }
+
     try {
-      // Create stall with package/amount and details
       const payload = { ...stallData, eventId: Number(eventId) };
-      const res = await axios.post(`http://localhost:8080/api/stall-owner/${ownerId}/stalls`, payload);
+      const res = await axios.post(
+        `http://localhost:8080/api/stall-owner/${ownerId}/stalls`,
+        payload
+      );
+
       navigate(`/stall-payment/${ownerId}/${res.data.id}`);
     } catch (err) {
       console.error(err);
@@ -33,39 +75,78 @@ const StallApplication = () => {
   };
 
   return (
-    <div>
-      <h2>Apply for Stall</h2>
-      <input
-        placeholder="Business Name"
-        value={stallData.businessName}
-        onChange={e => setStallData({ ...stallData, businessName: e.target.value })}
-      />
-      <input
-        placeholder="Product Type"
-        value={stallData.productType}
-        onChange={e => setStallData({ ...stallData, productType: e.target.value })}
-      />
+    <div className="stall-app-container">
+      <div className="stall-app-card">
+        <h2>Apply for Stall</h2>
 
-      <h3>Select Area / Package</h3>
-      {packages.map(p => (
+        <div className="input-group">
+          <input
+            placeholder="Business Name"
+            value={stallData.businessName}
+            onChange={(e) =>
+              setStallData({ ...stallData, businessName: e.target.value })
+            }
+          />
+          <input
+            placeholder="Product Type"
+            value={stallData.productType}
+            onChange={(e) =>
+              setStallData({ ...stallData, productType: e.target.value })
+            }
+          />
+        </div>
+
+        <h3>Select Package</h3>
+
+        <div className="package-grid">
+          {packages.map((p) => (
+            <div
+              key={p.name}
+              className={`package-card ${
+                stallData.packageType === p.name ? "selected" : ""
+              }`}
+              style={{
+                borderColor: p.color,
+                background:
+                  stallData.packageType === p.name
+                    ? `${p.color}22`
+                    : "rgba(255,255,255,0.05)",
+              }}
+              onClick={() =>
+                setStallData({
+                  ...stallData,
+                  packageType: p.name,
+                  amount: p.price,
+                })
+              }
+            >
+              <h4 style={{ color: p.color }}>{p.name}</h4>
+              <p className="price">Rs. {p.price}</p>
+
+              <ul>
+                {p.features.map((feature, index) => (
+                  <li key={index}>• {feature}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        {stallData.packageType && (
+          <div className="selected-info">
+            Selected: <strong>{stallData.packageType}</strong> – Rs.{" "}
+            {stallData.amount}
+          </div>
+        )}
+
         <button
-          key={p.name}
-          onClick={() => setStallData({ ...stallData, packageType: p.name, amount: p.price })}
-          style={{
-            marginRight: "8px",
-            padding: "6px 12px",
-            border: stallData.packageType === p.name ? "2px solid #00c8ff" : "1px solid #ccc",
-            borderRadius: "6px",
-          }}
+          className="next-btn"
+          onClick={handleSubmit}
+          disabled={!stallData.packageType}
         >
-          {p.name} (Rs. {p.price})
+          Next → Payment
         </button>
-      ))}
-
-      {stallData.packageType && (
-        <p>Selected: {stallData.packageType} – Amount: Rs. {stallData.amount}</p>
-      )}
-      <button onClick={handleSubmit}>Next → Payment</button>
+      </div>
     </div>
   );
 };

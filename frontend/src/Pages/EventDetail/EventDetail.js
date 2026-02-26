@@ -99,7 +99,7 @@ const EventDetail = ({ owner }) => { // owner passed from App.js or context
               </div>
               <div className="info-item">
                 <span className="info-label">Status</span>
-                <span className={`info-value status-badgee ${event.status?.toLowerCase()}`}>
+                <span className={`info-value status-badgeee ${event.status?.toLowerCase()}`}>
                   {event.status}
                 </span>
               </div>

@@ -2,11 +2,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./EventCalendar.css";
+import { useNavigate } from "react-router-dom";
 
 const EventCalendar = () => {
   const [calendar, setCalendar] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
@@ -80,6 +83,9 @@ const EventCalendar = () => {
 
   return (
     <div className="calendar-page">
+       <button className="cal-back-btn" onClick={() => navigate(-1)}>
+    ← 
+  </button>
       <div className="calendar-container">
         <h2 className="calendar-title">Event Calendar</h2>
         <div className="month-nav">

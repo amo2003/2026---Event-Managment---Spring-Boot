@@ -234,6 +234,36 @@ const Home = () => {
           </div>
         )}
       </section>
+            {/* FOOTER */}
+      <footer className="site-footer">
+        <div className="footer-content">
+
+          <div className="footer-brand">
+            <h2>Uni Festivo</h2>
+            <p>Celebrating Innovation. Connecting Communities.</p>
+          </div>
+
+          <div className="footer-links">
+            <h3>Quick Links</h3>
+            <button onClick={() => navigate("/")}>Home</button>
+            <button onClick={() => navigate("/calendar")}>Event Calendar</button>
+            <button onClick={() => navigate("/about")}>About</button>
+            <button onClick={() => navigate("/contact")}>Contact</button>
+          </div>
+
+          <div className="footer-contact">
+            <h3>Contact</h3>
+            <p>support@unifestivo.com</p>
+            <p>+94 77 123 4567</p>
+            <p>Negombo, Sri Lanka</p>
+          </div>
+
+        </div>
+
+        <div className="footer-bottom">
+          © {new Date().getFullYear()} Uni Festivo. All Rights Reserved.
+        </div>
+      </footer>
     </div>
   );
 };

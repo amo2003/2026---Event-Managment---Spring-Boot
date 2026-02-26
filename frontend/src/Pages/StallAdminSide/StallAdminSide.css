@@ -1,130 +1,191 @@
-/* PendingPayments.css */
 
-/* Container for the page */
 .pending-payments-scope {
-  padding: 20px;
-  background-color: #f5f7fa;
   min-height: 100vh;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #000000, #111111, #000000);
+  padding: 40px;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  justify-content: center;
 }
 
-/* Title */
+
+.pending-payments-container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 40px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 60px rgba(255, 255, 255, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated Border */
+.pending-payments-container::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 30px;
+  background: linear-gradient(45deg, #ffffff, #777777, #ffffff);
+  z-index: -1;
+  animation: adminGlow 5s linear infinite;
+}
+
+@keyframes adminGlow {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+
 .pending-payments-container h2 {
   text-align: center;
-  font-size: 28px;
-  margin-bottom: 20px;
-  color: #1f2937; /* Dark gray */
+  color: #000000;
+  font-size: 26px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 30px;
 }
 
-/* No stalls message */
-.pending-payments-container .no-stalls {
-  text-align: center;
-  font-size: 18px;
-  color: #6b7280; /* Gray text */
-  margin-top: 50px;
-}
-
-/* Table styling */
 .pending-payments-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #ffffff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  color: #111010;
+  font-size: 14px;
 }
 
-.pending-payments-table th,
-.pending-payments-table td {
-  padding: 12px 15px;
-  text-align: left;
-  border-bottom: 1px solid #e5e7eb;
-  font-size: 14px;
-  color: #374151;
+.pending-payments-table thead {
+  background: rgba(98, 10, 10, 0.08);
 }
 
 .pending-payments-table th {
-  background-color: #e0f2fe; /* Light blue */
-  color: #0c4a6e;
+  padding: 15px;
+  text-align: left;
   font-weight: 600;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  color: #111010;
 }
 
-/* Last row border removal */
-.pending-payments-table tbody tr:last-child td {
-  border-bottom: none;
+.pending-payments-table td {
+  padding: 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.308);
+  vertical-align: middle;
 }
 
-/* Status styling */
+.pending-payments-table tbody tr:hover {
+  background: rgba(126, 10, 10, 0.05);
+  transition: 0.3s ease;
+}
+
+
 .status-pending {
-  color: #f59e0b; /* Amber */
+  color: #bc900c;
   font-weight: 600;
 }
 
 .status-approved {
-  color: #10b981; /* Green */
+  color: #1e8d22;
   font-weight: 600;
 }
 
 .status-rejected {
-  color: #ef4444; /* Red */
+  color: #ca1616;
   font-weight: 600;
 }
 
-/* Buttons */
+
 .pending-payments-table button {
-  padding: 6px 12px;
+  padding: 8px 14px;
+  border-radius: 20px;
   border: none;
-  border-radius: 5px;
   cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease-in-out;
+  font-size: 12px;
+  margin-right: 8px;
+  transition: 0.3s ease;
 }
 
-.pending-payments-table button:hover {
-  opacity: 0.85;
-}
-
+/* Approve Button */
 .pending-payments-table button:first-child {
-  background-color: #10b981; /* Green */
-  color: white;
-  margin-right: 10px;
-}
-
-.pending-payments-table button:last-child {
-  background-color: #ef4444; /* Red */
+  background: #4caf50;
   color: white;
 }
 
-/* Slip image thumbnail */
-.slip-img {
-  max-width: 150px;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: transform 0.2s ease;
-}
-
-.slip-img:hover {
+.pending-payments-table button:first-child:hover {
+  background: #45a049;
   transform: scale(1.05);
 }
 
-/* Modal overlay */
-.slip-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+/* Reject Button */
+.pending-payments-table button:last-child {
+  background: #ff4d4d;
+  color: white;
 }
 
-/* Modal image */
+.pending-payments-table button:last-child:hover {
+  background: #e60000;
+  transform: scale(1.05);
+}
+
+.slip-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.slip-img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(255,255,255,0.4);
+}
+
+
+.no-stalls {
+  text-align: center;
+  color: rgba(255,255,255,0.6);
+  font-size: 14px;
+}
+
+
+.slip-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+}
+
 .slip-modal img {
-  max-height: 90%;
   max-width: 90%;
-  border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  max-height: 90%;
+  border-radius: 20px;
+  box-shadow: 0 0 40px rgba(255,255,255,0.3);
+  animation: zoomIn 0.3s ease;
+}
+
+@keyframes zoomIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@media (max-width: 992px) {
+  .pending-payments-container {
+    padding: 25px;
+  }
+
+  .pending-payments-table {
+    font-size: 12px;
+  }
+
+  .slip-img {
+    width: 45px;
+    height: 45px;
+  }
 }

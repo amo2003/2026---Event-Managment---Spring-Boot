@@ -21,9 +21,11 @@ import StallOwnerRegister from './Pages/StallOwnerRegister/StallOwnerRegister';
 import StallOwnerLogin from './Pages/StallOwnerLogin/StallOwnerLogin';
 import StallOwnerProfile from './Pages/StallOwnerProfile/StallOwnerProfile';
 import PendingPayments from './Pages/StallAdminSide/StallAdminSide';
+import About from './Pages/AboutUs/About';
+import Contact from './Pages/ContactUs/Contact';
 
 function App() {
-  const [owner, setOwner] = useState(null); // logged-in stall owner (used only for first redirect)
+  const [, setOwner] = useState(null); // logged-in stall owner (used only for first redirect)
   return (
     <Routes>
       <Route path="/" element={<Home/>}/>
@@ -60,6 +62,9 @@ function App() {
 
         {/* Admin Pages */}
         <Route path="/admin/pending-payments" element={<PendingPayments />} />
+
+        <Route path="/about" element={<About />} />
+<Route path="/contact" element={<Contact />} />
 
 
     </Routes>

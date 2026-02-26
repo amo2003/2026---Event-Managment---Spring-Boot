@@ -1,43 +1,40 @@
-/* ============================= */
-/* SCOPE ONLY THIS PAGE */
-/* ============================= */
+/* ================= ADMIN EVENTS PAGE ================= */
 
-.pending-payments-scope {
+.admin-events-scope {
   min-height: 100vh;
+  padding: 60px 40px;
   background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
   font-family: 'Poppins', sans-serif;
+  color: white;
 }
 
-/* ============================= */
-/* GLASS CONTAINER */
-/* ============================= */
-
-.pending-payments-container {
-  width: 100%;
-  max-width: 1300px;
+.admin-events-container {
+  max-width: 1400px;
+  margin: auto;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 25px;
   padding: 40px;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.839);
+  box-shadow: 0 0 50px rgba(255,255,255,0.05);
+  position: relative;
+}
+
+/* Animated border */
+.admin-events-container::before {
+  width: 100%;
+  max-width: 650px;
+  padding: 50px 40px;
   border-radius: 30px;
   position: relative;
   background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 0 60px rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
   overflow: hidden;
-}
-
-/* Animated Border */
-.pending-payments-container::before {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: 30px;
-  background: linear-gradient(45deg, #ffffff, #666, #ffffff);
-  z-index: -1;
-  animation: borderGlow 6s linear infinite;
 }
 
 @keyframes borderGlow {
@@ -45,57 +42,61 @@
   100% { filter: hue-rotate(360deg); }
 }
 
-/* ============================= */
-/* TITLE */
-/* ============================= */
-
-.pending-payments-container h2 {
+/* Page Title */
+.admin-events-title {
   text-align: center;
+  font-size: 32px;
   margin-bottom: 30px;
-  font-size: 28px;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgb(255, 255, 255);
+  background: white;
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: titleShine 4s linear infinite;
 }
 
-/* ============================= */
-/* TABLE STYLING */
-/* ============================= */
+@keyframes titleShine {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
 
-.pending-payments-table {
+/* No events message */
+.no-events {
+  text-align: center;
+  font-size: 20px;
+  opacity: 0.6;
+  margin-top: 60px;
+}
+
+/* Table Styling */
+.admin-events-table {
   width: 100%;
   border-collapse: collapse;
-  color: rgba(255, 255, 255, 0.9);
+  margin-top: 20px;
+  color: white;
 }
 
-.pending-payments-table th {
-  padding: 15px;
+.admin-events-table th,
+.admin-events-table td {
+  padding: 14px 10px;
+  text-align: left;
+  border-bottom: 1px solid rgba(201, 197, 197, 0.919);
+  font-size: 14px;
+}
+
+.admin-events-table th {
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: 13px;
   letter-spacing: 0.1em;
-  color: #00d4ff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  opacity: 0.8;
+  color: #ffffff;
+  background: rgb(138, 66, 66);
 }
 
-.pending-payments-table td {
-  padding: 15px;
-  text-align: center;
-  font-size: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* Row hover */
-.pending-payments-table tbody tr:hover {
-  background: rgba(255, 255, 255, 0.05);
-  transition: 0.3s ease;
-}
-
-/* ============================= */
-/* STATUS COLORS */
-/* ============================= */
-
+/* Status badges */
 .status-pending {
-  color: #ffc107;
+  color: #ffcc00;
   font-weight: 600;
 }
 
@@ -109,96 +110,104 @@
   font-weight: 600;
 }
 
-/* ============================= */
-/* BUTTONS */
-/* ============================= */
-
+/* Buttons */
 .approve-btn,
 .reject-btn {
-  padding: 8px 14px;
+  padding: 6px 12px;
   border-radius: 20px;
   border: none;
   font-size: 12px;
-  cursor: pointer;
-  transition: 0.3s ease;
-  margin: 3px;
   letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-right: 5px;
+  transition: 0.3s ease, box-shadow 0.3s ease;
 }
 
 .approve-btn {
   background: #00ff99;
-  color: #000;
+  color: black;
 }
 
 .approve-btn:hover {
-  transform: scale(1.1);
   box-shadow: 0 0 15px #00ff99;
+  transform: scale(1.05);
 }
 
 .reject-btn {
   background: #ff4d4d;
-  color: white;
+  color: black;
 }
 
 .reject-btn:hover {
-  transform: scale(1.1);
   box-shadow: 0 0 15px #ff4d4d;
+  transform: scale(1.05);
 }
 
-/* ============================= */
-/* SLIP IMAGE THUMBNAIL */
-/* ============================= */
-
-.slip-img {
-  width: 60px;
+/* Event Image Preview */
+.event-image-preview {
+  width: 80px;
   height: 60px;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: 10px;
   transition: 0.3s ease;
-  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.event-image-preview:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(255,255,255,0.4);
   cursor: pointer;
 }
 
-.slip-img:hover {
-  transform: scale(1.2);
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-}
-
-/* ============================= */
-/* IMAGE MODAL */
-/* ============================= */
-
-.slip-modal {
+/* Image Modal */
+.image-modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0,0,0,0.95);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   z-index: 9999;
-  backdrop-filter: blur(10px);
-}
-
-.slip-modal img {
-  max-width: 80%;
-  max-height: 80%;
-  border-radius: 20px;
-  box-shadow: 0 0 40px rgba(0,255,255,0.3);
+  cursor: zoom-out;
   animation: fadeIn 0.3s ease;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
+.image-modal img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 15px;
+  box-shadow: 0 0 50px rgba(255,255,255,0.3);
 }
 
-/* ============================= */
-/* NO STALLS TEXT */
-/* ============================= */
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
 
-.no-stalls {
-  text-align: center;
-  color: rgba(255,255,255,0.6);
-  font-size: 16px;
-  margin-top: 30px;
+/* Responsive Table Scroll */
+@media (max-width: 1200px) {
+  .admin-events-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-events-table th,
+  .admin-events-table td {
+    font-size: 12px;
+    padding: 10px 6px;
+  }
+
+  .approve-btn,
+  .reject-btn {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  .event-image-preview {
+    width: 60px;
+    height: 45px;
+  }
 }

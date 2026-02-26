@@ -161,9 +161,9 @@ const SocietyProfile = () => {
               <p><strong>Status:</strong> {event.status}</p>
 
               <div className="event-actions">
-                {event.status === "PENDING" && <span className="status pending">🟡 Waiting for Admin Approval</span>}
-                {event.status === "REJECTED" && <span className="status rejected">🔴 Rejected - {event.adminMessage}</span>}
-                {event.status === "CONFIRMED" && <span className="status confirmed">Event Scheduled Successfully</span>}
+                {event.status === "PENDING" && <span className="statuss pending">🟡 Waiting for Admin Approval</span>}
+                {event.status === "REJECTED" && <span className="statuss rejected">🔴 Rejected - {event.adminMessage}</span>}
+                {event.status === "CONFIRMED" && <span className="statuss confirmed">Event Scheduled Successfully</span>}
 
                 <button
                   className="delete-event-btn"

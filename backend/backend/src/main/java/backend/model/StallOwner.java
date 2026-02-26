@@ -15,11 +15,28 @@ public class StallOwner {
     private String email;
     private String password;
     private String contactNumber;
+    private String businessName;
+    private String productType;
+    private String address;
 
     // One owner can have multiple stall registrations
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<StallRegistration> stalls;
+
+    public StallOwner() {}
+
+    public StallOwner(Long id, String ownerName, String email, String password, String contactNumber, String businessName, String productType, String address, List<StallRegistration> stalls) {
+        this.id = id;
+        this.ownerName = ownerName;
+        this.email = email;
+        this.password = password;
+        this.contactNumber = contactNumber;
+        this.businessName = businessName;
+        this.productType = productType;
+        this.address = address;
+        this.stalls = stalls;
+    }
 
     // Getters and Setters
     public Long getId() { return id; }
@@ -36,6 +53,15 @@ public class StallOwner {
 
     public String getContactNumber() { return contactNumber; }
     public void setContactNumber(String contactNumber) { this.contactNumber = contactNumber; }
+
+    public String getBusinessName() { return businessName; }
+    public void setBusinessName(String businessName) { this.businessName = businessName; }
+
+    public String getProductType() { return productType; }
+    public void setProductType(String productType) { this.productType = productType; }
+
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
 
     public List<StallRegistration> getStalls() { return stalls; }
     public void setStalls(List<StallRegistration> stalls) { this.stalls = stalls; }

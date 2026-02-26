@@ -1,0 +1,84 @@
+.stall-register-page {
+  min-height: 100vh;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  padding: 40px;
+}
+
+.stall-register-card {
+  width: 100%;
+  max-width: 450px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 25px;
+  padding: 40px 30px;
+  box-shadow: 0 0 60px rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  text-align: center;
+  position: relative;
+}
+
+.stall-register-card h2 {
+  font-size: 28px;
+  margin-bottom: 25px;
+  color: #fff;
+  letter-spacing: 0.05em;
+}
+
+.stall-register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.stall-register-form input {
+  padding: 12px 16px;
+  border-radius: 25px;
+  border: 1px solid rgba(255,255,255,0.3);
+  background: transparent;
+  color: #fff;
+  outline: none;
+  font-size: 14px;
+  transition: 0.3s ease;
+}
+
+.stall-register-form input::placeholder {
+  color: rgba(255,255,255,0.6);
+}
+
+.stall-register-form input:focus {
+  border-color: #fff;
+  box-shadow: 0 0 15px rgba(255,255,255,0.4);
+}
+
+.register-btn {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 25px;
+  border: none;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  text-transform: uppercase;
+  background: #fff;
+  color: black;
+  transition: 0.3s ease;
+}
+
+.register-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255,255,255,0.7);
+}
+
+.error-msg {
+  color: #ff4d4d;
+  margin-bottom: 10px;
+}
+
+.success-msg {
+  color: #00ff99;
+  margin-bottom: 10px;
+}

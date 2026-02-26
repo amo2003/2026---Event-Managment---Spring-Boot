@@ -1,0 +1,100 @@
+/* ===== PAGE BACKGROUND ===== */
+
+.stall-login-container {
+  min-height: 100vh;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  padding: 40px;
+}
+
+/* ===== GLASS CARD ===== */
+
+.stall-login-card {
+  width: 100%;
+  max-width: 450px;
+  padding: 50px 40px;
+  border-radius: 30px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 60px rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  text-align: center;
+  color: white;
+}
+
+/* Animated Gradient Border */
+
+.stall-login-card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 30px;
+  background: linear-gradient(45deg, #ffffff, #888888, #ffffff);
+  z-index: -1;
+  animation: borderGlow 4s linear infinite;
+}
+
+@keyframes borderGlow {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+/* ===== TITLE ===== */
+
+.stall-login-card h2 {
+  margin-bottom: 30px;
+  font-size: 28px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: black;
+}
+
+/* ===== INPUTS ===== */
+
+.stall-login-card input {
+  width: 100%;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  border-radius: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.745);
+  background: transparent;
+  color: rgba(0, 0, 0, 0.783);
+  font-size: 14px;
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.stall-login-card input::placeholder {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.stall-login-card input:focus {
+  border-color: white;
+  box-shadow: 0 0 15px rgba(255,255,255,0.4);
+}
+
+/* ===== BUTTON ===== */
+
+.stall-login-card button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 30px;
+  border: none;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: 0.3s ease;
+  background: white;
+  color: black;
+}
+
+.stall-login-card button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(255,255,255,0.7);
+}

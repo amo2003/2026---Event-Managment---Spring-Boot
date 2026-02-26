@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./StallPayment.css";
 
 const StallPayment = () => {
   const { ownerId, stallId } = useParams();
@@ -70,47 +71,52 @@ const StallPayment = () => {
   };
 
   return (
-    <div>
-      <h2>Payment</h2>
+  <div className="stall-payment-container">
+    <div className="stall-payment-card">
+      <h2>Stall Payment</h2>
 
-      {/* Show auto-fetched amount and basic info */}
-      <p>
-        <strong>Business:</strong> {stall?.businessName || "-"}
-      </p>
-      <p>
-        <strong>Package:</strong> {stall?.packageType || "-"}
-      </p>
-      <p>
-        <strong>Amount:</strong> Rs. {amount || "-"}
-      </p>
+      <div className="stall-summary">
+        <p><strong>Business:</strong> {stall?.businessName || "-"}</p>
+        <p><strong>Package:</strong> {stall?.packageType || "-"}</p>
+        <p><strong>Amount:</strong> Rs. {amount || "-"}</p>
+      </div>
 
-      <h3>1) Pay by Card</h3>
-      <input
-        placeholder="Card Number"
-        value={card.number}
-        onChange={(e) => setCard({ ...card, number: e.target.value })}
-      />
-      <input
-        placeholder="Expiry MM/YY"
-        value={card.expiry}
-        onChange={(e) => setCard({ ...card, expiry: e.target.value })}
-      />
-      <input
-        placeholder="CVV"
-        value={card.cvv}
-        onChange={(e) => setCard({ ...card, cvv: e.target.value })}
-      />
-      <button onClick={handleCardPayment}>Pay by Card</button>
+      <div className="payment-section">
+        <h3>Pay by Card</h3>
+        <input
+          placeholder="Card Number"
+          value={card.number}
+          onChange={(e) => setCard({ ...card, number: e.target.value })}
+        />
+        <input
+          placeholder="Expiry MM/YY"
+          value={card.expiry}
+          onChange={(e) => setCard({ ...card, expiry: e.target.value })}
+        />
+        <input
+          placeholder="CVV"
+          value={card.cvv}
+          onChange={(e) => setCard({ ...card, cvv: e.target.value })}
+        />
+        <button className="pay-btn" onClick={handleCardPayment}>
+          Pay Now
+        </button>
+      </div>
 
-      <h3>2) Or Upload Bank Slip</h3>
-      <textarea
-        placeholder="Enter any details about this payment (optional)"
-        value={note}
-        onChange={(e) => setNote(e.target.value)}
-      />
-      <input type="file" onChange={handleSlipUpload} />
+      <div className="divider">OR</div>
+
+      <div className="payment-section">
+        <h3>Upload Bank Slip</h3>
+        <textarea
+          placeholder="Enter any details about this payment (optional)"
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+        />
+        <input type="file" onChange={handleSlipUpload} />
+      </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default StallPayment;

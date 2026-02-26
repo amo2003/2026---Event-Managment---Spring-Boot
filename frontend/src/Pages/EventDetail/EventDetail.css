@@ -1,53 +1,50 @@
-/* EventDetail.css */
+/* Scope everything to this page only */
 .event-detail {
-  width: 100%;
   min-height: 100vh;
-  background-color: #000000;
+  background: linear-gradient(135deg, #050505, #1e293b);
+  padding: 20px;
+  color: #f1f5f9;
   font-family: "Poppins", sans-serif;
-  padding-top: 60px;
-  position: relative;
 }
 
+/* Back Button */
 .event-back {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  background: #fff;
+  background: rgba(0, 0, 0, 0.1);
   border: none;
-  padding: 10px 15px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  color: #fff;
+  font-size: 18px;
+  padding: 8px 14px;
+  border-radius: 8px;
   cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  z-index: 1000;
+  margin-bottom: 20px;
+  transition: 0.3s ease;
 }
 
 .event-back:hover {
-  background-color: #eee;
+  background: rgba(255, 255, 255, 0.2);
 }
 
+/* Container */
 .event-detail-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px 50px;
+  max-width: 1100px;
+  margin: auto;
 }
 
+/* HERO IMAGE */
 .event-hero-image {
   position: relative;
-  width: 100%;
-  height: 400px;
   border-radius: 20px;
   overflow: hidden;
   margin-bottom: 30px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 .event-hero-image img {
   width: 100%;
-  height: 100%;
+  height: 380px;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  display: block;
+  transition: transform 0.6s ease;
 }
 
 .event-hero-image:hover img {
@@ -57,54 +54,58 @@
 .event-hero-overlay {
   position: absolute;
   bottom: 0;
-  left: 0;
   width: 100%;
-  padding: 20px 30px;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
-  color: #fff;
+  padding: 30px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
 }
 
 .event-hero-overlay h1 {
-  margin: 0;
-  font-size: 2.2rem;
-  font-weight: 700;
+  font-size: 32px;
+  margin-bottom: 8px;
+  color: #050505;
 }
 
 .event-society-name {
-  margin-top: 5px;
-  font-size: 1rem;
-  opacity: 0.9;
+  font-size: 16px;
+  opacity: 0.8;
+  font-weight: 600;
+  color: #e5e5e5;
 }
 
+/* INFO SECTION */
 .event-info-section {
   display: flex;
   flex-direction: column;
   gap: 25px;
-  font-size: 16px;
+  font-size: 15px;
 }
 
-/* Info card */
-.event-info-card {
-  background: #ddddddf0;
-  border-radius: 20px;
+/* Glass Card */
+.event-info-card,
+.event-description-card,
+.stall-owners-section,
+.society-info-section {
+  background: rgba(255, 255, 255, 0.05);
   padding: 25px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
+  border-radius: 18px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(235, 235, 235, 0.605);
+  transition: 0.3s ease;
 }
 
-.event-info-card:hover {
-  transform: translateY(-5px);
+.event-info-card:hover,
+.event-description-card:hover,
+.stall-owners-section:hover,
+.society-info-section:hover {
+  transform: translateY(-4px);
 }
 
-.event-info-card h2 {
-  margin-bottom: 15px;
-  font-size: 1.5rem;
-}
-
+/* Grid Layout */
 .event-info-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
+  gap: 20px;
+  
 }
 
 .info-item {
@@ -113,59 +114,53 @@
 }
 
 .info-label {
-  font-weight: 600;
-  color: #555;
-  margin-bottom: 5px;
-  font-size: 16px;
+  font-size: 18px;
+  opacity: 0.6;
+  margin-bottom: 4px;
+  color: #e5e5e5;
 }
 
 .info-value {
+  font-size: 16px;
   font-weight: 500;
-  color: #222;
 }
 
-.status-badgee {
-  padding: 5px 12px;
-  border-radius: 12px;
-  font-weight: bold;
+/* Status Badge */
+.status-badgeee {
+  padding: 6px 12px;
+  border-radius: 20px;
+  width: fit-content;
+  font-size: 12px;
   text-transform: uppercase;
-  font-size: 0.85rem;
-  display: inline-block;
-  color: #fff;
-  margin-right: 10px;
 }
 
-.status-badgee.pending { background-color: #f0ad4e; }
-.status-badgee.confirmed { background-color: #008d00; }
-.status-badgee.rejected { background-color: #d9534f; }
+.status-badgeee.active {
+  background: #16a34a;
+  color: white;
+}
+
+.status-badgeee.upcoming {
+  background: #3b82f6;
+  color: white;
+}
+
+.status-badgeee.completed {
+  background: #64748b;
+  color: white;
+}
 
 /* Description */
-.event-description-card {
-  background: #fff;
-  border-radius: 20px;
-  padding: 25px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+.event-description-card p {
+  line-height: 1.6;
+  font-size: 14px;
+  opacity: 0.9;
 }
 
-.event-description-card h2 {
-  margin-bottom: 15px;
-}
-
-/* Stall Owners Section */
-.stall-owners-section {
-  background: #fff;
-  border-radius: 20px;
-  padding: 25px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-}
-
-.stall-owners-section h2 {
-  margin-bottom: 10px;
-}
-
+/* Stall Section */
 .stall-info {
   margin-bottom: 15px;
-  color: #555;
+  font-size: 14px;
+  opacity: 0.85;
 }
 
 .stall-buttons {
@@ -175,76 +170,73 @@
 }
 
 .stall-btn {
-  padding: 10px 20px;
-  border-radius: 12px;
+  padding: 10px 18px;
+  border-radius: 10px;
   border: none;
   cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
+  font-weight: 500;
+  transition: 0.3s ease;
 }
 
 .apply-btn {
-  background-color: #007bff;
-  color: #fff;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: rgba(225, 225, 225, 0.91);
 }
 
 .apply-btn:hover {
-  background-color: #0056b3;
+  transform: scale(1.05);
 }
 
 .contact-btn {
-  background-color: #6c757d;
-  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
 }
 
 .contact-btn:hover {
-  background-color: #495057;
+  background: rgba(255, 255, 255, 0.2);
 }
 
-/* Society Info */
-.society-info-section {
-  background: #fff;
-  border-radius: 20px;
-  padding: 25px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-}
-
-.society-info-section h2 {
-  margin-bottom: 15px;
-}
-
+/* Society Section */
 .society-card {
+  margin-top: 10px;
+  padding: 15px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  cursor: pointer;
-  padding: 15px 20px;
-  border-radius: 15px;
-  background-color: #f7f7f7;
-  transition: all 0.3s ease;
+  transition: 0.3s ease;
 }
 
 .society-card:hover {
-  background-color: #e2e2e2;
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .society-name {
-  font-weight: 600;
-  font-size: 1.1rem;
+  font-weight: 500;
 }
 
 .view-profile {
-  font-weight: 500;
-  color: #007bff;
+  font-size: 13px;
+  opacity: 0.7;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .event-info-grid {
-    grid-template-columns: 1fr;
+  .event-hero-image img {
+    height: 250px;
+  }
+
+  .event-hero-overlay h1 {
+    font-size: 22px;
   }
 
   .stall-buttons {
     flex-direction: column;
+  }
+
+  .stall-btn {
+    width: 100%;
   }
 }

@@ -1,0 +1,97 @@
+.contact-page {
+  min-height: 100vh;
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #0f0f1a, #1a1a2e);
+  color: white;
+}
+
+/* HERO SECTION */
+.contact-hero {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.contact-hero h1 {
+  font-size: 48px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+
+  background: linear-gradient(90deg, #ffffff, #ff00ff, #ffffff);
+  background-size: 200% auto;
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  animation: shine 4s linear infinite;
+}
+
+.contact-tagline {
+  font-size: 18px;
+  opacity: 0.8;
+}
+
+/* GRID */
+.contact-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 40px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+/* CARD */
+.contact-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 40px 30px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: 0.4s ease;
+}
+
+.contact-card h2 {
+  margin-bottom: 20px;
+  font-size: 20px;
+  letter-spacing: 0.08em;
+}
+
+.contact-card p {
+  margin-bottom: 10px;
+  opacity: 0.85;
+}
+
+.contact-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(255, 0, 255, 0.2);
+}
+
+/* ANIMATION */
+@keyframes shine {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ===== BACK BUTTON ===== */
+.con-back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 8px 8px;
+  border-radius: 100px;
+  border: 1px solid rgb(248, 248, 248);
+  background: rgba(0, 0, 0, 0.965);
+  color: rgb(255, 255, 255);
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: 0.3s ease, box-shadow 0.3s ease;
+  z-index: 10;
+}
+
+.con-back-btn:hover {
+  background: rgba(251, 251, 251, 0.937);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.772);
+  color: rgb(0, 0, 0);
+  transform: scale(1.05);
+}

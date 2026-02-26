@@ -1,0 +1,151 @@
+/* ===== ABOUT PAGE ===== */
+.about-page {
+  min-height: 100vh;
+  background: #000;
+  color: white;
+  padding: 120px 40px 80px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.about-hero {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.about-hero h1 {
+  font-size: clamp(40px, 5vw, 70px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+
+  background: linear-gradient(90deg, #fff, #ff00ff, #fff);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 5s linear infinite;
+}
+
+.about-tagline {
+  margin-top: 20px;
+  font-size: 18px;
+  letter-spacing: 0.2em;
+  opacity: 0.8;
+}
+
+@keyframes shimmer {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Content Cards */
+.about-content {
+  max-width: 1100px;
+  margin: auto;
+  display: grid;
+  gap: 40px;
+}
+
+.about-card {
+  background: rgba(255,255,255,0.05);
+  padding: 40px;
+  border-radius: 25px;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: 0.4s ease;
+}
+
+.about-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 60px rgba(255,0,255,0.15);
+}
+
+.about-card h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  letter-spacing: 0.1em;
+}
+
+.about-card p,
+.about-card li {
+  font-size: 16px;
+  line-height: 1.8;
+  opacity: 0.85;
+}
+
+.about-card ul {
+  padding-left: 20px;
+}
+
+/* ===== SPONSOR SECTION ===== */
+
+.sponsor-section {
+  margin-top: 120px;
+  text-align: center;
+}
+
+.sponsor-title {
+  font-size: 32px;
+  letter-spacing: 0.2em;
+  margin-bottom: 60px;
+  text-transform: uppercase;
+}
+
+.sponsor-logos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 40px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.sponsor-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 30px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: 0.4s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sponsor-card img {
+  max-width: 200px;
+  height: auto;
+  filter: brightness(0.8);
+  transition: 0.4s ease;
+}
+
+.sponsor-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(255, 0, 255, 0.2);
+}
+
+.sponsor-card:hover img {
+  filter: grayscale(0%) brightness(1);
+  transform: scale(1.1);
+}
+
+/* ===== BACK BUTTON ===== */
+.abu-back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 8px 8px;
+  border-radius: 100px;
+  border: 1px solid rgb(248, 248, 248);
+  background: rgba(0, 0, 0, 0.965);
+  color: rgb(255, 255, 255);
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: 0.3s ease, box-shadow 0.3s ease;
+  z-index: 10;
+}
+
+.abu-back-btn:hover {
+  background: rgba(251, 251, 251, 0.937);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.772);
+  color: rgb(0, 0, 0);
+  transform: scale(1.05);
+}
