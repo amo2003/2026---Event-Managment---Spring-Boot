@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import "./StallAdminSide.css";
 
@@ -6,14 +6,14 @@ const PendingPayments = () => {
   const [stalls, setStalls] = useState([]);
   const [modalImage, setModalImage] = useState(null);
 
-  const fetchStalls = async () => {
+  const fetchStalls = useCallback(async () => {
     try {
       const res = await axios.get("http://localhost:8080/api/admin/stalls");
       setStalls(res.data);
     } catch (err) {
       console.error("Error fetching payments:", err);
     }
-  };
+  }, []);
 
   const approve = async (id) => {
     try {
@@ -40,7 +40,11 @@ const PendingPayments = () => {
 
   useEffect(() => {
     fetchStalls();
-  }, []);
+
+    // Auto-reload every 5 seconds
+    const interval = setInterval(fetchStalls, 5000);
+    return () => clearInterval(interval);
+  }, [fetchStalls]);
 
   return (
     <div className="pending-payments-scope">
