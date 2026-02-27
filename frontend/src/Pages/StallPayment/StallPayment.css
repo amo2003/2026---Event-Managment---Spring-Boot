@@ -187,3 +187,42 @@
   color: rgb(0, 0, 0);
   transform: scale(1.05);
 }
+
+
+/* PayHere Payment Section */
+.payhere-section {
+  background: rgba(255, 193, 7, 0.1);
+  padding: 25px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.payhere-section h3 {
+  color: #f57c00;
+  margin-bottom: 8px;
+}
+
+.payment-desc {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.7);
+  margin-bottom: 15px;
+}
+
+.payhere-btn {
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+}
+
+.payhere-btn:hover {
+  background: linear-gradient(135deg, #f57c00, #e65100);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 152, 0, 0.5);
+}
+
+.payhere-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}

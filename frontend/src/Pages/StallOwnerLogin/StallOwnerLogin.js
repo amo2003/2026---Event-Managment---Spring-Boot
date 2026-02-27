@@ -49,7 +49,7 @@ const StallOwnerLogin = () => {
       login(userData);
 
       // Navigate to stall owner profile
-      navigate(`/`);
+      navigate(`/owner-profile/${res.data.id}`);
     } catch (err) {
       console.error(err);
       alert("Login failed. Please check your credentials.");

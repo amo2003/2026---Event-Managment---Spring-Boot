@@ -31,7 +31,6 @@ function App() {
     <Routes>
       <Route path="/" element={<Home/>}/>
       
-      {/* Society Routes */}
       <Route path="/register" element={<Register/>}/>
       <Route path="/login" element={<Login/>}/>
       <Route path="/forgot-password" element={<SocietyForgotPassword/>}/>
@@ -43,12 +42,10 @@ function App() {
       <Route path="/myeventReqest" element={<MyEventRequests />} />
       <Route path="/addsocieties" element={<AddSociety />} />
 
-      {/* Event Routes */}
       <Route path="/events/:id" element={<EventDetail/>}/>
       <Route path="/event-payment/:id" element={<EventPayment/>}/>
       <Route path="/calendar" element={<EventCalendar/>}/>
 
-      {/* Stall Owner Routes */}
       <Route path="/sregister" element={<StallOwnerRegister />} />
       <Route path="/slogin" element={<StallOwnerLogin />} />
       <Route path="/sforgot-password" element={<StallOwnerForgotPassword/>}/>
@@ -56,11 +53,9 @@ function App() {
       <Route path="/stall-application/:ownerId/:eventId" element={<StallApplication />} />
       <Route path="/stall-payment/:ownerId/:stallId" element={<StallPayment />} />
 
-      {/* Admin Routes */}
       <Route path="/ad" element={<AdminEventRequests/>}/>
       <Route path="/admin/pending-payments" element={<PendingPayments />} />
 
-      {/* Other Routes */}
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
     </Routes>

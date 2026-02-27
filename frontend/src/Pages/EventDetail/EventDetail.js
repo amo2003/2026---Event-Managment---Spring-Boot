@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../../context/AuthContext";
 import "./EventDetail.css";
 import defaultImg from "../../assets/m4.jpg";
 
-const EventDetail = ({ owner }) => { // owner passed from App.js or context
+const EventDetail = () => {
   const { id } = useParams(); // eventId
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -123,13 +125,21 @@ const EventDetail = ({ owner }) => { // owner passed from App.js or context
             <div className="stall-buttons">
               <button
                 className="stall-btn apply-btn"
-                onClick={() => navigate("/slogin", { state: { eventId: event.id } })}
+                onClick={() => {
+                  if (user && user.userType === "stallOwner") {
+                    // Navigate to stall application with ownerId and eventId
+                    navigate(`/stall-application/${user.id}/${event.id}`);
+                  } else {
+                    // Navigate to login
+                    navigate("/slogin", { state: { eventId: event.id } });
+                  }
+                }}
               >
-                {owner ? "Apply for Stall" : "Login to Apply"}
+                {user && user.userType === "stallOwner" ? "Apply for Stall" : "Login to Apply"}
               </button>
               <button
                 className="stall-btn contact-btn"
-                onClick={() => navigate(`/contact-society/${event.societyId}`)}
+                onClick={() => navigate(`/contact`)}
               >
                 Contact Organizer
               </button>

@@ -157,9 +157,9 @@ const StallOwnerProfile = () => {
 
         <button
           className="so-apply-btn"
-          onClick={() => navigate("/events")}
+          onClick={() => navigate("/")}
         >
-          Apply for Stall
+          Browse Events & Apply for Stall
         </button>
 
         {loading && <p className="so-status-text">Loading stalls...</p>}

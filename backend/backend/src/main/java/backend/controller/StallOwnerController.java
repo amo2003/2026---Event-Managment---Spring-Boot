@@ -2,6 +2,7 @@ package backend.controller;
 
 import backend.Service.EmailService;
 import backend.Service.QRCodeService;
+import backend.config.PayHereConfig;
 import backend.model.StallOwner;
 import backend.model.StallRegistration;
 import backend.repository.StallOwnerRepository;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.util.UUID;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/stall-owner")
@@ -29,15 +31,18 @@ public class StallOwnerController {
     private final StallRegistrationRepository stallRepo;
     private final EmailService emailService;
     private final QRCodeService qrCodeService;
+    private final PayHereConfig payHereConfig;
 
     public StallOwnerController(StallOwnerRepository ownerRepo,
                                 StallRegistrationRepository stallRepo,
                                 EmailService emailService,
-                                QRCodeService qrCodeService) {
+                                QRCodeService qrCodeService,
+                                PayHereConfig payHereConfig) {
         this.ownerRepo = ownerRepo;
         this.stallRepo = stallRepo;
         this.emailService = emailService;
         this.qrCodeService = qrCodeService;
+        this.payHereConfig = payHereConfig;
     }
 
     // Register stall owner
@@ -46,6 +51,76 @@ public class StallOwnerController {
         // TODO: hash password for production
         StallOwner saved = ownerRepo.save(owner);
         return ResponseEntity.ok(saved);
+    }
+
+    // Get PayHere Configuration
+    @GetMapping("/payhere-config")
+    public ResponseEntity<Map<String, Object>> getPayHereConfig() {
+        System.out.println("PayHere config requested");
+        System.out.println("Merchant ID: " + payHereConfig.getMerchantId());
+        System.out.println("Sandbox: " + payHereConfig.isSandbox());
+        System.out.println("Currency: " + payHereConfig.getCurrency());
+        
+        Map<String, Object> config = new HashMap<>();
+        config.put("merchantId", payHereConfig.getMerchantId());
+        config.put("sandbox", payHereConfig.isSandbox());
+        config.put("currency", payHereConfig.getCurrency());
+        
+        System.out.println("Returning config: " + config);
+        return ResponseEntity.ok(config);
+    }
+
+    // Generate PayHere Hash
+    @PostMapping("/payhere-hash")
+    public ResponseEntity<Map<String, String>> generatePayHereHash(@RequestBody Map<String, String> request) {
+        try {
+            String orderId = request.get("order_id");
+            String amount = request.get("amount");
+            String currency = request.get("currency");
+
+            if (orderId == null || amount == null || currency == null) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Missing parameters"));
+            }
+
+            // Format amount to 2 decimal places
+            String formattedAmount = String.format("%.2f", Double.parseDouble(amount));
+
+            // Generate hash: MD5(merchant_id + order_id + amount + currency + MD5(merchant_secret).toUpperCase()).toUpperCase()
+            String merchantSecret = payHereConfig.getMerchantSecret();
+            String merchantId = payHereConfig.getMerchantId();
+
+            // Step 1: MD5 of merchant secret
+            String hashedSecret = getMD5Hash(merchantSecret).toUpperCase();
+
+            // Step 2: Concatenate and hash
+            String toHash = merchantId + orderId + formattedAmount + currency + hashedSecret;
+            String hash = getMD5Hash(toHash).toUpperCase();
+
+            System.out.println("Generated PayHere Hash:");
+            System.out.println("Order ID: " + orderId);
+            System.out.println("Amount: " + formattedAmount);
+            System.out.println("Hash: " + hash);
+
+            return ResponseEntity.ok(Map.of("hash", hash));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of("error", "Failed to generate hash"));
+        }
+    }
+
+    // Helper method to generate MD5 hash
+    private String getMD5Hash(String input) {
+        try {
+            java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+            byte[] array = md.digest(input.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : array) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // Login stall owner
@@ -222,6 +297,63 @@ public class StallOwnerController {
         emailService.sendStallPlacedEmail(saved.getOwner(), saved);
 
         return ResponseEntity.ok(saved);
+    }
+
+    // PayHere Payment
+    @PostMapping("/{ownerId}/pay-payhere")
+    public ResponseEntity<StallRegistration> payWithPayHere(
+            @PathVariable Long ownerId,
+            @RequestBody Map<String, Object> body
+    ) {
+        Long stallId = Long.valueOf(String.valueOf(body.get("stallId")));
+        String orderId = (String) body.get("orderId");
+
+        StallRegistration stall = stallRepo.findById(stallId).orElse(null);
+        if (stall == null) {
+            return ResponseEntity.notFound().build();
+        }
+        if (stall.getOwner() == null || stall.getOwner().getId() == null || !stall.getOwner().getId().equals(ownerId)) {
+            return ResponseEntity.status(403).build();
+        }
+
+        // Store amount if provided
+        if (body.get("amount") != null) {
+            try {
+                stall.setAmount(Double.valueOf(String.valueOf(body.get("amount"))));
+            } catch (Exception ignored) {}
+        }
+
+        stall.setPaymentMethod("PAYHERE");
+        stall.setPaymentStatus("APPROVED");
+        stall.setSlipNote("PayHere Order ID: " + orderId);
+        
+        // Generate QR code for PayHere payment
+        if (stall.getQrCodeUrl() == null || stall.getQrCodeUrl().isBlank()) {
+            try {
+                generateAndAttachQrCode(stall);
+            } catch (IOException | WriterException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        StallRegistration saved = stallRepo.save(stall);
+
+        // send success email
+        emailService.sendStallPlacedEmail(saved.getOwner(), saved);
+
+        return ResponseEntity.ok(saved);
+    }
+
+    // PayHere Notify URL (for server-to-server notification)
+    @PostMapping("/payhere-notify")
+    public ResponseEntity<String> payhereNotify(@RequestBody Map<String, String> params) {
+        System.out.println("PayHere Notification received:");
+        params.forEach((key, value) -> System.out.println(key + ": " + value));
+        
+        // In production, verify the payment with PayHere MD5 signature
+        // For now, just log the notification
+        
+        return ResponseEntity.ok("OK");
     }
 
     // Upload payment slip
