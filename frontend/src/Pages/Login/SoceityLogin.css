@@ -129,3 +129,23 @@
   color: rgb(0, 0, 0);
   transform: scale(1.05);
 }
+
+
+/* Forgot Password Link */
+.forgot-password-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.forgot-password-link span {
+  color: white;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.forgot-password-link span:hover {
+  color: #4caf50;
+}

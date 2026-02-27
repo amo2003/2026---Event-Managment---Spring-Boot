@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./AdminEventRequests.css";
+import { useNavigate } from "react-router-dom";
 
 const AdminPendingEvents = () => {
   const [events, setEvents] = useState([]);
   const [modalImage, setModalImage] = useState(null); // Track image for modal
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchEvents();
@@ -38,6 +41,9 @@ const AdminPendingEvents = () => {
 
   return (
     <div className="admin-events-scope">
+       <button className="admin-back-btn" onClick={() => navigate(-1)}>
+    ← 
+  </button>
       <div className="admin-events-container">
         <h2 className="admin-events-title">All Event Requests</h2>
 

@@ -107,6 +107,34 @@ public class Soceity {
         return ResponseEntity.ok("Society deleted successfully.");
     }
 
+    // FORGOT PASSWORD - Reset password by email
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody SocietyModel resetData) {
+        try {
+            System.out.println("Forgot password request for email: " + resetData.getEmail());
+            
+            SocietyModel society = societyRepository.findByEmail(resetData.getEmail())
+                    .orElseThrow(() -> new SoceityNotFoundException("Email not found!"));
+
+            System.out.println("Society found: " + society.getName());
+            
+            // Update password
+            society.setPassword(resetData.getPassword());
+            societyRepository.save(society);
+
+            System.out.println("Password updated successfully");
+            
+            return ResponseEntity.ok("Password reset successfully!");
+        } catch (SoceityNotFoundException e) {
+            System.out.println("Email not found: " + resetData.getEmail());
+            return ResponseEntity.status(404).body("Email not found!");
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Password reset failed!");
+        }
+    }
+
     // PIN GENERATOR
     private String generateUniquePin() {
         String pin;

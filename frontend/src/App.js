@@ -21,6 +21,8 @@ import StallOwnerRegister from './Pages/StallOwnerRegister/StallOwnerRegister';
 import StallOwnerLogin from './Pages/StallOwnerLogin/StallOwnerLogin';
 import StallOwnerProfile from './Pages/StallOwnerProfile/StallOwnerProfile';
 import PendingPayments from './Pages/StallAdminSide/StallAdminSide';
+import SocietyForgotPassword from './Pages/ForgotPassword/SocietyForgotPassword';
+import StallOwnerForgotPassword from './Pages/ForgotPassword/StallOwnerForgotPassword';
 import About from './Pages/AboutUs/About';
 import Contact from './Pages/ContactUs/Contact';
 
@@ -32,6 +34,7 @@ function App() {
       {/* Society Routes */}
       <Route path="/register" element={<Register/>}/>
       <Route path="/login" element={<Login/>}/>
+      <Route path="/forgot-password" element={<SocietyForgotPassword/>}/>
       <Route path="/societies" element={<SocietyList />} />
       <Route path="/society/:id" element={<SocietyProfile />} />
       <Route path="/dashboard" element={<Dashboard />} />
@@ -48,6 +51,7 @@ function App() {
       {/* Stall Owner Routes */}
       <Route path="/sregister" element={<StallOwnerRegister />} />
       <Route path="/slogin" element={<StallOwnerLogin />} />
+      <Route path="/sforgot-password" element={<StallOwnerForgotPassword/>}/>
       <Route path="/owner-profile/:ownerId" element={<StallOwnerProfile />} />
       <Route path="/stall-application/:ownerId/:eventId" element={<StallApplication />} />
       <Route path="/stall-payment/:ownerId/:stallId" element={<StallPayment />} />

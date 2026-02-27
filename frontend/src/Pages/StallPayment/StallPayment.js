@@ -129,6 +129,9 @@ const StallPayment = () => {
 
   return (
     <div className="stall-payment-container">
+      <button className="stp-back-btn" onClick={() => navigate(-1)}>
+    ← 
+  </button>
       <div className="stall-payment-card">
         <h2>Stall Payment</h2>
 

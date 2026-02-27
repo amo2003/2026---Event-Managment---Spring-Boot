@@ -11,6 +11,8 @@ public interface SocietyRepository extends JpaRepository<SocietyModel, Long> {
 
     boolean existsByPinCode(String pinCode);
 
+    Optional<SocietyModel> findByEmail(String email);
+
     Optional<SocietyModel> findByEmailAndPasswordAndPinCode(
             String email,
             String password,

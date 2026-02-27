@@ -134,8 +134,8 @@ const Home = () => {
             </button>
             {eventsDropdown && (
               <div className="dropdown">
-                <button className="dropdown-item" onClick={() => handleNavigate("/register")}>Societies</button>
-                <button className="dropdown-item" onClick={() => handleNavigate("/shops")}>Shops</button>
+                <button className="dropdown-item" onClick={() => handleNavigate("/register")}>Societies Register</button>
+                <button className="dropdown-item" onClick={() => handleNavigate("/sregister")}>Shops Owners Register</button>
               </div>
             )}
           </div>
@@ -145,7 +145,7 @@ const Home = () => {
               {/* Society User Navigation */}
               {user.userType === "society" && (
                 <>
-                  <span className="menu-user">Faculty: {user.faculty}</span>
+                  <span className="menu-user">{user.societyName || user.faculty}</span>
                   <button
                     className="menu-link"
                     onClick={() => handleNavigate(`/society/${user.id}`)}

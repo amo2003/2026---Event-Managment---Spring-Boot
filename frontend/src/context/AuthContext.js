@@ -12,6 +12,7 @@ export const AuthProvider = ({ children }) => {
     const role = localStorage.getItem("role");
     const userType = localStorage.getItem("userType"); // 'society', 'stallOwner', 'admin'
     const faculty = localStorage.getItem("faculty");
+    const societyName = localStorage.getItem("societyName");
     const email = localStorage.getItem("email");
     const ownerName = localStorage.getItem("ownerName");
 
@@ -21,7 +22,8 @@ export const AuthProvider = ({ children }) => {
         token, 
         role, 
         userType, 
-        faculty, 
+        faculty,
+        societyName, 
         email, 
         ownerName 
       });
@@ -36,6 +38,9 @@ export const AuthProvider = ({ children }) => {
     
     if (userData.faculty) {
       localStorage.setItem("faculty", userData.faculty);
+    }
+    if (userData.societyName) {
+      localStorage.setItem("societyName", userData.societyName);
     }
     if (userData.email) {
       localStorage.setItem("email", userData.email);

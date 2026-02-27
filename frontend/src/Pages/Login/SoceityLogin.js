@@ -40,11 +40,12 @@ function SoceityLogin() {
         role: response.data.role,
         userType: "society", // Add user type
         faculty: response.data.faculty,
+        societyName: response.data.name, // Add society name
         email: response.data.email,
       };
 
       login(userData);
-      setSuccess(`Welcome ${userData.faculty}`);
+      setSuccess(`Welcome ${userData.societyName}`);
 
       // redirect to home after 1s
       setTimeout(() => {
@@ -95,6 +96,10 @@ function SoceityLogin() {
           />
           <button type="submit" className="loginl-btn">Login</button>
         </form>
+
+        <p className="forgot-password-link">
+          <span onClick={() => navigate("/forgot-password")}>Forgot Password?</span>
+        </p>
       </div>
     </div>
   );

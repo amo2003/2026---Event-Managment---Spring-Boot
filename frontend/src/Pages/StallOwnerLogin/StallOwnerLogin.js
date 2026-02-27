@@ -49,7 +49,7 @@ const StallOwnerLogin = () => {
       login(userData);
 
       // Navigate to stall owner profile
-      navigate(`/owner-profile/${res.data.id}`);
+      navigate(`/`);
     } catch (err) {
       console.error(err);
       alert("Login failed. Please check your credentials.");
@@ -79,6 +79,10 @@ const StallOwnerLogin = () => {
         />
 
         <button onClick={handleLogin}>Login</button>
+
+        <p className="forgot-password-link">
+          <span onClick={() => navigate("/sforgot-password")}>Forgot Password?</span>
+        </p>
 
         <p className="register-link">
           Don't have an account?{" "}

@@ -65,6 +65,30 @@ public class StallOwnerController {
 
         return ResponseEntity.status(401).build();
     }
+    // Forgot Password - Reset password by email
+    @PostMapping("/forgot-password")
+    public ResponseEntity<Map<String, String>> forgotPassword(@RequestBody Map<String, String> resetData) {
+        String email = resetData.get("email");
+        String newPassword = resetData.get("password");
+
+        System.out.println("Stall Owner forgot password request for email: " + email);
+
+        List<StallOwner> owners = ownerRepo.findByEmail(email);
+        if (owners.isEmpty()) {
+            System.out.println("Email not found: " + email);
+            return ResponseEntity.status(404).body(Map.of("message", "Email not found!"));
+        }
+
+        StallOwner owner = owners.get(0);
+        System.out.println("Stall Owner found: " + owner.getOwnerName());
+        
+        owner.setPassword(newPassword);
+        ownerRepo.save(owner);
+
+        System.out.println("Password updated successfully for: " + email);
+
+        return ResponseEntity.ok(Map.of("message", "Password reset successfully!"));
+    }
 
     // Get owner details by ID
     @GetMapping("/{ownerId}/details")

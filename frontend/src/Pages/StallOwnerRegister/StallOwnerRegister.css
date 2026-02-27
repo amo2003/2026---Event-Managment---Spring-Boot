@@ -16,7 +16,7 @@
   border-radius: 25px;
   padding: 40px 30px;
   box-shadow: 0 0 60px rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.976);
   text-align: center;
   position: relative;
 }
@@ -37,7 +37,7 @@
 .stall-register-form input {
   padding: 12px 16px;
   border-radius: 25px;
-  border: 1px solid rgba(255,255,255,0.3);
+  border: 1px solid rgba(255, 255, 255, 0.893);
   background: transparent;
   color: #fff;
   outline: none;

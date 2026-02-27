@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import "./StallAdminSide.css";
+import { useNavigate } from "react-router-dom";
 
 const PendingPayments = () => {
   const [stalls, setStalls] = useState([]);
@@ -8,16 +9,19 @@ const PendingPayments = () => {
   const [modalImage, setModalImage] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const navigate = useNavigate();
+
+  // Fetch stalls
   const fetchStalls = useCallback(async () => {
     try {
       const res = await axios.get("http://localhost:8080/api/admin/stalls");
       setStalls(res.data);
-      setFilteredStalls(res.data);
     } catch (err) {
       console.error("Error fetching payments:", err);
     }
   }, []);
 
+  // Approve payment
   const approve = async (id) => {
     try {
       await axios.put(`http://localhost:8080/api/admin/approve-payment/${id}`);
@@ -27,6 +31,7 @@ const PendingPayments = () => {
     }
   };
 
+  // Reject payment
   const reject = async (id) => {
     const note = prompt("Enter rejection reason:");
     if (!note) return;
@@ -41,22 +46,26 @@ const PendingPayments = () => {
     }
   };
 
-  // Filter stalls based on search term
+  // Handle search input (only updates state)
   const handleSearch = (value) => {
     setSearchTerm(value);
-    
-    if (!value.trim()) {
+  };
+
+  // Filter stalls whenever stalls or searchTerm changes
+  useEffect(() => {
+    if (!searchTerm.trim()) {
       setFilteredStalls(stalls);
       return;
     }
 
-    const searchLower = value.toLowerCase();
+    const searchLower = searchTerm.toLowerCase();
+
     const filtered = stalls.filter((stall) => {
       const paymentMethod = (stall.paymentMethod || "").toLowerCase();
       const businessName = (stall.businessName || "").toLowerCase();
       const ownerName = (stall.owner?.ownerName || "").toLowerCase();
       const status = (stall.paymentStatus || "").toLowerCase();
-      
+
       return (
         paymentMethod.includes(searchLower) ||
         businessName.includes(searchLower) ||
@@ -64,47 +73,36 @@ const PendingPayments = () => {
         status.includes(searchLower)
       );
     });
-    
+
     setFilteredStalls(filtered);
-  };
+  }, [stalls, searchTerm]);
 
-  // Filter by payment method buttons
-  const filterByPaymentMethod = (method) => {
-    if (method === "ALL") {
-      setFilteredStalls(stalls);
-      setSearchTerm("");
-    } else {
-      const filtered = stalls.filter(
-        (stall) => stall.paymentMethod === method
-      );
-      setFilteredStalls(filtered);
-      setSearchTerm(method);
-    }
-  };
-
+  // Initial fetch + auto reload
   useEffect(() => {
     fetchStalls();
-
-    // Auto-reload every 5 seconds
     const interval = setInterval(fetchStalls, 5000);
     return () => clearInterval(interval);
   }, [fetchStalls]);
 
-  // Update filtered stalls when stalls change
-  useEffect(() => {
-    if (searchTerm) {
-      handleSearch(searchTerm);
+  // Filter by payment method buttons
+  const filterByPaymentMethod = (method) => {
+    if (method === "ALL") {
+      setSearchTerm("");
     } else {
-      setFilteredStalls(stalls);
+      setSearchTerm(method);
     }
-  }, [stalls]);
+  };
 
   return (
     <div className="pending-payments-scope">
+      <button className="ad-back-btn" onClick={() => navigate(-1)}>
+        ←
+      </button>
+
       <div className="pending-payments-container">
         <h2>Stall Payments</h2>
 
-        {/* Search and Filter Section */}
+        {/* Search + Filters */}
         <div className="search-filter-section">
           <input
             type="text"
@@ -113,7 +111,7 @@ const PendingPayments = () => {
             onChange={(e) => handleSearch(e.target.value)}
             className="search-input"
           />
-          
+
           <div className="filter-buttons">
             <button
               className={searchTerm === "" ? "filter-btn active" : "filter-btn"}
@@ -121,12 +119,14 @@ const PendingPayments = () => {
             >
               All
             </button>
+
             <button
               className={searchTerm === "CARD" ? "filter-btn active" : "filter-btn"}
               onClick={() => filterByPaymentMethod("CARD")}
             >
               Card
             </button>
+
             <button
               className={searchTerm === "SLIP" ? "filter-btn active" : "filter-btn"}
               onClick={() => filterByPaymentMethod("SLIP")}
@@ -157,22 +157,28 @@ const PendingPayments = () => {
                 <th>Actions</th>
               </tr>
             </thead>
+
             <tbody>
               {filteredStalls.map((stall) => (
                 <tr key={stall.id}>
                   <td>{stall.businessName}</td>
                   <td>{stall.owner?.ownerName || "-"}</td>
                   <td>{stall.packageType || "-"}</td>
+
                   <td className="amount-cell">
                     <span className="amount-value">
                       Rs. {stall.amount ? stall.amount.toLocaleString() : "0"}
                     </span>
                   </td>
+
                   <td>
-                    <span className={`payment-method-badge ${stall.paymentMethod?.toLowerCase()}`}>
+                    <span
+                      className={`payment-method-badge ${stall.paymentMethod?.toLowerCase()}`}
+                    >
                       {stall.paymentMethod || "-"}
                     </span>
                   </td>
+
                   <td>
                     {stall.slipUrl ? (
                       <img
@@ -180,22 +186,33 @@ const PendingPayments = () => {
                         alt="Payment Slip"
                         className="slip-img"
                         onClick={() =>
-                          setModalImage(`http://localhost:8080${stall.slipUrl}`)
+                          setModalImage(
+                            `http://localhost:8080${stall.slipUrl}`
+                          )
                         }
                       />
                     ) : (
                       "-"
                     )}
                   </td>
+
                   <td>{stall.slipNote || "-"}</td>
-                  <td className={`status-${stall.paymentStatus?.toLowerCase()}`}>
+
+                  <td
+                    className={`status-${stall.paymentStatus?.toLowerCase()}`}
+                  >
                     {stall.paymentStatus}
                   </td>
+
                   <td>
                     {stall.paymentStatus === "PENDING" ? (
                       <>
-                        <button onClick={() => approve(stall.id)}>Approve</button>
-                        <button onClick={() => reject(stall.id)}>Reject</button>
+                        <button onClick={() => approve(stall.id)}>
+                          Approve
+                        </button>
+                        <button onClick={() => reject(stall.id)}>
+                          Reject
+                        </button>
                       </>
                     ) : (
                       "-"
@@ -207,6 +224,7 @@ const PendingPayments = () => {
           </table>
         )}
 
+        {/* Image Modal */}
         {modalImage && (
           <div className="slip-modal" onClick={() => setModalImage(null)}>
             <img src={modalImage} alt="Slip Preview" />

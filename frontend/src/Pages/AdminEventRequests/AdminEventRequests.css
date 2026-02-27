@@ -211,3 +211,28 @@
     height: 45px;
   }
 }
+
+
+/* ===== BACK BUTTON ===== */
+.admin-back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 8px 8px;
+  border-radius: 100px;
+  border: 1px solid rgb(248, 248, 248);
+  background: rgba(0, 0, 0, 0.965);
+  color: rgb(255, 255, 255);
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: 0.3s ease, box-shadow 0.3s ease;
+  z-index: 10;
+}
+
+.admin-back-btn:hover {
+  background: rgba(251, 251, 251, 0.937);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.772);
+  color: rgb(0, 0, 0);
+  transform: scale(1.05);
+}
