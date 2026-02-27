@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./ForgotPassword.css";
+import "./SocietyForgotPassword.css"; // updated CSS
 
 const SocietyForgotPassword = () => {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ const SocietyForgotPassword = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8080/api/society/forgot-password", {
+      await axios.post("http://localhost:8080/api/society/forgot-password", {
         email: email,
         password: newPassword,
       });
@@ -44,36 +44,34 @@ const SocietyForgotPassword = () => {
       }, 2000);
     } catch (err) {
       console.error("Forgot password error:", err);
-      
+
       if (err.response) {
-        // Server responded with error
-        const errorMsg = typeof err.response.data === 'string' 
-          ? err.response.data 
-          : err.response.data?.message || "Password reset failed!";
+        const errorMsg =
+          typeof err.response.data === "string"
+            ? err.response.data
+            : err.response.data?.message || "Password reset failed!";
         setError(errorMsg);
       } else if (err.request) {
-        // Request made but no response
         setError("No response from server. Please check if the backend is running.");
       } else {
-        // Something else happened
         setError("An error occurred: " + err.message);
       }
     }
   };
 
   return (
-    <div className="forgot-password-page">
-      <button className="back-btn" onClick={() => navigate("/login")}>
+    <div className="sfp-page">
+      <button className="sfp-back-btn" onClick={() => navigate("/login")}>
         ←
       </button>
-      <div className="forgot-password-container">
-        <h1 className="forgot-password-title">Reset Society Password</h1>
+      <div className="sfp-container">
+        <h1 className="sfp-title">Reset Society Password</h1>
 
-        {error && <p className="error-msg">{error}</p>}
-        {success && <p className="success-msg">{success}</p>}
+        {error && <p className="sfp-error-msg">{error}</p>}
+        {success && <p className="sfp-success-msg">{success}</p>}
 
-        <form onSubmit={handleReset}>
-          <div className="form-group">
+        <form onSubmit={handleReset} className="sfp-form">
+          <div className="sfp-form-group">
             <label>Email Address</label>
             <input
               type="email"
@@ -84,7 +82,7 @@ const SocietyForgotPassword = () => {
             />
           </div>
 
-          <div className="form-group">
+          <div className="sfp-form-group">
             <label>New Password</label>
             <input
               type="password"
@@ -95,7 +93,7 @@ const SocietyForgotPassword = () => {
             />
           </div>
 
-          <div className="form-group">
+          <div className="sfp-form-group">
             <label>Confirm Password</label>
             <input
               type="password"
@@ -106,12 +104,12 @@ const SocietyForgotPassword = () => {
             />
           </div>
 
-          <button type="submit" className="reset-btn">
+          <button type="submit" className="sfp-reset-btn">
             Reset Password
           </button>
         </form>
 
-        <p className="back-to-login">
+        <p className="sfp-back-to-login">
           Remember your password?{" "}
           <span onClick={() => navigate("/login")}>Back to Login</span>
         </p>

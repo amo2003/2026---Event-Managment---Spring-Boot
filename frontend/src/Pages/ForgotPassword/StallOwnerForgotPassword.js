@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./ForgotPassword.css";
+import "./StallOwnerForgotPassword.css"; // updated CSS
 
 const StallOwnerForgotPassword = () => {
   const navigate = useNavigate();
@@ -33,10 +33,13 @@ const StallOwnerForgotPassword = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8080/api/stall-owner/forgot-password", {
-        email: email,
-        password: newPassword,
-      });
+      await axios.post(
+        "http://localhost:8080/api/stall-owner/forgot-password",
+        {
+          email: email,
+          password: newPassword,
+        }
+      );
 
       setSuccess("Password reset successfully! Redirecting to login...");
       setTimeout(() => {
@@ -44,35 +47,35 @@ const StallOwnerForgotPassword = () => {
       }, 2000);
     } catch (err) {
       console.error("Forgot password error:", err);
-      
+
       if (err.response) {
-        // Server responded with error
-        const errorMsg = err.response.data?.message || 
-                        (typeof err.response.data === 'string' ? err.response.data : "Password reset failed!");
+        const errorMsg =
+          err.response.data?.message ||
+          (typeof err.response.data === "string"
+            ? err.response.data
+            : "Password reset failed!");
         setError(errorMsg);
       } else if (err.request) {
-        // Request made but no response
         setError("No response from server. Please check if the backend is running.");
       } else {
-        // Something else happened
         setError("An error occurred: " + err.message);
       }
     }
   };
 
   return (
-    <div className="forgot-password-page">
-      <button className="back-btn" onClick={() => navigate("/slogin")}>
+    <div className="sofp-page">
+      <button className="sofp-back-btn" onClick={() => navigate("/slogin")}>
         ←
       </button>
-      <div className="forgot-password-container">
-        <h1 className="forgot-password-title">Reset Stall Owner Password</h1>
+      <div className="sofp-container">
+        <h1 className="sofp-title">Reset Stall Owner Password</h1>
 
-        {error && <p className="error-msg">{error}</p>}
-        {success && <p className="success-msg">{success}</p>}
+        {error && <p className="sofp-error-msg">{error}</p>}
+        {success && <p className="sofp-success-msg">{success}</p>}
 
-        <form onSubmit={handleReset}>
-          <div className="form-group">
+        <form onSubmit={handleReset} className="sofp-form">
+          <div className="sofp-form-group">
             <label>Email Address</label>
             <input
               type="email"
@@ -83,7 +86,7 @@ const StallOwnerForgotPassword = () => {
             />
           </div>
 
-          <div className="form-group">
+          <div className="sofp-form-group">
             <label>New Password</label>
             <input
               type="password"
@@ -94,7 +97,7 @@ const StallOwnerForgotPassword = () => {
             />
           </div>
 
-          <div className="form-group">
+          <div className="sofp-form-group">
             <label>Confirm Password</label>
             <input
               type="password"
@@ -105,12 +108,12 @@ const StallOwnerForgotPassword = () => {
             />
           </div>
 
-          <button type="submit" className="reset-btn">
+          <button type="submit" className="sofp-reset-btn">
             Reset Password
           </button>
         </form>
 
-        <p className="back-to-login">
+        <p className="sofp-back-to-login">
           Remember your password?{" "}
           <span onClick={() => navigate("/slogin")}>Back to Login</span>
         </p>
