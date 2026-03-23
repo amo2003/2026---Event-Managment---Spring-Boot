@@ -1,4 +1,3 @@
-// src/pages/SocietyProfile.js
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
@@ -83,6 +82,16 @@ const SocietyProfile = () => {
       .catch(() => alert("Failed to delete event."));
   };
 
+  const handleChange = (field, value) => {
+    // Validation rules
+    if (field === "name" || field === "presidentName" || field === "advisorName") {
+      if (/\d/.test(value)) return; // prevent numbers
+    } else if (field === "contactNumber") {
+      if (/[^0-9]/.test(value)) return; // prevent letters
+    }
+    setProfile({ ...profile, [field]: value });
+  };
+
   return (
     <div className="society-profile-page">
       <h1>Society Profile</h1>
@@ -92,25 +101,47 @@ const SocietyProfile = () => {
         {editMode ? (
           <div className="edit-form">
             <label>Society Name:</label>
-            <input value={profile.name || ""} onChange={(e) => setProfile({ ...profile, name: e.target.value })} />
+            <input
+              value={profile.name || ""}
+              onChange={(e) => handleChange("name", e.target.value)}
+            />
 
             <label>Faculty:</label>
-            <input value={profile.faculty || ""} onChange={(e) => setProfile({ ...profile, faculty: e.target.value })} />
+            <input
+              value={profile.faculty || ""}
+              disabled
+            />
 
             <label>President Name:</label>
-            <input value={profile.presidentName || ""} onChange={(e) => setProfile({ ...profile, presidentName: e.target.value })} />
+            <input
+              value={profile.presidentName || ""}
+              onChange={(e) => handleChange("presidentName", e.target.value)}
+            />
 
             <label>Email:</label>
-            <input value={profile.email || ""} onChange={(e) => setProfile({ ...profile, email: e.target.value })} />
+            <input
+              value={profile.email || ""}
+              onChange={(e) => handleChange("email", e.target.value)}
+            />
 
             <label>Password:</label>
-            <input type="password" value={profile.password || ""} onChange={(e) => setProfile({ ...profile, password: e.target.value })} />
+            <input
+              type="text"  // visible password
+              value={profile.password || ""}
+              onChange={(e) => handleChange("password", e.target.value)}
+            />
 
             <label>Contact Number:</label>
-            <input value={profile.contactNumber || ""} onChange={(e) => setProfile({ ...profile, contactNumber: e.target.value })} />
+            <input
+              value={profile.contactNumber || ""}
+              onChange={(e) => handleChange("contactNumber", e.target.value)}
+            />
 
             <label>Advisor Name:</label>
-            <input value={profile.advisorName || ""} onChange={(e) => setProfile({ ...profile, advisorName: e.target.value })} />
+            <input
+              value={profile.advisorName || ""}
+              onChange={(e) => handleChange("advisorName", e.target.value)}
+            />
 
             <div className="profile-buttons">
               <button onClick={handleUpdate}>Save</button>
@@ -138,7 +169,6 @@ const SocietyProfile = () => {
       {/* EVENTS SECTION */}
       <div className="society-events-section">
         <h2>My Created Events</h2>
-
         {events.length === 0 ? (
           <p>No events created yet.</p>
         ) : (

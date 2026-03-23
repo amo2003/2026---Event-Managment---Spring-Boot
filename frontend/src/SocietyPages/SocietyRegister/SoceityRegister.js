@@ -6,7 +6,6 @@ import "./SoceityRegister.css";
 function SoceityRegister() {
   const navigate = useNavigate();
 
-  /* ---------------- NEW: Society List State ---------------- */
   const [societyList, setSocietyList] = useState([]);
 
   const [formData, setFormData] = useState({
@@ -48,9 +47,20 @@ function SoceityRegister() {
   };
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    // Validation logic
+    if (name === "presidentName" || name === "advisorName") {
+      // Prevent numbers
+      if (/\d/.test(value)) return;
+    } else if (name === "contactNumber") {
+      // Prevent letters
+      if (/[^0-9]/.test(value)) return;
+    }
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
   };
 
@@ -84,9 +94,9 @@ function SoceityRegister() {
   return (
     <div className="register-page">
       {/* ===== BACK BUTTON ===== */}
-  <button className="back-btn" onClick={() => navigate(-1)}>
-    ← 
-  </button>
+      <button className="back-btn" onClick={() => navigate(-1)}>
+        ← 
+      </button>
       <div className="register-container">
         <h1 className="register-title">Society Registration</h1>
 
@@ -104,7 +114,6 @@ function SoceityRegister() {
 
         {!success && (
           <form className="register-form" onSubmit={handleSubmit}>
-
             {/* ----------- NEW DROPDOWN FOR SOCIETY NAME ----------- */}
             <div className="select-wrapper">
               <select
@@ -114,7 +123,6 @@ function SoceityRegister() {
                 required
               >
                 <option value="">Select Society</option>
-
                 {societyList.map((society) => (
                   <option key={society.id} value={society.name}>
                     {society.name}
@@ -149,11 +157,50 @@ function SoceityRegister() {
               </select>
             </div>
 
-            <input type="text" name="presidentName" placeholder="President Name" onChange={handleChange} required />
-            <input type="email" name="email" placeholder="Email Address" onChange={handleChange} required />
-            <input type="text" name="contactNumber" placeholder="Contact Number" onChange={handleChange} required />
-            <input type="text" name="advisorName" placeholder="Advisor Name" onChange={handleChange} required />
-            <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+            <input
+              type="text"
+              name="presidentName"
+              placeholder="President Name"
+              onChange={handleChange}
+              value={formData.presidentName}
+              required
+            />
+
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              onChange={handleChange}
+              value={formData.email}
+              required
+            />
+
+            <input
+              type="text"
+              name="contactNumber"
+              placeholder="Contact Number"
+              onChange={handleChange}
+              value={formData.contactNumber}
+              required
+            />
+
+            <input
+              type="text"
+              name="advisorName"
+              placeholder="Advisor Name"
+              onChange={handleChange}
+              value={formData.advisorName}
+              required
+            />
+
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              onChange={handleChange}
+              value={formData.password}
+              required
+            />
 
             <button type="submit" className="register-btn">
               Register Society

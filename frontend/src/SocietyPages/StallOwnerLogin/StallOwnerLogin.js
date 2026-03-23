@@ -69,6 +69,7 @@ const StallOwnerLogin = () => {
           placeholder="Enter Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
 
         <input
@@ -76,6 +77,7 @@ const StallOwnerLogin = () => {
           placeholder="Enter Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
 
         <button onClick={handleLogin}>Login</button>

@@ -1,4 +1,3 @@
-// src/pages/stallOwner/StallPayment.jsx
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -20,6 +19,7 @@ const StallPayment = () => {
   const [note, setNote] = useState("");
   const [loading, setLoading] = useState(false);
   const [payHereConfig, setPayHereConfig] = useState(null);
+  const [selectedSlip, setSelectedSlip] = useState(null);
 
   // Fetch stall details
   useEffect(() => {
@@ -29,9 +29,7 @@ const StallPayment = () => {
           `http://localhost:8080/api/stall-owner/${ownerId}/stalls`
         );
 
-        const s = res.data.find(
-          (st) => String(st.id) === String(stallId)
-        );
+        const s = res.data.find((st) => String(st.id) === String(stallId));
 
         if (s) {
           setStall(s);
@@ -58,7 +56,9 @@ const StallPayment = () => {
       } catch (err) {
         console.error("Failed to load PayHere config:", err);
         console.error("Error details:", err.response);
-        alert("Failed to load PayHere configuration. Please check if backend is running.");
+        alert(
+          "Failed to load PayHere configuration. Please check if backend is running."
+        );
       }
     };
 
@@ -143,11 +143,10 @@ const StallPayment = () => {
       return;
     }
 
-    // Use config from backend or fallback to defaults
     const config = payHereConfig || {
       merchantId: "1227569",
       sandbox: true,
-      currency: "LKR"
+      currency: "LKR",
     };
 
     if (!payHereConfig) {
@@ -158,32 +157,31 @@ const StallPayment = () => {
       const orderId = `STALL_${stallId}_${Date.now()}`;
       const formattedAmount = parseFloat(amount).toFixed(2);
 
-      // Generate hash from backend
       console.log("Generating PayHere hash...");
       const hashResponse = await axios.post(
         "http://localhost:8080/api/stall-owner/payhere-hash",
         {
           order_id: orderId,
           amount: formattedAmount,
-          currency: config.currency
+          currency: config.currency,
         }
       );
 
       const hash = hashResponse.data.hash;
       console.log("Hash generated:", hash);
 
-      // PayHere payment object
       const payment = {
         sandbox: true,
         merchant_id: config.merchantId,
         return_url: window.location.origin + `/owner-profile/${ownerId}`,
-        cancel_url: window.location.origin + `/stall-payment/${ownerId}/${stallId}`,
+        cancel_url:
+          window.location.origin + `/stall-payment/${ownerId}/${stallId}`,
         notify_url: "http://sample.com/notify",
         order_id: orderId,
         items: "Stall Registration",
         amount: formattedAmount,
         currency: config.currency,
-        hash: hash, // Add the hash
+        hash: hash,
         first_name: "Test",
         last_name: "Customer",
         email: "test@example.com",
@@ -195,12 +193,10 @@ const StallPayment = () => {
 
       console.log("PayHere Payment Config:", payment);
 
-      // PayHere callbacks
       window.payhere.onCompleted = async function onCompleted(orderId) {
         console.log("Payment completed. OrderID:" + orderId);
-        
+
         try {
-          // Call backend to mark payment as completed
           await axios.post(
             `http://localhost:8080/api/stall-owner/${ownerId}/pay-payhere`,
             {
@@ -224,19 +220,20 @@ const StallPayment = () => {
 
       window.payhere.onError = function onError(error) {
         console.log("PayHere Error:", error);
-        
+
         let errorMessage = "Payment error occurred.";
-        
+
         if (error && error.toLowerCase().includes("unauthorized")) {
-          errorMessage = "Payment Unauthorized!\n\n" +
-                        "Please check:\n" +
-                        "1. Verify your email in PayHere sandbox\n" +
-                        "2. Add 'http://localhost:3000' to PayHere allowed domains\n" +
-                        "3. Verify your Merchant ID and Secret\n" +
-                        "4. Restart the backend server\n\n" +
-                        "See PAYHERE_UNAUTHORIZED_FIX.md for detailed instructions.";
+          errorMessage =
+            "Payment Unauthorized!\n\n" +
+            "Please check:\n" +
+            "1. Verify your email in PayHere sandbox\n" +
+            "2. Add 'http://localhost:3000' to PayHere allowed domains\n" +
+            "3. Verify your Merchant ID and Secret\n" +
+            "4. Restart the backend server\n\n" +
+            "See PAYHERE_UNAUTHORIZED_FIX.md for detailed instructions.";
         }
-        
+
         alert(errorMessage);
       };
 
@@ -247,13 +244,23 @@ const StallPayment = () => {
     }
   };
 
-  // Handle Slip Upload
-  const handleSlipUpload = async (e) => {
+  // Store selected slip file only
+  const handleSlipSelect = (e) => {
     const file = e.target.files[0];
-    if (!file) return;
+    if (file) {
+      setSelectedSlip(file);
+    }
+  };
+
+  // Upload slip only when button clicked
+  const handleSlipUpload = async () => {
+    if (!selectedSlip) {
+      alert("Please select a slip first");
+      return;
+    }
 
     const formData = new FormData();
-    formData.append("slip", file);
+    formData.append("slip", selectedSlip);
     formData.append("stallId", stallId);
     if (note) formData.append("note", note);
 
@@ -279,23 +286,33 @@ const StallPayment = () => {
   return (
     <div className="stall-payment-container">
       <button className="stp-back-btn" onClick={() => navigate(-1)}>
-        ← 
+        ←
       </button>
+
       <div className="stall-payment-card">
         <h2>Stall Payment</h2>
 
         <div className="stall-summary">
-          <p><strong>Business:</strong> {stall?.businessName || "-"}</p>
-          <p><strong>Package:</strong> {stall?.packageType || "-"}</p>
-          <p><strong>Amount:</strong> Rs. {amount || "-"}</p>
+          <p>
+            <strong>Business:</strong> {stall?.businessName || "-"}
+          </p>
+          <p>
+            <strong>Package:</strong> {stall?.packageType || "-"}
+          </p>
+          <p>
+            <strong>Amount:</strong> Rs. {amount || "-"}
+          </p>
         </div>
 
         {/* PayHere Payment Section */}
         <div className="payment-section payhere-section">
           <h3>💳 Pay via PayHere</h3>
           <p className="payment-desc">Secure online payment gateway (Sandbox Mode)</p>
-          <p className="payment-desc" style={{fontSize: '11px', color: 'rgba(0,0,0,0.6)'}}>
-            Merchant ID: {payHereConfig?.merchantId || 'Loading...'}
+          <p
+            className="payment-desc"
+            style={{ fontSize: "11px", color: "rgba(0,0,0,0.6)" }}
+          >
+            Merchant ID: {payHereConfig?.merchantId || "Loading..."}
           </p>
           <button
             className="pay-btn payhere-btn"
@@ -370,9 +387,23 @@ const StallPayment = () => {
 
           <input
             type="file"
-            onChange={handleSlipUpload}
+            onChange={handleSlipSelect}
             disabled={loading}
           />
+
+          {selectedSlip && (
+            <p style={{ marginTop: "8px", fontSize: "14px" }}>
+              Selected file: {selectedSlip.name}
+            </p>
+          )}
+
+          <button
+            className="pay-btn"
+            onClick={handleSlipUpload}
+            disabled={loading || !selectedSlip}
+          >
+            {loading ? "Uploading..." : "Upload Slip"}
+          </button>
         </div>
       </div>
     </div>

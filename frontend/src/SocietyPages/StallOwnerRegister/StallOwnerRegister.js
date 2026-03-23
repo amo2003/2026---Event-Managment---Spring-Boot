@@ -21,7 +21,23 @@ const StallOwnerRegister = () => {
   const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    // Validation for owner name: only letters and spaces
+    if (name === "ownerName") {
+      const filteredValue = value.replace(/[^A-Za-z\s]/g, "");
+      setFormData({ ...formData, [name]: filteredValue });
+      return;
+    }
+
+    // Validation for contact number: only digits
+    if (name === "contactNumber") {
+      const filteredValue = value.replace(/[^0-9]/g, "");
+      setFormData({ ...formData, [name]: filteredValue });
+      return;
+    }
+
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleRegister = async (e) => {
@@ -29,9 +45,25 @@ const StallOwnerRegister = () => {
     setError("");
     setSuccess("");
 
+    const nameRegex = /^[A-Za-z\s]+$/;
+    const contactRegex = /^[0-9]+$/;
+
     // Basic validation
     if (!formData.ownerName || !formData.email || !formData.password) {
       setError("Name, Email, and Password are required");
+      return;
+    }
+
+    if (!nameRegex.test(formData.ownerName.trim())) {
+      setError("Owner name can only contain letters and spaces");
+      return;
+    }
+
+    if (
+      formData.contactNumber &&
+      !contactRegex.test(formData.contactNumber)
+    ) {
+      setError("Contact number can only contain numbers");
       return;
     }
 
