@@ -83,7 +83,13 @@ const StallOwnerRegister = () => {
       setTimeout(() => navigate("/slogin"), 1500);
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.message || "Failed to register");
+      const status = err.response?.status;
+      const msg = err.response?.data?.message || "";
+      if (status === 409 || msg.toLowerCase().includes("email")) {
+        setError("This email is already registered.");
+      } else {
+        setError(msg || "Failed to register");
+      }
     }
   };
 
