@@ -54,6 +54,29 @@
   box-shadow: 0 0 15px rgba(255,255,255,0.4);
 }
 
+.stall-register-form select {
+  padding: 12px 16px;
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.893);
+  background: transparent;
+  color: #fff;
+  outline: none;
+  font-size: 14px;
+  transition: 0.3s ease;
+  appearance: none;
+  cursor: pointer;
+}
+
+.stall-register-form select option {
+  background: #2c2c54;
+  color: #fff;
+}
+
+.stall-register-form select:focus {
+  border-color: #fff;
+  box-shadow: 0 0 15px rgba(255,255,255,0.4);
+}
+
 .register-btn {
   margin-top: 15px;
   padding: 12px;

@@ -58,7 +58,7 @@ const StallOwnerLogin = () => {
 
   return (
     <div className="stall-login-container">
-      <button className="back-btn" onClick={() => navigate("/")}>
+      <button className="back-btn" onClick={() => navigate(-1)}>
         ←
       </button>
       <div className="stall-login-card">

@@ -84,11 +84,28 @@ const StallPayment = () => {
     return formatted;
   };
 
-  // Format expiry (MM/YY)
+  // Format expiry (MM/YY) and block past dates
   const formatExpiry = (value) => {
     const cleaned = value.replace(/\D/g, "").slice(0, 4);
     if (cleaned.length <= 2) return cleaned;
     return cleaned.slice(0, 2) + "/" + cleaned.slice(2);
+  };
+
+  const isExpiryValid = (expiry) => {
+    if (expiry.length !== 5) return false;
+    const [mm, yy] = expiry.split("/");
+    const month = parseInt(mm, 10);
+    const year = 2000 + parseInt(yy, 10);
+    if (month < 1 || month > 12) return false;
+    const now = new Date();
+    const expDate = new Date(year, month - 1, 1);
+    const currentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    return expDate >= currentMonth;
+  };
+
+  const handleExpiryChange = (e) => {
+    const formatted = formatExpiry(e.target.value);
+    setCard({ ...card, expiry: formatted });
   };
 
   // Handle Card Payment
@@ -107,6 +124,11 @@ const StallPayment = () => {
 
     if (card.cvv.length < 3) {
       alert("Invalid CVV");
+      return;
+    }
+
+    if (!isExpiryValid(card.expiry)) {
+      alert("Card expiry date is invalid or in the past");
       return;
     }
 
@@ -343,12 +365,7 @@ const StallPayment = () => {
           <input
             placeholder="Expiry MM/YY"
             value={card.expiry}
-            onChange={(e) =>
-              setCard({
-                ...card,
-                expiry: formatExpiry(e.target.value),
-              })
-            }
+            onChange={handleExpiryChange}
           />
 
           <input

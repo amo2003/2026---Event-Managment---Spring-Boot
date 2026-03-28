@@ -19,17 +19,6 @@ const Dashboard = () => {
         "Track Success – Monitor attendance and feedback after the event.",
       ],
     },
-    {
-      title: "Apply for Food Stall",
-      path: "/food-stall-application",
-      points: [
-        "Submit Stall Request – Apply for a stall during campus events.",
-        "Approval by Admin – Your stall request will be reviewed and approved.",
-        "Select Location – Choose preferred stall location.",
-        "Fee Details – Review applicable fees and payment options.",
-        "Manage Stall – Manage menu, stock, and timings after approval.",
-      ],
-    },
   ];
 
   return (

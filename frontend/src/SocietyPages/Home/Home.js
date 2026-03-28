@@ -130,7 +130,7 @@ const Home = () => {
 
           <div className="menu-events">
             <button className="menu-link" onClick={() => setEventsDropdown(!eventsDropdown)}>
-              Events ▾
+              Conduct Event ▾
             </button>
             {eventsDropdown && (
               <div className="dropdown">
@@ -206,7 +206,7 @@ const Home = () => {
           ) : (
             <>
               <button className="menu-link" onClick={() => handleNavigate("/login")}>Society Login</button>
-              <button className="menu-link" onClick={() => handleNavigate("/slogin")}>Stall Owner Login</button>
+              <button className="menu-link" onClick={() => handleNavigate("/slogin")}>Stall Owner's Login</button>
             </>
           )}
 

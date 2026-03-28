@@ -62,6 +62,11 @@
   box-shadow: 0 0 15px rgba(255,255,255,0.4);
 }
 
+.stall-app-card input[readonly] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 /* ===== INPUT GROUP ===== */
 .input-group {
   display: flex;

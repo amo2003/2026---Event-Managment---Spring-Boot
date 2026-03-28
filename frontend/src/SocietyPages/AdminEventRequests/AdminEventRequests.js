@@ -88,7 +88,7 @@ const AdminPendingEvents = () => {
                       <img
                         src={`http://localhost:8080/images/events/${event.imageUrl}`}
                         alt={event.eventName}
-                        className="event-image-preview"
+                        className="aer-event-img"
                         onClick={() =>
                           setModalImage(`http://localhost:8080/images/events/${event.imageUrl}`)
                         }
@@ -104,11 +104,10 @@ const AdminPendingEvents = () => {
                   <td>
                     {event.status === "PENDING" && (
                       <>
-                        <button onClick={() => approve(event.id)} className="approve-btn">
+                        <button onClick={() => approve(event.id)} className="aer-approve-btn">
                           Approve
                         </button>
-
-                        <button onClick={() => reject(event.id)} className="reject-btn">
+                        <button onClick={() => reject(event.id)} className="aer-reject-btn">
                           Reject
                         </button>
                       </>
@@ -120,9 +119,8 @@ const AdminPendingEvents = () => {
           </table>
         )}
 
-        {/* Image Modal */}
         {modalImage && (
-          <div className="image-modal" onClick={() => setModalImage(null)}>
+          <div className="aer-image-modal" onClick={() => setModalImage(null)}>
             <img src={modalImage} alt="Preview" />
           </div>
         )}

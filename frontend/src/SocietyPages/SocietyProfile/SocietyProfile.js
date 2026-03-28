@@ -95,11 +95,11 @@ const SocietyProfile = () => {
   return (
     <div className="society-profile-page">
       <h1>Society Profile</h1>
-      <button className="back-btn" onClick={() => navigate(-1)}>✕</button>
+      <button className="sp-back-btn" onClick={() => navigate(-1)}>✕</button>
 
-      <div className="profile-card">
+      <div className="sp-profile-card">
         {editMode ? (
-          <div className="edit-form">
+          <div className="sp-edit-form">
             <label>Society Name:</label>
             <input
               value={profile.name || ""}
@@ -143,13 +143,20 @@ const SocietyProfile = () => {
               onChange={(e) => handleChange("advisorName", e.target.value)}
             />
 
-            <div className="profile-buttons">
-              <button onClick={handleUpdate}>Save</button>
-              <button onClick={() => setEditMode(false)}>Cancel</button>
+            <label>PIN Code:</label>
+            <input
+              value={profile.pinCode || ""}
+              onChange={(e) => handleChange("pinCode", e.target.value)}            
+            />
+
+            <div className="sp-profile-btns">
+              <button className="sp-btn-edit" onClick={handleUpdate}>Save</button>
+              <button className="sp-btn-danger" onClick={() => setEditMode(false)}>Cancel</button>
             </div>
           </div>
         ) : (
-          <div className="profile-details">
+          <div className="sp-profile-details">
+            <p><strong>Society ID:</strong> {profile.id}</p>
             <p><strong>Society Name:</strong> {profile.name}</p>
             <p><strong>Faculty:</strong> {profile.faculty}</p>
             <p><strong>President:</strong> {profile.presidentName}</p>
@@ -158,49 +165,45 @@ const SocietyProfile = () => {
             <p><strong>Advisor:</strong> {profile.advisorName}</p>
             <p><strong>PIN:</strong> {profile.pinCode}</p>
 
-            <div className="profile-buttons">
-              <button className="edit" onClick={() => setEditMode(true)}>Edit Profile</button>
-              <button onClick={handleDelete}>Delete Profile</button>
+            <div className="sp-profile-btns">
+              <button className="sp-btn-edit" onClick={() => setEditMode(true)}>Edit Profile</button>
+              <button className="sp-btn-danger" onClick={handleDelete}>Delete Profile</button>
             </div>
           </div>
         )}
       </div>
 
       {/* EVENTS SECTION */}
-      <div className="society-events-section">
+      <div className="sp-events-section">
         <h2>My Created Events</h2>
         {events.length === 0 ? (
           <p>No events created yet.</p>
         ) : (
           events.map(event => (
-            <div key={event.id} className="event-card">
-              <p><strong>Event Name:</strong> {event.eventName}</p>
-              <p><strong>Date:</strong> {event.eventDate}</p>
-              <p><strong>Time:</strong> {event.startTime} - {event.endTime}</p>
-              <p><strong>Venue:</strong> {event.venue}</p>
-              {event.description && <p><strong>Description:</strong> {event.description}</p>}
+            <div key={event.id} className="sp-event-card">
               {event.imageUrl && (
                 <img
                   src={`http://localhost:8080/images/events/${event.imageUrl}`}
                   alt={event.eventName}
-                  className="event-image-preview"
+                  className="sp-event-img"
                   onClick={() => setModalImage(`http://localhost:8080/images/events/${event.imageUrl}`)}
-                  style={{ cursor: "pointer" }}
                 />
               )}
-              <p><strong>Status:</strong> {event.status}</p>
-
-              <div className="event-actions">
-                {event.status === "PENDING" && <span className="statuss pending">🟡 Waiting for Admin Approval</span>}
-                {event.status === "REJECTED" && <span className="statuss rejected">🔴 Rejected - {event.adminMessage}</span>}
-                {event.status === "CONFIRMED" && <span className="statuss confirmed">Event Scheduled Successfully</span>}
-
-                <button
-                  className="delete-event-btn"
-                  onClick={() => handleEventDelete(event.id)}
-                >
-                  🗑 Delete Event
-                </button>
+              <div className="sp-event-body">
+                <p><strong>Event Name:</strong> {event.eventName}</p>
+                <p><strong>Date:</strong> {event.eventDate}</p>
+                <p><strong>Time:</strong> {event.startTime} - {event.endTime}</p>
+                <p><strong>Venue:</strong> {event.venue}</p>
+                {event.description && <p><strong>Description:</strong> {event.description}</p>}
+                <p><strong>Status:</strong> {event.status}</p>
+                <div className="sp-event-actions">
+                  {event.status === "PENDING" && <span className="sp-badge sp-badge-pending">🟡 Waiting for Admin Approval</span>}
+                  {event.status === "REJECTED" && <span className="sp-badge sp-badge-rejected">🔴 Rejected - {event.adminMessage}</span>}
+                  {event.status === "CONFIRMED" && <span className="sp-badge sp-badge-confirmed">✅ Scheduled</span>}
+                  <button className="sp-btn-delete-event" onClick={() => handleEventDelete(event.id)}>
+                    🗑 Delete Event
+                  </button>
+                </div>
               </div>
             </div>
           ))
@@ -209,7 +212,7 @@ const SocietyProfile = () => {
 
       {/* IMAGE MODAL */}
       {modalImage && (
-        <div className="image-modal" onClick={() => setModalImage(null)}>
+        <div className="sp-image-modal" onClick={() => setModalImage(null)}>
           <img src={modalImage} alt="Preview" />
         </div>
       )}

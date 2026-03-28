@@ -54,8 +54,9 @@ function SoceityRegister() {
       // Prevent numbers
       if (/\d/.test(value)) return;
     } else if (name === "contactNumber") {
-      // Prevent letters
+      // Prevent letters, max 10 digits
       if (/[^0-9]/.test(value)) return;
+      if (value.length > 10) return;
     }
 
     setFormData({
@@ -70,6 +71,21 @@ function SoceityRegister() {
     setSuccess("");
 
     try {
+      // Validate all fields
+      const { name, faculty, presidentName, email, contactNumber, advisorName, password } = formData;
+      if (!name || !faculty || !presidentName || !email || !contactNumber || !advisorName || !password) {
+        setError("All fields are required.");
+        return;
+      }
+      if (password.length < 6) {
+        setError("Password must be at least 6 characters.");
+        return;
+      }
+      if (contactNumber.length !== 10) {
+        setError("Contact number must be exactly 10 digits.");
+        return;
+      }
+
       const response = await axios.post(
         "http://localhost:8080/api/society/register",
         formData
@@ -79,11 +95,13 @@ function SoceityRegister() {
       setSuccess("Registration Successful!");
 
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-        err.response?.data?.error ||
-        "Registration Failed!"
-      );
+      const status = err.response?.status;
+      const msg = err.response?.data?.message || err.response?.data?.error || "";
+      if (status === 500 || msg.toLowerCase().includes("duplicate") || msg.toLowerCase().includes("email")) {
+        setError("This email is already registered.");
+      } else {
+        setError(msg || "Registration Failed!");
+      }
     }
   };
 

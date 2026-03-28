@@ -30,9 +30,9 @@ const StallOwnerRegister = () => {
       return;
     }
 
-    // Validation for contact number: only digits
+    // Validation for contact number: only digits, max 10
     if (name === "contactNumber") {
-      const filteredValue = value.replace(/[^0-9]/g, "");
+      const filteredValue = value.replace(/[^0-9]/g, "").slice(0, 10);
       setFormData({ ...formData, [name]: filteredValue });
       return;
     }
@@ -56,6 +56,16 @@ const StallOwnerRegister = () => {
 
     if (!nameRegex.test(formData.ownerName.trim())) {
       setError("Owner name can only contain letters and spaces");
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError("Password must be at least 6 characters");
+      return;
+    }
+
+    if (formData.contactNumber && formData.contactNumber.length !== 10) {
+      setError("Contact number must be exactly 10 digits");
       return;
     }
 
@@ -119,6 +129,7 @@ const StallOwnerRegister = () => {
             placeholder="Contact Number"
             value={formData.contactNumber}
             onChange={handleChange}
+            required
           />
 
           <input
@@ -127,15 +138,21 @@ const StallOwnerRegister = () => {
             placeholder="Business Name"
             value={formData.businessName}
             onChange={handleChange}
+            required
           />
 
-          <input
-            type="text"
+          <select
             name="productType"
-            placeholder="Product Type"
             value={formData.productType}
             onChange={handleChange}
-          />
+            required
+          >
+            <option value="" disabled>Select Product Type</option>
+            <option value="Foods">Foods</option>
+            <option value="Cool Beverages">Cool Beverages</option>
+            <option value="Snacks">Snacks</option>
+            <option value="Games">Games</option>
+          </select>
 
           <input
             type="text"
@@ -143,6 +160,7 @@ const StallOwnerRegister = () => {
             placeholder="Address"
             value={formData.address}
             onChange={handleChange}
+            required
           />
 
           <button type="submit" className="register-btn">

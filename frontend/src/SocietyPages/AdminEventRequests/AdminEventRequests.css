@@ -111,8 +111,8 @@
 }
 
 /* Buttons */
-.approve-btn,
-.reject-btn {
+.aer-approve-btn,
+.aer-reject-btn {
   padding: 6px 12px;
   border-radius: 20px;
   border: none;
@@ -124,28 +124,28 @@
   transition: 0.3s ease, box-shadow 0.3s ease;
 }
 
-.approve-btn {
+.aer-approve-btn {
   background: #00ff99;
   color: black;
 }
 
-.approve-btn:hover {
+.aer-approve-btn:hover {
   box-shadow: 0 0 15px #00ff99;
   transform: scale(1.05);
 }
 
-.reject-btn {
+.aer-reject-btn {
   background: #ff4d4d;
   color: black;
 }
 
-.reject-btn:hover {
+.aer-reject-btn:hover {
   box-shadow: 0 0 15px #ff4d4d;
   transform: scale(1.05);
 }
 
 /* Event Image Preview */
-.event-image-preview {
+.aer-event-img {
   width: 80px;
   height: 60px;
   object-fit: cover;
@@ -153,14 +153,14 @@
   transition: 0.3s ease;
 }
 
-.event-image-preview:hover {
+.aer-event-img:hover {
   transform: scale(1.1);
   box-shadow: 0 0 15px rgba(255,255,255,0.4);
   cursor: pointer;
 }
 
 /* Image Modal */
-.image-modal {
+.aer-image-modal {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.95);
@@ -172,7 +172,7 @@
   animation: fadeIn 0.3s ease;
 }
 
-.image-modal img {
+.aer-image-modal img {
   max-width: 90%;
   max-height: 90%;
   border-radius: 15px;
@@ -200,13 +200,13 @@
     padding: 10px 6px;
   }
 
-  .approve-btn,
-  .reject-btn {
+  .aer-approve-btn,
+  .aer-reject-btn {
     font-size: 11px;
     padding: 5px 10px;
   }
 
-  .event-image-preview {
+  .aer-event-img {
     width: 60px;
     height: 45px;
   }

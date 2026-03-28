@@ -149,7 +149,7 @@ const StallOwnerProfile = () => {
 
   return (
     <div className="so-profile-scope">
-      <button className="ssp-back-btn" onClick={() => navigate(-1)}>
+      <button className="ssp-back-btn" onClick={() => navigate('/')}>
     ← 
   </button>
       <div className="so-profile-container">

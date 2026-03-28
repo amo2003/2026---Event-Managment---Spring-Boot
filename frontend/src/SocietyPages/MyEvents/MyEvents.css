@@ -1,138 +1,182 @@
-/* Scope everything to this page only */
-.my-events-page {
+/* ===== MY EVENTS PAGE ===== */
+.me-page {
   min-height: 100vh;
-  padding: 40px 20px;
-  background: linear-gradient(135deg, #000000, #000000);
+  padding: 60px 20px 100px;
+  background: #080810;
   font-family: "Poppins", sans-serif;
-  color: #fff;
+  color: #f1f5f9;
   position: relative;
 }
 
-/* Close button */
-.my-events-page .close-btn {
-  position: absolute;
-  top: 25px;
-  right: 25px;
-  background: #000000;
-  border: none;
-  color: rgb(255, 255, 255);
-  font-size: 15px;
-  padding: 8px 12px;
-  border-radius: 50px;
-  border: 1px solid white;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-.my-events-page .close-btn:hover {
-  background: #dc2626;
-  transform: scale(1.05);
-}
-
-/* Page title */
-.my-events-page h2 {
-  text-align: center;
-  font-size: 32px;
-  margin-bottom: 35px;
-  font-weight: 600;
-  letter-spacing: 1px;
-}
-
-/* Event card */
-.my-events-page .event-card {
-  max-width: 700px;
-  margin: 20px auto;
-  padding: 25px 30px;
-  border-radius: 18px;
-
-  /* Glass effect */
-  background: rgba(0, 0, 0, 0.841);
-  backdrop-filter: blur(14px);
-  border: 1px solid rgb(255, 255, 255);
-
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
-  transition: 0.3s ease;
-}
-
-.my-events-page .event-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
-}
-
-/* Event title */
-.my-events-page .event-card h3 {
-  font-size: 22px;
-  margin-bottom: 12px;
-  color: #ffee00;
-}
-
-/* Details text */
-.my-events-page .event-card p {
-  margin: 6px 0;
-  color: #e2e8f0;
-  font-size: 19px;
-  
-}
-
-/* Status text */
-.my-events-page .event-card strong {
-  color: #b0b894;
-}
-
-/* Buttons */
-.my-events-page .event-card button {
-  margin-top: 15px;
-  padding: 10px 18px;
-  border-radius: 8px;
-  border: none;
-  font-size: 14px;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-/* Disabled waiting button */
-.my-events-page .event-card button:disabled {
-  background: #e1da00;
-  color: #000000;
-  cursor: not-allowed;
-}
-
-/* Payment button */
-.my-events-page .event-card button:not(:disabled) {
-  background: #009938;
+/* ===== CLOSE BUTTON ===== */
+.me-close-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
   color: #fff;
-}
-
-.my-events-page .event-card button:not(:disabled):hover {
-  background: #16a34a;
-  transform: scale(1.05);
-}
-
-/* Rejected status */
-.my-events-page .rejected {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 8px 12px;
-  border-radius: 6px;
-  background: rgba(239, 68, 68, 0.15);
-  color: #f87171;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
   font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s ease;
+  z-index: 100;
 }
 
-/* Confirmed status */
-.my-events-page .confirmed {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 8px 12px;
-  border-radius: 6px;
-  background: rgba(34, 197, 94, 0.15);
-  color: #4ade80;
-  font-size: 14px;
+.me-close-btn:hover {
+  background: rgba(239, 68, 68, 0.3);
+  border-color: rgba(239, 68, 68, 0.5);
+  transform: scale(1.08);
 }
 
-/* Empty message */
-.my-events-page > p {
+/* ===== TITLE ===== */
+.me-title {
   text-align: center;
-  margin-top: 30px;
-  color: #cbd5f5;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  margin-bottom: 36px;
+  color: #ffffff;
+}
+
+/* ===== EMPTY ===== */
+.me-empty {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.9rem;
+  margin-top: 60px;
+}
+
+/* ===== EVENT CARD ===== */
+.me-card {
+  display: flex;
+  flex-direction: row;
+  max-width: 720px;
+  margin: 0 auto 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+  position: relative;
+}
+
+.me-card::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, #a855f7, #ec4899);
+}
+
+.me-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(168, 85, 247, 0.3);
+}
+
+/* ===== CARD IMAGE (left) ===== */
+.me-card-img {
+  width: 150px;
+  min-width: 150px;
+  object-fit: cover;
+  display: block;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.me-card-img:hover { opacity: 0.82; }
+
+/* ===== CARD BODY (right) ===== */
+.me-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 20px 14px;
+}
+
+.me-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 12px;
+}
+
+/* ===== FIELDS ===== */
+.me-card-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.me-card-fields p {
+  display: flex;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.me-card-fields strong {
+  min-width: 80px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+/* ===== FOOTER / BADGE ===== */
+.me-card-footer {
+  margin-top: 14px;
+}
+
+.me-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 13px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.me-badge-pending  { background: rgba(251,191,36,0.1);  color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
+.me-badge-rejected { background: rgba(239,68,68,0.1);   color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+.me-badge-confirmed{ background: rgba(34,197,94,0.1);   color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+
+/* ===== IMAGE MODAL ===== */
+.me-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+}
+
+.me-modal img {
+  max-width: 90%;
+  max-height: 88vh;
+  border-radius: 16px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .me-card { flex-direction: column; }
+  .me-card-img { width: 100%; min-width: unset; height: 160px; }
+  .me-card-body { padding: 16px; }
 }
