@@ -263,8 +263,9 @@ const SocietyProfile = () => {
                     {unreadMap[event.id] > 0 && (
                       <span className="sp-unread-indicator">{unreadMap[event.id]} new message{unreadMap[event.id] > 1 ? "s" : ""}</span>
                     )}
-                    <button className="sp-btn-chat" onClick={() => { setChatEventId(event.id); clearUnread(event.id); }}>
-                      💬 Chat with Admin
+                    <button className="sp-btn-chat-icon" onClick={() => { setChatEventId(event.id); clearUnread(event.id); }} title="Chat with Admin">
+                      💬
+                      {unreadMap[event.id] > 0 && <span className="sp-chat-dot" />}
                     </button>
                   </div>
                 </div>

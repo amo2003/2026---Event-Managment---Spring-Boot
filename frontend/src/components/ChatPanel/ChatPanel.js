@@ -7,6 +7,7 @@ import "./ChatPanel.css";
 const ChatPanel = ({ eventId, senderType, senderName, onClose }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const [confirmClear, setConfirmClear] = useState(false);
   const stompRef = useRef(null);
   const bottomRef = useRef(null);
 
@@ -58,6 +59,12 @@ const ChatPanel = ({ eventId, senderType, senderName, onClose }) => {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); }
   };
 
+  const handleClear = () => {
+    axios.delete(`http://localhost:8080/api/chat/${eventId}/clear`)
+      .then(() => { setMessages([]); setConfirmClear(false); })
+      .catch(console.error);
+  };
+
   const fmt = (dt) => {
     if (!dt) return "";
     return new Date(dt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -68,7 +75,21 @@ const ChatPanel = ({ eventId, senderType, senderName, onClose }) => {
       <div className="cp-panel">
         <div className="cp-header">
           <span>💬 Event Chat</span>
-          <button className="cp-close" onClick={onClose}>✕</button>
+          <div className="cp-header-actions">
+            {senderType === "SOCIETY" && !confirmClear && (
+              <button className="cp-clear-btn" onClick={() => setConfirmClear(true)} title="Clear chat">
+                🗑
+              </button>
+            )}
+            {confirmClear && (
+              <div className="cp-confirm-clear">
+                <span>Clear all?</span>
+                <button className="cp-confirm-yes" onClick={handleClear}>Yes</button>
+                <button className="cp-confirm-no" onClick={() => setConfirmClear(false)}>No</button>
+              </div>
+            )}
+            <button className="cp-close" onClick={onClose}>✕</button>
+          </div>
         </div>
 
         <div className="cp-messages">

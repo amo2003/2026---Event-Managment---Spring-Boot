@@ -1,4 +1,4 @@
-package backend.Society_Stall.Service.controller;
+package backend.Society_Stall.controller;
 
 import backend.Society_Stall.Service.model.ChatMessage;
 import backend.Society_Stall.Service.repository.ChatMessageRepository;

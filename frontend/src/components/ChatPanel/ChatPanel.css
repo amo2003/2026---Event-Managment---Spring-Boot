@@ -37,6 +37,60 @@
   font-family: 'Poppins', sans-serif;
 }
 
+.cp-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cp-clear-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 2px 4px;
+}
+
+.cp-clear-btn:hover { color: #ef4444; }
+
+.cp-confirm-clear {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.6);
+}
+
+.cp-confirm-yes {
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(239,68,68,0.4);
+  background: rgba(239,68,68,0.1);
+  color: #ef4444;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cp-confirm-yes:hover { background: rgba(239,68,68,0.25); }
+
+.cp-confirm-no {
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: transparent;
+  color: rgba(255,255,255,0.5);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cp-confirm-no:hover { background: rgba(255,255,255,0.07); }
+
 .cp-close {
   background: transparent;
   border: none;

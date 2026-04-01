@@ -22,6 +22,9 @@ function SoceityLogin() {
     if (!formData.email.trim())    e.email    = "Email is required.";
     if (!formData.password.trim()) e.password = "Password is required.";
     if (!formData.pinCode.trim())  e.pinCode  = "Society PIN is required.";
+    if(!formData.pinCode.startsWith("SOC-")) {
+      e.pinCode = "Invalid Society PIN format. It should start with 'SOC-' followed by 6 characters.";
+    }
     return e;
   };
 

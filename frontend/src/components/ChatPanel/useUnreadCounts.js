@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import axios from "axios";
@@ -6,27 +6,33 @@ import axios from "axios";
 const useUnreadCounts = (eventIds, viewerType) => {
   const [unreadMap, setUnreadMap] = useState({});
   const stompRef = useRef(null);
+
+  // Stable string key derived from eventIds — used as dependency
   const idsKey = eventIds.join(",");
 
-  // Initial fetch
-  useEffect(() => {
+  const fetchCounts = useCallback(() => {
     if (!idsKey) return;
-    eventIds.forEach(id => {
+    idsKey.split(",").filter(Boolean).forEach(id => {
       axios.get(`http://localhost:8080/api/chat/${id}/unread?viewerType=${viewerType}`)
         .then(res => setUnreadMap(prev => ({ ...prev, [id]: res.data.unread })))
         .catch(() => {});
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idsKey, viewerType]);
+
+  // Initial fetch
+  useEffect(() => {
+    fetchCounts();
+  }, [fetchCounts]);
 
   // Live WebSocket subscription
   useEffect(() => {
     if (!idsKey) return;
+    const ids = idsKey.split(",").filter(Boolean);
 
     const client = new Client({
       webSocketFactory: () => new SockJS("http://localhost:8080/ws-chat"),
       onConnect: () => {
-        eventIds.forEach(id => {
+        ids.forEach(id => {
           client.subscribe(`/topic/unread/${id}`, (frame) => {
             const data = JSON.parse(frame.body);
             const count = viewerType === "ADMIN" ? data.adminUnread : data.societyUnread;
@@ -38,7 +44,6 @@ const useUnreadCounts = (eventIds, viewerType) => {
     client.activate();
     stompRef.current = client;
     return () => client.deactivate();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idsKey, viewerType]);
 
   const clearUnread = (eventId) => {
