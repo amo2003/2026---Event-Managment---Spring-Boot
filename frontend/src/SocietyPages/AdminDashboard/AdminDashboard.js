@@ -1,6 +1,6 @@
-import { useContext } from "react";
+//import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+//import { AuthContext } from "../../context/AuthContext";
 import "./AdminDashboard.css";
 
 const cards = [
@@ -21,7 +21,7 @@ const cards = [
 ];
 
 const AdminDashboard = () => {
-  const { user, logout } = useContext(AuthContext);
+  //const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   return (
