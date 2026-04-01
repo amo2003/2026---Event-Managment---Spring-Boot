@@ -24,6 +24,7 @@ import PendingPayments from './SocietyPages/StallAdminSide/StallAdminSide';
 import SocietyForgotPassword from './SocietyPages/ForgotPassword/SocietyForgotPassword';
 import StallOwnerForgotPassword from './SocietyPages/ForgotPassword/StallOwnerForgotPassword';
 import AdminLogin from './SocietyPages/AdminLogin/AdminLogin';
+import AdminDashboard from './SocietyPages/AdminDashboard/AdminDashboard';
 import Contact from './SocietyPages/ContactUs/Contact';
 import About from './SocietyPages/AboutUs/About';
 
@@ -59,6 +60,7 @@ function App() {
 
       {/* Admin Routes */}
       <Route path="/admin" element={<AdminLogin />} />
+      <Route path="/admin-dashboard" element={<AdminDashboard />} />
       <Route path="/ad" element={<AdminEventRequests/>}/>
       <Route path="/admin/pending-payments" element={<PendingPayments />} />
 

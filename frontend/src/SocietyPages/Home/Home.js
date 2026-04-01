@@ -180,15 +180,9 @@ const Home = () => {
                   <span className="menu-user">Admin Panel</span>
                   <button
                     className="menu-link"
-                    onClick={() => handleNavigate("/admin/pending-payments")}
+                    onClick={() => handleNavigate("/admin-dashboard")}
                   >
-                    Stall Payments
-                  </button>
-                  <button
-                    className="menu-link"
-                    onClick={() => handleNavigate("/ad")}
-                  >
-                    Event Requests
+                    Admin Dashboard
                   </button>
                 </>
               )}
