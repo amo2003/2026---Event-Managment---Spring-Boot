@@ -36,10 +36,8 @@ public class ChatController {
             @RequestParam String viewerType) {
         long count;
         if ("ADMIN".equals(viewerType)) {
-            // Admin wants to know how many SOCIETY messages they haven't read
             count = chatRepo.countByEventIdAndSenderTypeAndReadByAdminFalse(eventId, "SOCIETY");
         } else {
-            // Society wants to know how many ADMIN messages they haven't read
             count = chatRepo.countByEventIdAndSenderTypeAndReadBySocietyFalse(eventId, "ADMIN");
         }
         return Map.of("unread", count);
@@ -60,7 +58,6 @@ public class ChatController {
     public void sendMessage(@Payload ChatMessage message) {
         ChatMessage saved = chatRepo.save(message);
         messagingTemplate.convertAndSend("/topic/chat/" + saved.getEventId(), saved);
-        // Also push updated unread counts to both sides
         long adminUnread   = chatRepo.countByEventIdAndSenderTypeAndReadByAdminFalse(saved.getEventId(), "SOCIETY");
         long societyUnread = chatRepo.countByEventIdAndSenderTypeAndReadBySocietyFalse(saved.getEventId(), "ADMIN");
         java.util.Map<String, Long> unreadPayload = new java.util.HashMap<>();
