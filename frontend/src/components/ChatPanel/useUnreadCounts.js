@@ -3,24 +3,25 @@ import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import axios from "axios";
 
-// Returns { unreadMap: { [eventId]: count }, clearUnread }
 const useUnreadCounts = (eventIds, viewerType) => {
   const [unreadMap, setUnreadMap] = useState({});
   const stompRef = useRef(null);
+  const idsKey = eventIds.join(",");
 
-  // Initial fetch for all events
+  // Initial fetch
   useEffect(() => {
-    if (!eventIds || eventIds.length === 0) return;
+    if (!idsKey) return;
     eventIds.forEach(id => {
       axios.get(`http://localhost:8080/api/chat/${id}/unread?viewerType=${viewerType}`)
         .then(res => setUnreadMap(prev => ({ ...prev, [id]: res.data.unread })))
         .catch(() => {});
     });
-  }, [eventIds.join(","), viewerType]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idsKey, viewerType]);
 
-  // Subscribe to live unread updates via WebSocket
+  // Live WebSocket subscription
   useEffect(() => {
-    if (!eventIds || eventIds.length === 0) return;
+    if (!idsKey) return;
 
     const client = new Client({
       webSocketFactory: () => new SockJS("http://localhost:8080/ws-chat"),
@@ -37,7 +38,8 @@ const useUnreadCounts = (eventIds, viewerType) => {
     client.activate();
     stompRef.current = client;
     return () => client.deactivate();
-  }, [eventIds.join(","), viewerType]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idsKey, viewerType]);
 
   const clearUnread = (eventId) => {
     setUnreadMap(prev => ({ ...prev, [eventId]: 0 }));

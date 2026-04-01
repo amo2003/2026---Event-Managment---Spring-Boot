@@ -1,0 +1,139 @@
+/* ===== ADMIN LOGIN PAGE ===== */
+.al-page {
+  min-height: 100vh;
+  background: #080810;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  padding: 20px;
+  position: relative;
+}
+
+.al-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+/* ===== CARD ===== */
+.al-card {
+  width: 100%;
+  max-width: 400px;
+  background: linear-gradient(135deg, rgba(165, 165, 165, 0.781), rgba(181, 173, 173, 0.82));
+  border: 1px solid rgba(255, 255, 255, 0.836);
+  border-radius: 24px;
+  padding: 44px 40px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  position: relative;
+  z-index: 1;
+}
+
+.al-icon {
+  font-size: 2.4rem;
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.al-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-align: center;
+  color: #000000;
+  margin: 0 0 6px;
+  letter-spacing: 0.04em;
+}
+
+.al-subtitle {
+  font-size: 0.8rem;
+  text-align: center;
+  color: rgb(76, 76, 76);
+  margin: 0 0 30px;
+  letter-spacing: 0.06em;
+}
+
+/* ===== GENERAL ERROR ===== */
+.al-error {
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.3);
+  color: #ef4444;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+/* ===== FORM ===== */
+.al-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.al-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.al-field label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.754);
+}
+
+.al-field input {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.754);
+  background: rgba(255,255,255,0.05);
+  color: #212121;
+  font-size: 0.9rem;
+  font-family: 'Poppins', sans-serif;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.al-field input::placeholder { color: rgba(0, 0, 0, 0.686); }
+
+.al-field input:focus {
+  border-color: rgba(255, 255, 255, 0.855);
+  box-shadow: 0 0 0 3px rgba(168,85,247,0.1);
+}
+
+.al-field-error {
+  font-size: 0.72rem;
+  color: #ef4444;
+  font-weight: 500;
+}
+
+/* ===== BUTTON ===== */
+.al-btn {
+  margin-top: 6px;
+  padding: 13px;
+  border-radius: 50px;
+  border: none;
+  background: linear-gradient(135deg, #eaeaea, #f3f3f3);
+  color: #000000;
+  font-size: 0.92rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: opacity 0.3s, transform 0.3s;
+  letter-spacing: 0.04em;
+}
+
+.al-btn:hover {
+ background: rgba(255, 255, 255, 0.897);
+  border: #000000;
+  color: black;
+  transform: translateX(-2px);
+}

@@ -105,3 +105,11 @@
   color: #00ff99;
   margin-bottom: 10px;
 }
+
+.reg-field-error {
+  display: block;
+  font-size: 0.72rem;
+  color: #ef4444;
+  font-weight: 500;
+  margin: -6px 0 6px 4px;
+}

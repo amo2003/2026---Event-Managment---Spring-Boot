@@ -11,7 +11,6 @@ const AdminPendingEvents = () => {
   const [chatEventId, setChatEventId] = useState(null);
   const [detailEvent, setDetailEvent] = useState(null);
   const [descEvent, setDescEvent] = useState(null);
-  const [searchSociety, setSearchSociety] = useState("");
   const [searchDate, setSearchDate] = useState("");
   const navigate = useNavigate();
 
