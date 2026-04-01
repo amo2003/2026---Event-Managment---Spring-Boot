@@ -19,22 +19,22 @@ public class GroupController {
     
     private final GroupService groupService;
 
-    public GroupController(GroupService groupService){
+    public GroupController(GroupService groupService) {
         this.groupService = groupService;
     }
 
     @PostMapping
-    public Group createGroup(@RequestBody Group group){
-
+    public Group createGroup(@RequestBody Group group) {
         return groupService.createGroup(group);
-
     }
 
     @GetMapping("/{groupId}/members")
-    public List<GroupMember> getMembers(@PathVariable Long groupId){
-
+    public List<GroupMember> getMembers(@PathVariable Long groupId) {
         return groupService.getGroupMembers(groupId);
-
     }
 
+    @GetMapping("/{groupId}")
+    public Group getGroupById(@PathVariable Long groupId) {
+        return groupService.getGroupById(groupId);
+    }
 }

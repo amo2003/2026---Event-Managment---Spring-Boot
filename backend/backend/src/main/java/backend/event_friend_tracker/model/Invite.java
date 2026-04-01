@@ -26,8 +26,11 @@ public class Invite {
 
     private Long invitedUserId;
 
+    private String invitedUserName;
+
     private Long invitedBy;
 
-    private String status;
+    private String invitedByName;
 
+    private String status;
 }

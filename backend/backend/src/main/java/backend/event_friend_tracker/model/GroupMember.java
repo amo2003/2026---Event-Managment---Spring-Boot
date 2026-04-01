@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="group_members")
+@Table(name = "group_members")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,6 +25,8 @@ public class GroupMember {
     private Long groupId;
 
     private Long userId;
+
+    private String userName;
 
     private String role;
 }

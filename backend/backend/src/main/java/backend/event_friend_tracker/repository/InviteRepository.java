@@ -1,12 +1,13 @@
 package backend.event_friend_tracker.repository;
 
-import java.util.List;
-
+import backend.event_friend_tracker.model.Invite;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import backend.event_friend_tracker.model.Invite;
+import java.util.List;
 
 public interface InviteRepository extends JpaRepository<Invite, Long> {
-    
+
     List<Invite> findByInvitedUserId(Long userId);
+
+    List<Invite> findByGroupIdAndStatus(Long groupId, String status);
 }

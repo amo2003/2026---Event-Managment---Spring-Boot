@@ -25,6 +25,7 @@ import SocietyForgotPassword from './SocietyPages/ForgotPassword/SocietyForgotPa
 import StallOwnerForgotPassword from './SocietyPages/ForgotPassword/StallOwnerForgotPassword';
 import About from './SocietyPages/AboutUs/About';
 import Contact from './SocietyPages/ContactUs/Contact';
+import FriendTrackerPage from "./SocietyPages/FriendTracker/FriendTrackerPage";
 
 function App() {
   return (
@@ -63,6 +64,7 @@ function App() {
       {/* Other Routes */}
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/friend-tracker" element={<FriendTrackerPage />} />
     </Routes>
   );
 }

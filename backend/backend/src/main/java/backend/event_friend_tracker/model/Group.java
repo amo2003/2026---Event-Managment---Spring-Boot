@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="event_groups")
+@Table(name = "event_groups")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,6 +28,13 @@ public class Group {
 
     private Long createdBy;
 
+    private String adminName;
+
     private LocalDateTime createdAt;
-    
+
+    private Double eventLatitude;
+
+    private Double eventLongitude;
+
+    private Double eventRadius;
 }
