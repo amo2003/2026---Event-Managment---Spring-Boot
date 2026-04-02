@@ -20,6 +20,14 @@ function setupDataChannel(remoteUserId, channel) {
     console.log(`P2P DataChannel connected with user ${remoteUserId}`);
   };
 
+  channel.onclose = () => {
+    console.log(`P2P DataChannel closed with user ${remoteUserId}`);
+  };
+
+  channel.onerror = (error) => {
+    console.error(`DataChannel error with user ${remoteUserId}:`, error);
+  };
+
   channel.onmessage = (event) => {
     try {
       const data = JSON.parse(event.data);
@@ -59,11 +67,23 @@ function setupPeerConnection(remoteUserId, sendSignal) {
     setupDataChannel(remoteUserId, event.channel);
   };
 
+  pc.onconnectionstatechange = () => {
+    console.log(`Connection state with ${remoteUserId}:`, pc.connectionState);
+  };
+
+  pc.oniceconnectionstatechange = () => {
+    console.log(`ICE state with ${remoteUserId}:`, pc.iceConnectionState);
+  };
+
   return pc;
 }
 
 export function initializeWebRTC(onLocationReceived) {
   locationCallback = onLocationReceived;
+}
+
+export function hasPeerConnection(remoteUserId) {
+  return !!peerConnections[remoteUserId];
 }
 
 export function createPeerForRemoteUser(remoteUserId, sendSignal) {
@@ -78,15 +98,24 @@ export function createPeerForRemoteUser(remoteUserId, sendSignal) {
 }
 
 export async function createOfferForUser(remoteUserId, sendSignal) {
-  const pc = createPeerForRemoteUser(remoteUserId, sendSignal);
+  try {
+    const pc = createPeerForRemoteUser(remoteUserId, sendSignal);
 
-  const offer = await pc.createOffer();
-  await pc.setLocalDescription(offer);
+    if (pc.signalingState !== "stable") {
+      console.log(`Skipping offer for ${remoteUserId}, state:`, pc.signalingState);
+      return;
+    }
 
-  sendSignal(remoteUserId, {
-    type: "offer",
-    data: offer
-  });
+    const offer = await pc.createOffer();
+    await pc.setLocalDescription(offer);
+
+    sendSignal(remoteUserId, {
+      type: "offer",
+      data: offer
+    });
+  } catch (error) {
+    console.error(`createOfferForUser error (${remoteUserId}):`, error);
+  }
 }
 
 export async function handleOfferFromUser(remoteUserId, offer, sendSignal) {
@@ -135,11 +164,7 @@ export async function addCandidateFromUser(remoteUserId, candidate) {
     const pc = peerConnections[remoteUserId];
     ensurePending(remoteUserId);
 
-    if (
-      pc &&
-      pc.remoteDescription &&
-      pc.remoteDescription.type
-    ) {
+    if (pc && pc.remoteDescription && pc.remoteDescription.type) {
       await pc.addIceCandidate(new RTCIceCandidate(candidate));
     } else {
       pendingCandidates[remoteUserId].push(candidate);
@@ -177,10 +202,36 @@ export function sendLocationToAll(lat, lng) {
   });
 }
 
-export function closeAllPeerConnections() {
-  Object.values(peerConnections).forEach((pc) => pc.close());
+export function getConnectedPeerCount() {
+  return Object.values(dataChannels).filter(
+    (channel) => channel && channel.readyState === "open"
+  ).length;
+}
 
-  Object.keys(peerConnections).forEach((key) => delete peerConnections[key]);
-  Object.keys(dataChannels).forEach((key) => delete dataChannels[key]);
-  Object.keys(pendingCandidates).forEach((key) => delete pendingCandidates[key]);
+export function removePeerConnection(remoteUserId) {
+  try {
+    if (dataChannels[remoteUserId]) {
+      dataChannels[remoteUserId].close();
+    }
+  } catch (e) {
+    console.error(`Error closing data channel for ${remoteUserId}:`, e);
+  }
+
+  try {
+    if (peerConnections[remoteUserId]) {
+      peerConnections[remoteUserId].close();
+    }
+  } catch (e) {
+    console.error(`Error closing peer connection for ${remoteUserId}:`, e);
+  }
+
+  delete peerConnections[remoteUserId];
+  delete dataChannels[remoteUserId];
+  delete pendingCandidates[remoteUserId];
+}
+
+export function closeAllPeerConnections() {
+  Object.keys(peerConnections).forEach((remoteUserId) => {
+    removePeerConnection(remoteUserId);
+  });
 }

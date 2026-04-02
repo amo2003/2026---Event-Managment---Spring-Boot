@@ -1,6 +1,10 @@
 let socket = null;
 
 export function connectSocket(onMessage) {
+  if (socket && (socket.readyState === WebSocket.OPEN || socket.readyState === WebSocket.CONNECTING)) {
+    return;
+  }
+
   socket = new WebSocket("ws://localhost:8080/signal");
 
   socket.onopen = () => {
@@ -14,6 +18,8 @@ export function connectSocket(onMessage) {
           ? JSON.parse(event.data)
           : event.data;
 
+      console.log("Socket received:", data);
+
       if (onMessage) onMessage(data);
     } catch (error) {
       console.error("Failed to parse socket message:", error);
@@ -26,12 +32,16 @@ export function connectSocket(onMessage) {
 
   socket.onclose = () => {
     console.log("Disconnected from signaling server");
+    socket = null;
   };
 }
 
 export function sendMessage(message) {
   if (socket && socket.readyState === WebSocket.OPEN) {
+    console.log("Socket sent:", message);
     socket.send(JSON.stringify(message));
+  } else {
+    console.error("WebSocket is not open. Cannot send message:", message);
   }
 }
 

@@ -7,11 +7,13 @@ import {
 } from "../../services/friendTracker/socketService";
 import {
   initializeWebRTC,
+  hasPeerConnection,
   createOfferForUser,
   handleOfferFromUser,
   handleAnswerFromUser,
   addCandidateFromUser,
   sendLocationToAll,
+  getConnectedPeerCount,
   closeAllPeerConnections
 } from "../../services/friendTracker/webrtcService";
 import {
@@ -350,6 +352,7 @@ function FriendTrackerPage() {
   const [currentUserId, setCurrentUserId] = useState("");
   const [myLocation, setMyLocation] = useState(null);
   const [memberLocations, setMemberLocations] = useState({});
+  const [connectedPeerCount, setConnectedPeerCount] = useState(0);
   const [selectedGroup, setSelectedGroup] = useState("");
   const [members, setMembers] = useState([]);
   const [pendingRequests, setPendingRequests] = useState([]);
@@ -420,6 +423,10 @@ function FriendTrackerPage() {
     });
   }
 
+  function refreshConnectedPeerCount() {
+    setConnectedPeerCount(getConnectedPeerCount());
+  }
+
   function addNotification(message, placeName, remoteUserId) {
     const item = {
       id: `${Date.now()}-${Math.random()}`,
@@ -475,48 +482,114 @@ function FriendTrackerPage() {
   }
 
   function handleSignalMessage(msg) {
-    console.log("Signal received:", msg);
+  console.log("Signal received:", msg);
 
-    if (msg.type === "online-users") {
-      const onlineUsers = Array.isArray(msg.data) ? msg.data : [];
+  if (msg.type === "online-users") {
+    const onlineUsers = Array.isArray(msg.data) ? msg.data : [];
 
-      onlineUsers.forEach((remoteUserId) => {
-        if (
-          Number(remoteUserId) !== Number(currentUserIdRef.current) &&
-          Number(currentUserIdRef.current) < Number(remoteUserId)
-        ) {
-          createOfferForUser(remoteUserId, sendSignalToUser);
-        }
-      });
+    onlineUsers.forEach((remoteUserId) => {
+      const localId = Number(currentUserIdRef.current);
+      const remoteId = Number(remoteUserId);
 
-      return;
-    }
+      if (remoteId === localId) return;
 
+      // create only once, and only one side creates offer
+      if (!hasPeerConnection(remoteId) && localId < remoteId) {
+        createOfferForUser(remoteId, sendSignalToUser);
+      }
+    });
+
+    setTimeout(() => {
+      setConnectedPeerCount(getConnectedPeerCount());
+    }, 300);
+
+    return;
+  }
+
+  if (msg.type === "user-joined") {
     if (!msg.groupId || String(msg.groupId) !== String(selectedGroupRef.current)) {
       return;
     }
 
-    if (Number(msg.fromUserId) === Number(currentUserIdRef.current)) {
-      return;
+    const localId = Number(currentUserIdRef.current);
+    const remoteId = Number(msg.data ?? msg.fromUserId);
+
+    if (remoteId === localId) return;
+
+    // create only once, and only one side creates offer
+    if (!hasPeerConnection(remoteId) && localId < remoteId) {
+      createOfferForUser(remoteId, sendSignalToUser);
+      setStatusMessage(`User ${remoteId} joined. Negotiating...`);
     }
 
-    if (msg.type === "offer") {
-      handleOfferFromUser(msg.fromUserId, msg.data, sendSignalToUser);
-      setStatusMessage(`Offer received from user ${msg.fromUserId}. Negotiating...`);
-      return;
-    }
+    setTimeout(() => {
+      setConnectedPeerCount(getConnectedPeerCount());
+    }, 300);
 
-    if (msg.type === "answer") {
-      handleAnswerFromUser(msg.fromUserId, msg.data);
-      setConnectionStarted(true);
-      setStatusMessage(`Answer received from user ${msg.fromUserId}.`);
-      return;
-    }
-
-    if (msg.type === "candidate") {
-      addCandidateFromUser(msg.fromUserId, msg.data);
-    }
+    return;
   }
+
+  if (msg.type === "user-left") {
+    if (!msg.groupId || String(msg.groupId) !== String(selectedGroupRef.current)) {
+      return;
+    }
+
+    const remoteId = Number(msg.data ?? msg.fromUserId);
+
+    setMemberLocations((prev) => {
+      const updated = { ...prev };
+      delete updated[remoteId];
+      return updated;
+    });
+
+    setStatusMessage(`User ${remoteId} left the group.`);
+
+    setTimeout(() => {
+      setConnectedPeerCount(getConnectedPeerCount());
+    }, 300);
+
+    return;
+  }
+
+  if (!msg.groupId || String(msg.groupId) !== String(selectedGroupRef.current)) {
+    return;
+  }
+
+  if (Number(msg.fromUserId) === Number(currentUserIdRef.current)) {
+    return;
+  }
+
+  if (msg.type === "offer") {
+    handleOfferFromUser(msg.fromUserId, msg.data, sendSignalToUser);
+    setStatusMessage(`Offer received from user ${msg.fromUserId}. Negotiating...`);
+
+    setTimeout(() => {
+      setConnectedPeerCount(getConnectedPeerCount());
+    }, 300);
+
+    return;
+  }
+
+  if (msg.type === "answer") {
+    handleAnswerFromUser(msg.fromUserId, msg.data);
+    setConnectionStarted(true);
+    setStatusMessage(`Answer received from user ${msg.fromUserId}.`);
+
+    setTimeout(() => {
+      setConnectedPeerCount(getConnectedPeerCount());
+    }, 300);
+
+    return;
+  }
+
+  if (msg.type === "candidate") {
+    addCandidateFromUser(msg.fromUserId, msg.data);
+
+    setTimeout(() => {
+      setConnectedPeerCount(getConnectedPeerCount());
+    }, 300);
+  }
+}
 
   useEffect(() => {
     connectSocket(handleSignalMessage);
@@ -541,6 +614,7 @@ function FriendTrackerPage() {
 
       setConnectionStarted(true);
       setStatusMessage("Live group tracking active.");
+      refreshConnectedPeerCount();
     });
 
     let watchId = null;
@@ -774,6 +848,7 @@ function FriendTrackerPage() {
     setMembersLoaded(false);
     setConnectionStarted(false);
     setMemberLocations({});
+    setConnectedPeerCount(0);
     setNotifications([]);
     previousPlaceStateRef.current = {};
     setStatusMessage("Waiting for user action...");
@@ -794,6 +869,7 @@ function FriendTrackerPage() {
       setMembersLoaded(false);
       setConnectionStarted(false);
       setMemberLocations({});
+      setConnectedPeerCount(0);
       setNotifications([]);
       previousPlaceStateRef.current = {};
       setEventCenter(null);
@@ -1185,7 +1261,7 @@ function FriendTrackerPage() {
                 <input
                   className="ft-input"
                   type="text"
-                  placeholder="e.g. Aisha or 12"
+                  placeholder="e.g. Anisha or 12"
                   value={friendSearch}
                   onChange={(e) => {
                     setFriendSearch(e.target.value);
@@ -1287,9 +1363,9 @@ function FriendTrackerPage() {
 
                   <div className="ft-coord-card">
                     <div className="clabel">🔴 Group Members Live</div>
-                    <div className={`cval${Object.keys(memberLocations).length === 0 ? " dim" : ""}`}>
-                      {Object.keys(memberLocations).length > 0
-                        ? `${Object.keys(memberLocations).length} member(s) connected`
+                    <div className={`cval${connectedPeerCount === 0 ? " dim" : ""}`}>
+                      {connectedPeerCount > 0
+                        ? `${connectedPeerCount} member(s) connected`
                         : connectionStarted
                         ? "Waiting..."
                         : "Start P2P"}

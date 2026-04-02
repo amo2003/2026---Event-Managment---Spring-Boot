@@ -67,7 +67,7 @@ public class SignalingHandler extends TextWebSocketHandler {
 
         Set<Long> onlineUsers = sessionManager.getOnlineUsersInGroup(groupId);
 
-        // 1. Send current online users to the newly joined user
+        // Send full online user list only to the newly joined user
         SignalingMessage onlineUsersMessage = new SignalingMessage();
         onlineUsersMessage.setType("online-users");
         onlineUsersMessage.setGroupId(groupId);
@@ -77,24 +77,25 @@ public class SignalingHandler extends TextWebSocketHandler {
 
         session.sendMessage(new TextMessage(objectMapper.writeValueAsString(onlineUsersMessage)));
 
-        // 2. Notify all existing users that a new user joined
+        // Notify existing users only about the new joined user
         for (Long existingUserId : onlineUsers) {
             if (existingUserId.equals(joinedUserId)) {
                 continue;
             }
 
-            WebSocketSession existingSession = sessionManager.getUserSession(groupId, existingUserId);
+            WebSocketSession existingSession =
+                    sessionManager.getUserSession(groupId, existingUserId);
 
             if (existingSession != null && existingSession.isOpen()) {
-                SignalingMessage notifyExistingUser = new SignalingMessage();
-                notifyExistingUser.setType("online-users");
-                notifyExistingUser.setGroupId(groupId);
-                notifyExistingUser.setFromUserId(null);
-                notifyExistingUser.setToUserId(existingUserId);
-                notifyExistingUser.setData(onlineUsers);
+                SignalingMessage joinedNotice = new SignalingMessage();
+                joinedNotice.setType("user-joined");
+                joinedNotice.setGroupId(groupId);
+                joinedNotice.setFromUserId(joinedUserId);
+                joinedNotice.setToUserId(existingUserId);
+                joinedNotice.setData(joinedUserId);
 
                 existingSession.sendMessage(
-                        new TextMessage(objectMapper.writeValueAsString(notifyExistingUser))
+                        new TextMessage(objectMapper.writeValueAsString(joinedNotice))
                 );
             }
         }
@@ -112,24 +113,24 @@ public class SignalingHandler extends TextWebSocketHandler {
 
         System.out.println("WebSocket disconnected: " + session.getId());
 
-        // Optional: notify remaining users after someone leaves
-        if (groupId != null) {
+        if (groupId != null && userId != null) {
             Set<Long> remainingUsers = sessionManager.getOnlineUsersInGroup(groupId);
 
             for (Long remainingUserId : remainingUsers) {
-                WebSocketSession remainingSession = sessionManager.getUserSession(groupId, remainingUserId);
+                WebSocketSession remainingSession =
+                        sessionManager.getUserSession(groupId, remainingUserId);
 
                 if (remainingSession != null && remainingSession.isOpen()) {
                     try {
-                        SignalingMessage updateMessage = new SignalingMessage();
-                        updateMessage.setType("online-users");
-                        updateMessage.setGroupId(groupId);
-                        updateMessage.setFromUserId(userId);
-                        updateMessage.setToUserId(remainingUserId);
-                        updateMessage.setData(remainingUsers);
+                        SignalingMessage leftMessage = new SignalingMessage();
+                        leftMessage.setType("user-left");
+                        leftMessage.setGroupId(groupId);
+                        leftMessage.setFromUserId(userId);
+                        leftMessage.setToUserId(remainingUserId);
+                        leftMessage.setData(userId);
 
                         remainingSession.sendMessage(
-                                new TextMessage(objectMapper.writeValueAsString(updateMessage))
+                                new TextMessage(objectMapper.writeValueAsString(leftMessage))
                         );
                     } catch (Exception e) {
                         System.out.println("Failed to notify remaining user: " + remainingUserId);
