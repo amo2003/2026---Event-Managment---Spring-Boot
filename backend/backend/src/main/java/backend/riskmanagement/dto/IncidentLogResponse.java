@@ -1,7 +1,6 @@
 package backend.riskmanagement.dto;
 
 
-
 import lombok.Getter;
 import lombok.Setter;
 

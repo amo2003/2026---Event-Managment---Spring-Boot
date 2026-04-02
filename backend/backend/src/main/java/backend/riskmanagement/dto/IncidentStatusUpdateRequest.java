@@ -8,11 +8,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UpdateIncidentStatusRequest {
+public class IncidentStatusUpdateRequest {
 
     @NotNull(message = "Status is required")
     private IncidentStatus status;
 
     private String actionBy;
+
     private String resolutionSummary;
 }

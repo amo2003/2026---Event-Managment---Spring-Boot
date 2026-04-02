@@ -1,7 +1,5 @@
 package backend.riskmanagement.dto;
 
-
-
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,8 +13,6 @@ public class ResolutionReportRequest {
 
     @NotBlank(message = "Action taken is required")
     private String actionTaken;
-
-    private String recommendations;
 
     @NotBlank(message = "Prepared by is required")
     private String preparedBy;

@@ -8,11 +8,13 @@ import lombok.Setter;
 public class AnalyticsSummaryResponse {
 
     private long totalIncidents;
+
     private long reportedCount;
     private long assignedCount;
     private long inActionCount;
     private long resolvedCount;
     private long closedCount;
+
     private long criticalCount;
     private long highCount;
     private long mediumCount;

@@ -1,7 +1,6 @@
 package backend.riskmanagement.dto;
 
 
-
 import backend.riskmanagement.enums.IncidentPriority;
 import backend.riskmanagement.enums.IncidentStatus;
 import backend.riskmanagement.enums.IncidentType;

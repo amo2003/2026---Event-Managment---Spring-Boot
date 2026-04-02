@@ -1,7 +1,5 @@
 package backend.riskmanagement.dto;
 
-
-
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
