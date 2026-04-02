@@ -47,8 +47,11 @@ public class StallOwnerController {
 
     // Register stall owner
     @PostMapping("/register")
-    public ResponseEntity<StallOwner> register(@RequestBody StallOwner owner) {
-        // TODO: hash password for production
+    public ResponseEntity<?> register(@RequestBody StallOwner owner) {
+        if (ownerRepo.existsByEmail(owner.getEmail())) {
+            return ResponseEntity.status(409)
+                    .body(Map.of("message", "This email is already registered."));
+        }
         StallOwner saved = ownerRepo.save(owner);
         return ResponseEntity.ok(saved);
     }

@@ -1,10 +1,12 @@
 package backend.Society_Stall.Service.controller;
 
 import backend.Society_Stall.Service.EventService;
+import backend.Society_Stall.Service.dto.EventDTO;
 import backend.Society_Stall.Service.model.EventModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/admin/events")
@@ -18,13 +20,18 @@ public class AdminEvent {
     }
 
     @GetMapping("/pending")
-    public List<EventModel> getPendingEvents() {
-        return eventService.getPendingEvents();
+    public List<EventDTO> getPendingEvents() {
+        return eventService.getPendingEvents().stream()
+                .map(e -> eventService.getEventWithSociety(e.getId()))
+                .collect(Collectors.toList());
     }
 
+    // Returns all events with society name included
     @GetMapping
-    public List<EventModel> getAllEvents() {
-        return eventService.getAllEvents();
+    public List<EventDTO> getAllEvents() {
+        return eventService.getAllEvents().stream()
+                .map(e -> eventService.getEventWithSociety(e.getId()))
+                .collect(Collectors.toList());
     }
 
     @PutMapping("/approve/{id}")

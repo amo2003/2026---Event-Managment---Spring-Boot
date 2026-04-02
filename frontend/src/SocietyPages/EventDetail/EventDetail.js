@@ -6,10 +6,12 @@ import "./EventDetail.css";
 import defaultImg from "../../assets/m4.jpg";
 
 const EventDetail = () => {
-  const { id } = useParams(); // eventId
+  const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
+
   const [event, setEvent] = useState(null);
+  const [society, setSociety] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -18,6 +20,16 @@ const EventDetail = () => {
         setLoading(true);
         const res = await axios.get(`http://localhost:8080/api/public/events/${id}`);
         setEvent(res.data);
+
+        // Fetch related society
+        if (res.data.societyId) {
+          try {
+            const sRes = await axios.get(`http://localhost:8080/api/society/profile/${res.data.societyId}`);
+            setSociety(sRes.data);
+          } catch {
+            // fallback to event.societyName
+          }
+        }
       } catch (err) {
         console.error("Failed to fetch event:", err);
       } finally {
@@ -27,14 +39,14 @@ const EventDetail = () => {
     fetchEvent();
   }, [id]);
 
-  const getEventImage = () => event?.imageUrl
-    ? `http://localhost:8080/images/events/${event.imageUrl}`
-    : defaultImg;
+  const getEventImage = () =>
+    event?.imageUrl ? `http://localhost:8080/images/events/${event.imageUrl}` : defaultImg;
 
   const formatDate = (dateStr) => {
     if (!dateStr) return "";
-    const date = new Date(dateStr);
-    return date.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+    return new Date(dateStr).toLocaleDateString("en-US", {
+      weekday: "long", year: "numeric", month: "long", day: "numeric",
+    });
   };
 
   const formatTime = (timeStr) => {
@@ -42,118 +54,119 @@ const EventDetail = () => {
     const [hours, minutes] = timeStr.split(":");
     const hour = parseInt(hours, 10);
     const ampm = hour >= 12 ? "PM" : "AM";
-    const hour12 = hour % 12 || 12;
-    return `${hour12}:${minutes} ${ampm}`;
+    return `${hour % 12 || 12}:${minutes} ${ampm}`;
   };
 
-  if (loading) {
-    return (
-      <div className="event-detail">
-        <button className="event-back" onClick={() => navigate(-1)}>←</button>
-        <div className="event-detail-inner">
-          <p>Loading event details...</p>
-        </div>
-      </div>
-    );
-  }
+  const statusColor = { active: "#22c55e", upcoming: "#3b82f6", completed: "#64748b" };
 
-  if (!event) {
-    return (
-      <div className="event-detail">
-        <button className="event-back" onClick={() => navigate(-1)}>←</button>
-        <div className="event-detail-inner">
-          <p>Event not found.</p>
-        </div>
-      </div>
-    );
-  }
+  if (loading) return (
+    <div className="ed-page">
+      <button className="ed-back-btn" onClick={() => navigate(-1)}>←</button>
+      <div className="ed-loading">Loading event details...</div>
+    </div>
+  );
+
+  if (!event) return (
+    <div className="ed-page">
+      <button className="ed-back-btn" onClick={() => navigate(-1)}>←</button>
+      <div className="ed-loading">Event not found.</div>
+    </div>
+  );
+
+  const societyName = society?.societyName || event.societyName || "Unknown Society";
 
   return (
-    <div className="event-detail">
-      <button className="event-back" onClick={() => navigate(-1)}>←</button>
+    <div className="ed-page">
+      <button className="ed-back-btn" onClick={() => navigate(-1)}>←</button>
 
-      <div className="event-detail-container">
-        {/* Event Image */}
-        <div className="event-hero-image">
-          <img src={getEventImage()} alt={event.eventName} />
-          <div className="event-hero-overlay">
-            <h1>{event.eventName}</h1>
-            <p className="event-society-name">Organized by: {event.societyName}</p>
+      <div className="ed-container">
+
+        {/* ── Hero ── */}
+        <div className="ed-hero">
+          <img src={getEventImage()} alt={event.eventName} className="ed-hero-img" />
+          <div className="ed-hero-overlay">
+            <span
+              className="ed-status-badge"
+              style={{ background: statusColor[event.status?.toLowerCase()] || "#64748b" }}
+            >
+              {event.status}
+            </span>
+            <h1 className="ed-hero-title">{event.eventName}</h1>
+            <p className="ed-hero-society">Organized by {societyName}</p>
           </div>
         </div>
 
-        {/* Event Details */}
-        <div className="event-info-section">
-          <div className="event-info-card">
-            <h2>📅 Event Details</h2>
-            <div className="event-info-grid">
-              <div className="info-item">
-                <span className="info-label">Date</span>
-                <span className="info-value">{formatDate(event.eventDate)}</span>
+        <div className="ed-body">
+
+          {/* ── Quick Info Strip ── */}
+          <div className="ed-info-strip">
+            <div className="ed-info-item">
+              <span className="ed-info-icon">📅</span>
+              <div>
+                <span className="ed-info-label">Date</span>
+                <span className="ed-info-value">{formatDate(event.eventDate)}</span>
               </div>
-              <div className="info-item">
-                <span className="info-label">Time</span>
-                <span className="info-value">{formatTime(event.startTime)} - {formatTime(event.endTime)}</span>
+            </div>
+            <div className="ed-strip-divider" />
+            <div className="ed-info-item">
+              <span className="ed-info-icon">🕐</span>
+              <div>
+                <span className="ed-info-label">Time</span>
+                <span className="ed-info-value">{formatTime(event.startTime)} – {formatTime(event.endTime)}</span>
               </div>
-              <div className="info-item">
-                <span className="info-label">Venue</span>
-                <span className="info-value">{event.venue}</span>
-              </div>
-              <div className="info-item">
-                <span className="info-label">Status</span>
-                <span className={`info-value status-badgeee ${event.status?.toLowerCase()}`}>
-                  {event.status}
-                </span>
+            </div>
+            <div className="ed-strip-divider" />
+            <div className="ed-info-item">
+              <span className="ed-info-icon">📍</span>
+              <div>
+                <span className="ed-info-label">Venue</span>
+                <span className="ed-info-value">{event.venue}</span>
               </div>
             </div>
           </div>
 
-          {/* Description */}
+          {/* ── Description ── */}
           {event.description && (
-            <div className="event-description-card">
-              <h2>📝 About This Event</h2>
-              <p>{event.description}</p>
+            <div className="ed-card">
+              <h2 className="ed-card-title">About This Event</h2>
+              <p className="ed-description">{event.description}</p>
             </div>
           )}
 
-          {/* Stall Owners Section */}
-          <div className="stall-owners-section">
-            <h2>🏪 Stall Opportunities</h2>
-            <p className="stall-info">
-              Interested in setting up a stall at this event? Connect with the organizers!
-            </p>
-            <div className="stall-buttons">
-              <button
-                className="stall-btn apply-btn"
-                onClick={() => {
-                  if (user && user.userType === "stallOwner") {
-                    // Navigate to stall application with ownerId and eventId
-                    navigate(`/stall-application/${user.id}/${event.id}`);
-                  } else {
-                    // Navigate to login
-                    navigate("/slogin", { state: { eventId: event.id } });
-                  }
-                }}
-              >
-                {user && user.userType === "stallOwner" ? "Apply for Stall" : "Login to Apply"}
-              </button>
-              <button
-                className="stall-btn contact-btn"
-                onClick={() => navigate(`/contact`)}
-              >
-                Contact Organizer
-              </button>
+          {/* ── Stall Opportunities ── */}
+          <div className="ed-card ed-stall-card">
+            <div className="ed-stall-text">
+              <h2 className="ed-card-title">🏪 Stall Opportunities</h2>
+              <p className="ed-stall-desc">Interested in setting up a stall at this event? Apply now to secure your spot.</p>
+            </div>
+            <button
+              className="ed-apply-btn"
+              onClick={() => {
+                if (user && user.userType === "stallOwner") {
+                  navigate(`/stall-application/${user.id}/${event.id}`);
+                } else {
+                  navigate("/slogin", { state: { eventId: event.id } });
+                }
+              }}
+            >
+              {user && user.userType === "stallOwner" ? "Apply for Stall →" : "Login to Apply →"}
+            </button>
+          </div>
+
+          {/* ── Organizer ── */}
+          <div className="ed-card">
+            <h2 className="ed-card-title">About the Organizer</h2>
+            <div className="ed-organizer-card" >
+              <div className="ed-organizer-avatar">
+                {societyName.charAt(0).toUpperCase()}
+              </div>
+              <div className="ed-organizer-info">
+                <span className="ed-organizer-name">{societyName}</span>
+                <span className="ed-organizer-sub"> Society</span>
+              </div>
             </div>
           </div>
 
-          {/* Society Info */}
-          <div className="society-info-section">
-            <h2>🎓 About the Organizer</h2>
-            <div className="society-card" onClick={() => navigate(`/society/${event.societyId}`)}>
-              <span className="society-name">{event.societyName}</span>
-              <span className="view-profile">View Profile →</span>
-            </div>
-          </div>
         </div>
       </div>
     </div>

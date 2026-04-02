@@ -106,27 +106,42 @@ const EventCalendar = () => {
         </div>
 
         <div className="event-list">
-          <h3>Events This Month</h3>
+          <h3 className="event-list-title">Events This Month</h3>
           {calendar
             .filter(
               (e) =>
                 new Date(e.eventDate).getMonth() === currentMonth.getMonth() &&
                 new Date(e.eventDate).getFullYear() === currentMonth.getFullYear()
             )
+            .sort((a, b) => new Date(a.eventDate) - new Date(b.eventDate))
             .map((e) => (
               <div key={e.id} className="event-card">
-                <h4>{e.eventName}</h4>
-                <p>
-                  {new Date(e.eventDate).toLocaleDateString("en-GB")} | {e.startTime} - {e.endTime}
-                </p>
-                <p>Venue: {e.venue}</p>
+                <div className="event-card-date">
+                  <span className="event-day-num">{new Date(e.eventDate).getDate()}</span>
+                  <span className="event-month-label">
+                    {new Date(e.eventDate).toLocaleString("default", { month: "short" }).toUpperCase()}
+                  </span>
+                </div>
+                <div className="event-card-body">
+                  <h4 className="event-card-title">{e.eventName}</h4>
+                  <div className="event-card-meta">
+                    <span className="event-meta-item">🕐 {e.startTime} – {e.endTime}</span>
+                    <span className="event-meta-item">📍 {e.venue}</span>
+                  </div>
+                </div>
+                <div className="event-card-badge">Upcoming</div>
               </div>
             ))}
           {calendar.filter(
             (e) =>
               new Date(e.eventDate).getMonth() === currentMonth.getMonth() &&
               new Date(e.eventDate).getFullYear() === currentMonth.getFullYear()
-          ).length === 0 && <p>No events this month</p>}
+          ).length === 0 && (
+            <div className="no-events">
+              <span>📭</span>
+              <p>No events scheduled this month</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
