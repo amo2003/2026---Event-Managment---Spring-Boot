@@ -9,17 +9,13 @@ const CreateEvent = () => {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
-    eventName: "",
-    venue: "",
-    eventDate: "",
-    startTime: "",
-    endTime: "",
-    contactNumber: "",
-    description: "",
+    eventName: "", venue: "", eventDate: "",
+    startTime: "", endTime: "", contactNumber: "", description: "",
   });
 
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [errors, setErrors] = useState({});
 
   const venues = [
     "Main Auditorium",
@@ -28,29 +24,51 @@ const CreateEvent = () => {
     "Main Ground",
   ];
 
-  // Minimum date = today + 3 days
   const getMinDate = () => {
     const today = new Date();
     today.setDate(today.getDate() + 3);
     return today.toISOString().split("T")[0];
   };
 
+  const handleChange = (field, value) => {
+    setErrors(prev => ({ ...prev, [field]: "" }));
+    setForm(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleContactChange = (e) => {
+    const value = e.target.value.replace(/[^0-9]/g, "").slice(0, 10);
+    setErrors(prev => ({ ...prev, contactNumber: "" }));
+    setForm(prev => ({ ...prev, contactNumber: value }));
+  };
+
+  const handleDescChange = (e) => {
+    const value = e.target.value;
+    if (value.length > 200) return;
+    setErrors(prev => ({ ...prev, description: "" }));
+    setForm(prev => ({ ...prev, description: value }));
+  };
+
+  const validate = () => {
+    const e = {};
+    if (!form.eventName.trim())     e.eventName     = "Event name is required.";
+    if (!form.venue)                e.venue         = "Please select a venue.";
+    if (!form.eventDate)            e.eventDate     = "Event date is required.";
+    if (!form.startTime)            e.startTime     = "Start time is required.";
+    if (!form.endTime)              e.endTime       = "End time is required.";
+    else if (form.startTime && form.endTime <= form.startTime)
+                                    e.endTime       = "End time must be after start time.";
+    if (!form.contactNumber.trim()) e.contactNumber = "Contact number is required.";
+    else if (form.contactNumber.length !== 10)
+                                    e.contactNumber = "Contact number must be exactly 10 digits.";
+    if (!form.description.trim())   e.description   = "Description is required.";
+    if (!image)                      e.image         = "Please upload a feature image.";
+    return e;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Check all required fields
-    if (
-      !form.eventName ||
-      !form.venue ||
-      !form.eventDate ||
-      !form.startTime ||
-      !form.endTime ||
-      !form.contactNumber ||
-      !form.description
-    ) {
-      alert("Please fill all fields!");
-      return;
-    }
+    const errs = validate();
+    if (Object.keys(errs).length > 0) { setErrors(errs); return; }
 
     try {
       const data = new FormData();
@@ -63,17 +81,7 @@ const CreateEvent = () => {
       });
 
       alert("Event Submitted! Waiting for Admin Approval.");
-
-      setForm({
-        eventName: "",
-        venue: "",
-        eventDate: "",
-        startTime: "",
-        endTime: "",
-        contactNumber: "",
-        description: "",
-      });
-
+      setForm({ eventName: "", venue: "", eventDate: "", startTime: "", endTime: "", contactNumber: "", description: "" });
       setImage(null);
       setPreview(null);
       navigate("/my-events");
@@ -86,14 +94,15 @@ const CreateEvent = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImage(file);
-    if (file) setPreview(URL.createObjectURL(file));
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+      setErrors(prev => ({ ...prev, image: "" }));
+    }
   };
 
-  const handleContactChange = (e) => {
-    const value = e.target.value;
-    if (/[^0-9]/.test(value)) return; // prevent letters
-    setForm({ ...form, contactNumber: value });
-  };
+  const FE = ({ name }) => errors[name]
+    ? <span className="ce-field-error">{errors[name]}</span>
+    : null;
 
   return (
     <div className="event-create-scope">
@@ -101,67 +110,65 @@ const CreateEvent = () => {
         <h2 className="event-create-title">Apply to Conduct Event</h2>
 
         <form className="event-create-form" onSubmit={handleSubmit}>
-          
-          <input
-            className="event-input"
-            placeholder="Event Name"
-            value={form.eventName}
-            onChange={(e) => setForm({ ...form, eventName: e.target.value })}
-          />
 
-          <select
-            className="event-input event-select"
-            value={form.venue}
-            onChange={(e) => setForm({ ...form, venue: e.target.value })}
-          >
-            <option value="">Select Venue</option>
-            {venues.map((v, index) => (
-              <option key={index} value={v}>{v}</option>
-            ))}
-          </select>
+          <div className="ce-field">
+            <input className="event-input" placeholder="Event Name"
+              value={form.eventName}
+              onChange={(e) => handleChange("eventName", e.target.value)} />
+            <FE name="eventName" />
+          </div>
 
-          <input
-            className="event-input"
-            type="date"
-            value={form.eventDate}
-            min={getMinDate()}
-            onChange={(e) => setForm({ ...form, eventDate: e.target.value })}
-          />
+          <div className="ce-field">
+            <select className="event-input event-select" value={form.venue}
+              onChange={(e) => handleChange("venue", e.target.value)}>
+              <option value="">Select Venue</option>
+              {venues.map((v, i) => <option key={i} value={v}>{v}</option>)}
+            </select>
+            <FE name="venue" />
+          </div>
 
-          <input
-            className="event-input"
-            type="time"
-            value={form.startTime}
-            onChange={(e) => setForm({ ...form, startTime: e.target.value })}
-          />
+          <div className="ce-field">
+            <input className="event-input" type="date" value={form.eventDate}
+              min={getMinDate()}
+              onChange={(e) => handleChange("eventDate", e.target.value)} />
+            <FE name="eventDate" />
+          </div>
 
-          <input
-            className="event-input"
-            type="time"
-            value={form.endTime}
-            onChange={(e) => setForm({ ...form, endTime: e.target.value })}
-          />
+          <div className="ce-field">
+            <input className="event-input" type="time" value={form.startTime}
+              onChange={(e) => handleChange("startTime", e.target.value)} />
+            <FE name="startTime" />
+          </div>
 
-          <input
-            className="event-input"
-            placeholder="Contact Number"
-            value={form.contactNumber}
-            onChange={handleContactChange}
-          />
+          <div className="ce-field">
+            <input className="event-input" type="time" value={form.endTime}
+              onChange={(e) => handleChange("endTime", e.target.value)} />
+            <FE name="endTime" />
+          </div>
 
-          <textarea
-            className="event-textarea"
-            placeholder="Description"
-            value={form.description}
-            onChange={(e) => setForm({ ...form, description: e.target.value })}
-          />
+          <div className="ce-field">
+            <input className="event-input" placeholder="Contact Number"
+              value={form.contactNumber} onChange={handleContactChange} />
+            <FE name="contactNumber" />
+          </div>
+
+          <div className="ce-field">
+            <textarea className="event-textarea" placeholder="Description (max 200 characters)"
+              value={form.description} onChange={handleDescChange} />
+            <div className="ce-desc-footer">
+              <FE name="description" />
+              <span className={`ce-char-count ${form.description.length >= 190 ? "ce-char-warn" : ""}`}>
+                {form.description.length}/200
+              </span>
+            </div>
+          </div>
 
           <div className="image-upload-wrapper">
             <label className="custom-file-upload">
               Upload Event Feature Image
               <input type="file" accept="image/*" onChange={handleImageChange} />
             </label>
-
+            {errors.image && <span className="ce-field-error" style={{display:"block", marginTop:"6px"}}>{errors.image}</span>}
             {preview && (
               <div className="image-preview">
                 <img src={preview} alt="Preview" />

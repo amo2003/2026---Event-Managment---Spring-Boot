@@ -179,3 +179,37 @@
 .event-select:focus {
   background-color: rgba(255,255,255,0.2);
 }
+
+/* ===== FIELD WRAPPER ===== */
+.ce-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ===== INLINE ERROR ===== */
+.ce-field-error {
+  font-size: 0.72rem;
+  color: #ef4444;
+  font-weight: 500;
+  padding-left: 6px;
+}
+
+/* ===== DESCRIPTION FOOTER ===== */
+.ce-desc-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.ce-char-count {
+  font-size: 0.7rem;
+  color: rgba(0, 0, 0, 0.45);
+  font-family: 'Poppins', sans-serif;
+}
+
+.ce-char-warn {
+  color: #ef4444;
+  font-weight: 600;
+}
