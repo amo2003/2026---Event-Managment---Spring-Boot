@@ -1,5 +1,7 @@
 package backend.riskmanagement.config;
 
+
+
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
