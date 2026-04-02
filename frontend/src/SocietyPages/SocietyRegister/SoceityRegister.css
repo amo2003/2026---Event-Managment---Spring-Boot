@@ -221,3 +221,11 @@
   color: rgb(0, 0, 0);
   transform: scale(1.05);
 }
+
+.reg-field-error {
+  display: block;
+  font-size: 0.72rem;
+  color: #ef4444;
+  font-weight: 500;
+  margin: -6px 0 6px 4px;
+}

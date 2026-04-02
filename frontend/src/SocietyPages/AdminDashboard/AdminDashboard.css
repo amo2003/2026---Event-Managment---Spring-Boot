@@ -1,0 +1,154 @@
+/* ===== ADMIN DASHBOARD ===== */
+.adm-page {
+  min-height: 100vh;
+  background: #080810;
+  font-family: 'Poppins', sans-serif;
+  color: #f1f5f9;
+  padding: 80px 40px 100px;
+  position: relative;
+}
+
+.adm-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.adm-page > * { position: relative; z-index: 1; }
+
+/* ===== LOGOUT ===== */
+.adm-logout-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 8px 20px;
+  border-radius: 50px;
+  border: 1px solid rgba(244, 244, 244, 0.851);
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(10px);
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 0.82rem;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: 0.3s ease;
+  z-index: 100;
+}
+
+.adm-logout-btn:hover {
+  background: rgb(0, 0, 0);
+  border-color: rgba(255, 255, 255, 0.936);
+  color: #ffffff;
+}
+
+/* ===== HEADER ===== */
+.adm-header {
+  max-width: 700px;
+  margin: 0 auto 60px;
+  text-align: center;
+}
+
+.adm-eyebrow {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #a855f7;
+  background: rgba(168,85,247,0.1);
+  border: 1px solid rgba(168,85,247,0.3);
+  border-radius: 20px;
+  padding: 4px 14px;
+  margin-bottom: 16px;
+}
+
+.adm-header h1 {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 800;
+  margin: 0 0 12px;
+  letter-spacing: 0.03em;
+}
+
+.adm-name {
+  background: linear-gradient(135deg, #942ff2, #f4228b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.adm-subtitle {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.4);
+  margin: 0;
+}
+
+/* ===== CARDS ===== */
+.adm-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.adm-card {
+  background: rgba(206, 206, 206, 0.732);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 22px;
+  padding: 36px 32px;
+  cursor: pointer;
+  transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.adm-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent);
+  opacity: 0.8;
+}
+
+.adm-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255,255,255,0.14);
+  background: rgba(112, 112, 112, 0.904);
+}
+
+.adm-card-icon {
+  font-size: 2.4rem;
+  margin-bottom: 18px;
+}
+
+.adm-card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 10px;
+  color: #000000;
+}
+
+.adm-card-desc {
+  font-size: 0.9rem;
+  color: rgba(169, 63, 63, 0.987);
+  line-height: 1.7;
+  margin: 0 0 22px;
+}
+
+.adm-card-link {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .adm-page { padding: 60px 16px 80px; }
+  .adm-cards { grid-template-columns: 1fr; }
+}

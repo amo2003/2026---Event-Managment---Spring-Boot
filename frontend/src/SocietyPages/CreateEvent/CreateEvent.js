@@ -1,4 +1,3 @@
-// src/pages/CreateEvent.js
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
@@ -29,20 +28,33 @@ const CreateEvent = () => {
     "Main Ground",
   ];
 
+  // Minimum date = today + 3 days
+  const getMinDate = () => {
+    const today = new Date();
+    today.setDate(today.getDate() + 3);
+    return today.toISOString().split("T")[0];
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!form.eventName || !form.venue || !form.eventDate || !form.startTime || !form.endTime) {
-      alert("Please fill all required fields");
+    // Check all required fields
+    if (
+      !form.eventName ||
+      !form.venue ||
+      !form.eventDate ||
+      !form.startTime ||
+      !form.endTime ||
+      !form.contactNumber ||
+      !form.description
+    ) {
+      alert("Please fill all fields!");
       return;
     }
 
     try {
       const data = new FormData();
-      Object.keys(form).forEach((key) => {
-        data.append(key, form[key]);
-      });
-
+      Object.keys(form).forEach((key) => data.append(key, form[key]));
       data.append("societyId", user.id);
       if (image) data.append("image", image);
 
@@ -64,7 +76,6 @@ const CreateEvent = () => {
 
       setImage(null);
       setPreview(null);
-
       navigate("/my-events");
     } catch (err) {
       console.error(err);
@@ -75,10 +86,13 @@ const CreateEvent = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImage(file);
+    if (file) setPreview(URL.createObjectURL(file));
+  };
 
-    if (file) {
-      setPreview(URL.createObjectURL(file));
-    }
+  const handleContactChange = (e) => {
+    const value = e.target.value;
+    if (/[^0-9]/.test(value)) return; // prevent letters
+    setForm({ ...form, contactNumber: value });
   };
 
   return (
@@ -95,7 +109,6 @@ const CreateEvent = () => {
             onChange={(e) => setForm({ ...form, eventName: e.target.value })}
           />
 
-          {/* Venue Dropdown */}
           <select
             className="event-input event-select"
             value={form.venue}
@@ -103,9 +116,7 @@ const CreateEvent = () => {
           >
             <option value="">Select Venue</option>
             {venues.map((v, index) => (
-              <option key={index} value={v}>
-                {v}
-              </option>
+              <option key={index} value={v}>{v}</option>
             ))}
           </select>
 
@@ -113,6 +124,7 @@ const CreateEvent = () => {
             className="event-input"
             type="date"
             value={form.eventDate}
+            min={getMinDate()}
             onChange={(e) => setForm({ ...form, eventDate: e.target.value })}
           />
 
@@ -134,7 +146,7 @@ const CreateEvent = () => {
             className="event-input"
             placeholder="Contact Number"
             value={form.contactNumber}
-            onChange={(e) => setForm({ ...form, contactNumber: e.target.value })}
+            onChange={handleContactChange}
           />
 
           <textarea
@@ -144,15 +156,10 @@ const CreateEvent = () => {
             onChange={(e) => setForm({ ...form, description: e.target.value })}
           />
 
-          {/* Image Upload Section */}
           <div className="image-upload-wrapper">
             <label className="custom-file-upload">
-              Upload Event Image
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-              />
+              Upload Event Feature Image
+              <input type="file" accept="image/*" onChange={handleImageChange} />
             </label>
 
             {preview && (
