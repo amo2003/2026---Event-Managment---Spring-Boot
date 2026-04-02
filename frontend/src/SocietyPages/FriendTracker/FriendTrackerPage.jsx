@@ -645,6 +645,7 @@ function FriendTrackerPage() {
         navigator.geolocation.clearWatch(watchId);
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notificationsEnabled, selectedPlaceId]);
 
   async function handleCreateGroupStep1() {
