@@ -26,6 +26,7 @@ import StallOwnerForgotPassword from './SocietyPages/ForgotPassword/StallOwnerFo
 import AdminLogin from './SocietyPages/AdminLogin/AdminLogin';
 import AdminDashboard from './SocietyPages/AdminDashboard/AdminDashboard';
 import Contact from './SocietyPages/ContactUs/Contact';
+import FriendTrackerPage from "./SocietyPages/FriendTracker/FriendTrackerPage";
 import About from './SocietyPages/AboutUs/About';
 
 function App() {
@@ -67,6 +68,7 @@ function App() {
       {/* Other Routes */}
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/friend-tracker" element={<FriendTrackerPage />} />
     </Routes>
   );
 }
