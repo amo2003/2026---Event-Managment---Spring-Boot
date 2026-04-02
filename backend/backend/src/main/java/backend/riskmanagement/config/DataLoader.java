@@ -1,8 +1,8 @@
 package backend.riskmanagement.config;
 
 
-import com.example.Risk_new.entity.PlaceArea;
-import com.example.Risk_new.repository.PlaceAreaRepository;
+import backend.riskmanagement.entity.PlaceArea;
+import backend.riskmanagement.repository.PlaceAreaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

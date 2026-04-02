@@ -1,5 +1,6 @@
 package backend.riskmanagement.controller;
 
+
 import backend.riskmanagement.entity.PlaceArea;
 import backend.riskmanagement.service.PlaceAreaService;
 import lombok.RequiredArgsConstructor;

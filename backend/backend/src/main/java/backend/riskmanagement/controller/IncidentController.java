@@ -1,17 +1,11 @@
 package backend.riskmanagement.controller;
 
 
-import backend.riskmanagement.dto.AssignOfficerRequest;
-import backend.riskmanagement.dto.IncidentCreateRequest;
-import backend.riskmanagement.dto.IncidentFilterRequest;
-import backend.riskmanagement.dto.IncidentLogResponse;
-import backend.riskmanagement.dto.IncidentResponse;
-import backend.riskmanagement.dto.PlaceIncidentCountResponse;
-import backend.riskmanagement.dto.TrackIncidentRequest;
-import backend.riskmanagement.dto.UpdateIncidentStatusRequest;
+import backend.riskmanagement.dto.*;
 import backend.riskmanagement.service.IncidentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,14 +19,8 @@ public class IncidentController {
     private final IncidentService incidentService;
 
     @PostMapping
-    public IncidentResponse createIncident(@Valid @ModelAttribute IncidentCreateRequest request,
-                                           @RequestParam(value = "file", required = false) MultipartFile file) {
-        return incidentService.createIncident(request, file);
-    }
-
-    @PostMapping("/track")
-    public IncidentResponse trackIncident(@Valid @RequestBody TrackIncidentRequest request) {
-        return incidentService.trackIncident(request);
+    public IncidentResponse createIncident(@Valid @RequestBody IncidentCreateRequest request) {
+        return incidentService.createIncident(request);
     }
 
     @GetMapping
@@ -45,43 +33,9 @@ public class IncidentController {
         return incidentService.getIncidentById(id);
     }
 
-    @PutMapping("/{id}/assign")
-    public IncidentResponse assignOfficer(@PathVariable Long id,
-                                          @Valid @RequestBody AssignOfficerRequest request) {
-        return incidentService.assignOfficer(id, request);
-    }
-
-    @PutMapping("/{id}/auto-assign")
-    public IncidentResponse autoAssignOfficer(@PathVariable Long id) {
-        return incidentService.autoAssignOfficer(id);
-    }
-
-    @PutMapping("/{id}/status")
-    public IncidentResponse updateIncidentStatus(@PathVariable Long id,
-                                                 @Valid @RequestBody UpdateIncidentStatusRequest request) {
-        return incidentService.updateIncidentStatus(id, request);
-    }
-
-    @GetMapping("/{id}/logs")
-    public List<IncidentLogResponse> getIncidentLogs(@PathVariable Long id) {
-        return incidentService.getIncidentLogs(id);
-    }
-
-    @PostMapping("/{id}/check-escalation")
-    public String checkEscalation(@PathVariable Long id) {
-        return incidentService.checkEscalation(id);
-    }
-
-    @PostMapping("/{id}/evidence")
-    public String uploadEvidence(@PathVariable Long id,
-                                 @RequestParam("file") MultipartFile file,
-                                 @RequestParam(value = "uploadedBy", required = false) String uploadedBy) {
-        return incidentService.uploadEvidence(id, file, uploadedBy);
-    }
-
-    @GetMapping("/{id}/evidence")
-    public List<String> getEvidence(@PathVariable Long id) {
-        return incidentService.getIncidentEvidencePaths(id);
+    @PostMapping("/track")
+    public IncidentResponse trackIncident(@Valid @RequestBody TrackIncidentRequest request) {
+        return incidentService.trackIncident(request);
     }
 
     @PostMapping("/filter")
@@ -89,8 +43,21 @@ public class IncidentController {
         return incidentService.filterIncidents(request);
     }
 
-    @GetMapping("/dashboard/by-place")
-    public List<PlaceIncidentCountResponse> getIncidentCountsByPlace() {
-        return incidentService.getIncidentCountsByPlace();
+    @PutMapping("/{id}/status")
+    public IncidentResponse updateIncidentStatus(@PathVariable Long id,
+                                                 @Valid @RequestBody IncidentStatusUpdateRequest request) {
+        return incidentService.updateIncidentStatus(id, request);
+    }
+
+    @GetMapping("/{id}/timeline")
+    public List<IncidentLogResponse> getIncidentTimeline(@PathVariable Long id) {
+        return incidentService.getIncidentTimeline(id);
+    }
+
+    @PostMapping(value = "/{id}/evidence", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String uploadEvidence(@PathVariable Long id,
+                                 @RequestParam("file") MultipartFile file,
+                                 @RequestParam(value = "uploadedBy", required = false) String uploadedBy) {
+        return incidentService.uploadEvidence(id, file, uploadedBy);
     }
 }

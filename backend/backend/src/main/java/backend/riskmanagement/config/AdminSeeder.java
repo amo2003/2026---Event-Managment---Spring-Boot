@@ -1,8 +1,8 @@
 package backend.riskmanagement.config;
 
-import com.example.Risk_new.entity.AppUser;
-import com.example.Risk_new.enums.SystemRole;
-import com.example.Risk_new.repository.AppUserRepository;
+import backend.riskmanagement.entity.AppUser;
+import backend.riskmanagement.enums.SystemRole;
+import backend.riskmanagement.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
