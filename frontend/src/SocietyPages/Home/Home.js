@@ -280,7 +280,6 @@ const Home = () => {
             <button onClick={() => navigate("/calendar")}>Event Calendar</button>
             <button onClick={() => navigate("/about")}>About</button>
             <button onClick={() => navigate("/contact")}>Contact</button>
-            <button onClick={() => navigate("/friend-tracker")}>Friend Tracker</button>
           </div>
 
           <div className="footer-contact">

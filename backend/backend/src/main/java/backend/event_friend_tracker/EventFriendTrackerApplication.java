@@ -1,13 +1,7 @@
 package backend.event_friend_tracker;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
+// This module is part of the main BackendApplication.
+// Do NOT annotate with @SpringBootApplication — it causes duplicate bean registration.
 public class EventFriendTrackerApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(EventFriendTrackerApplication.class, args);
-	}
-
+    // Entry point removed — use BackendApplication to start the server.
 }

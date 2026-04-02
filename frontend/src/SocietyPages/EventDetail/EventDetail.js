@@ -153,6 +153,20 @@ const EventDetail = () => {
             </button>
           </div>
 
+          {/* ── Friend Tracker ── */}
+          <div className="ed-card ed-friend-card">
+            <div className="ed-stall-text">
+              <h2 className="ed-card-title">👥 Friend Tracker</h2>
+              <p className="ed-stall-desc">Find and connect with friends attending this event. Track who's going and meet up on the day.</p>
+            </div>
+            <button
+              className="ed-friend-btn"
+              onClick={() => navigate("/friend-tracker")}
+            >
+              Open Friend Tracker →
+            </button>
+          </div>
+
           {/* ── Organizer ── */}
           <div className="ed-card">
             <h2 className="ed-card-title">About the Organizer</h2>
