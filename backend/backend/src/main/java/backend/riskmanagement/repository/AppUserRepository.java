@@ -1,5 +1,6 @@
 package backend.riskmanagement.repository;
 
+
 import backend.riskmanagement.entity.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 

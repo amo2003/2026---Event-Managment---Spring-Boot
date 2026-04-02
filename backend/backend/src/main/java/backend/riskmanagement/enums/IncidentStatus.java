@@ -1,7 +1,6 @@
 package backend.riskmanagement.enums;
 
 
-
 public enum IncidentStatus {
     REPORTED,
     ASSIGNED,

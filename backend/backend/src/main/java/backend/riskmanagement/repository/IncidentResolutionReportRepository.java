@@ -1,5 +1,6 @@
 package backend.riskmanagement.repository;
 
+
 import backend.riskmanagement.entity.IncidentResolutionReport;
 import org.springframework.data.jpa.repository.JpaRepository;
 

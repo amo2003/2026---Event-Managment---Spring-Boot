@@ -1,6 +1,6 @@
 package backend.riskmanagement.repository;
 
-import backend.riskmanagement.dto.PlaceIncidentCountResponse;
+
 import backend.riskmanagement.entity.Incident;
 import backend.riskmanagement.enums.IncidentPriority;
 import backend.riskmanagement.enums.IncidentStatus;
@@ -15,24 +15,22 @@ public interface IncidentRepository extends JpaRepository<Incident, Long> {
 
     Optional<Incident> findByTrackingCode(String trackingCode);
 
-    List<Incident> findByStatus(IncidentStatus status);
+    long countByStatus(IncidentStatus status);
 
-    List<Incident> findByPriority(IncidentPriority priority);
-
-    List<Incident> findByIncidentType(IncidentType incidentType);
-
-    List<Incident> findByPlaceAreaId(Long placeAreaId);
-
-    List<Incident> findByReportedByContainingIgnoreCase(String reportedBy);
+    long countByPriority(IncidentPriority priority);
 
     @Query("""
-            SELECT new com.example.Risk_new.dto.PlaceIncidentCountResponse(
-                i.placeArea.id,
-                i.placeArea.name,
-                COUNT(i)
-            )
-            FROM Incident i
-            GROUP BY i.placeArea.id, i.placeArea.name
+            select i from Incident i
+            where (:status is null or i.status = :status)
+              and (:priority is null or i.priority = :priority)
+              and (:incidentType is null or i.incidentType = :incidentType)
+              and (:placeAreaId is null or i.placeArea.id = :placeAreaId)
+              and (:reportedBy is null or lower(i.reportedBy) like lower(concat('%', :reportedBy, '%')))
+            order by i.createdAt desc
             """)
-    List<PlaceIncidentCountResponse> countIncidentsGroupByPlace();
+    List<Incident> filterIncidents(IncidentStatus status,
+                                   IncidentPriority priority,
+                                   IncidentType incidentType,
+                                   Long placeAreaId,
+                                   String reportedBy);
 }

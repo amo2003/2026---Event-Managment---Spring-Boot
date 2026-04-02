@@ -1,5 +1,6 @@
 package backend.riskmanagement.exception;
 
+
 import backend.riskmanagement.dto.ApiErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

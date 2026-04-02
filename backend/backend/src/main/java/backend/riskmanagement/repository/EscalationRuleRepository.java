@@ -1,5 +1,6 @@
 package backend.riskmanagement.repository;
 
+
 import backend.riskmanagement.entity.EscalationRule;
 import backend.riskmanagement.enums.IncidentPriority;
 import org.springframework.data.jpa.repository.JpaRepository;

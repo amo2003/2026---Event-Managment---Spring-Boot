@@ -1,5 +1,6 @@
 package backend.riskmanagement.entity;
 
+
 import backend.riskmanagement.enums.IncidentPriority;
 import jakarta.persistence.*;
 import lombok.Getter;

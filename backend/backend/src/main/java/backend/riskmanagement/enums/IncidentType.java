@@ -1,5 +1,6 @@
 package backend.riskmanagement.enums;
 
+
 public enum IncidentType {
     MEDICAL,
     FIRE,

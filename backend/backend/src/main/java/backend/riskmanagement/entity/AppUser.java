@@ -1,9 +1,12 @@
 package backend.riskmanagement.entity;
 
+
 import backend.riskmanagement.enums.SystemRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "app_users")
@@ -33,4 +36,10 @@ public class AppUser extends BaseEntity {
 
     @Column(nullable = false)
     private Boolean mustChangePassword = false;
+
+    @Column(name = "reset_code")
+    private String resetCode;
+
+    @Column(name = "reset_code_expiry")
+    private LocalDateTime resetCodeExpiry;
 }
