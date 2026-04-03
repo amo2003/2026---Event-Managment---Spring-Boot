@@ -23,8 +23,11 @@ import StallOwnerProfile from './SocietyPages/StallOwnerProfile/StallOwnerProfil
 import PendingPayments from './SocietyPages/StallAdminSide/StallAdminSide';
 import SocietyForgotPassword from './SocietyPages/ForgotPassword/SocietyForgotPassword';
 import StallOwnerForgotPassword from './SocietyPages/ForgotPassword/StallOwnerForgotPassword';
-import About from './SocietyPages/AboutUs/About';
+import AdminLogin from './SocietyPages/AdminLogin/AdminLogin';
+import AdminDashboard from './SocietyPages/AdminDashboard/AdminDashboard';
 import Contact from './SocietyPages/ContactUs/Contact';
+import FriendTrackerPage from "./SocietyPages/FriendTracker/FriendTrackerPage";
+import About from './SocietyPages/AboutUs/About';
 
 function App() {
   return (
@@ -57,12 +60,15 @@ function App() {
       <Route path="/stall-payment/:ownerId/:stallId" element={<StallPayment />} />
 
       {/* Admin Routes */}
+      <Route path="/admin" element={<AdminLogin />} />
+      <Route path="/admin-dashboard" element={<AdminDashboard />} />
       <Route path="/ad" element={<AdminEventRequests/>}/>
       <Route path="/admin/pending-payments" element={<PendingPayments />} />
 
       {/* Other Routes */}
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/friend-tracker" element={<FriendTrackerPage />} />
     </Routes>
   );
 }

@@ -114,16 +114,12 @@ const StallApplication = () => {
               <input
                 placeholder="Business Name"
                 value={stallData.businessName}
-                onChange={(e) =>
-                  setStallData({ ...stallData, businessName: e.target.value })
-                }
+                readOnly
               />
               <input
                 placeholder="Product Type"
                 value={stallData.productType}
-                onChange={(e) =>
-                  setStallData({ ...stallData, productType: e.target.value })
-                }
+                readOnly
               />
             </div>
 

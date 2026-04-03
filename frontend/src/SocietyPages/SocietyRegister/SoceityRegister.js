@@ -6,7 +6,6 @@ import "./SoceityRegister.css";
 function SoceityRegister() {
   const navigate = useNavigate();
 
-  /* ---------------- NEW: Society List State ---------------- */
   const [societyList, setSocietyList] = useState([]);
 
   const [formData, setFormData] = useState({
@@ -19,9 +18,8 @@ function SoceityRegister() {
     password: "",
   });
 
-  /* KEEP PIN LOGIC */
   const [generatedPin, setGeneratedPin] = useState("");
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState("");
 
   const faculties = [
@@ -48,32 +46,52 @@ function SoceityRegister() {
   };
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setErrors(prev => ({ ...prev, [name]: "" }));
+
+    if (name === "presidentName" || name === "advisorName") {
+      if (/\d/.test(value)) return;
+    } else if (name === "contactNumber") {
+      if (/[^0-9]/.test(value)) return;
+      if (value.length > 10) return;
+    }
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const validate = () => {
+    const e = {};
+    if (!formData.name)                    e.name          = "Please select a society.";
+    if (!formData.faculty)                 e.faculty       = "Please select a faculty.";
+    if (!formData.presidentName.trim())    e.presidentName = "President name is required.";
+    if (!formData.email.trim())            e.email         = "Email is required.";
+    if (!formData.contactNumber.trim())    e.contactNumber = "Contact number is required.";
+    else if (formData.contactNumber.length !== 10) e.contactNumber = "Contact number must be exactly 10 digits.";
+    if (!formData.advisorName.trim())      e.advisorName   = "Advisor name is required.";
+    if (!formData.password.trim())         e.password      = "Password is required.";
+    else if (formData.password.length < 6) e.password      = "Password must be at least 6 characters.";
+    return e;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setErrors({});
     setSuccess("");
 
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/society/register",
-        formData
-      );
+    const errs = validate();
+    if (Object.keys(errs).length > 0) { setErrors(errs); return; }
 
+    try {
+      const response = await axios.post("http://localhost:8080/api/society/register", formData);
       setGeneratedPin(response.data.pinCode);
       setSuccess("Registration Successful!");
-
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-        err.response?.data?.error ||
-        "Registration Failed!"
-      );
+      const status = err.response?.status;
+      const msg = err.response?.data?.message || err.response?.data?.error || "";
+      if (status === 500 || msg.toLowerCase().includes("duplicate") || msg.toLowerCase().includes("email")) {
+        setErrors({ email: "This email is already registered." });
+      } else {
+        setErrors({ general: msg || "Registration Failed!" });
+      }
     }
   };
 
@@ -84,13 +102,13 @@ function SoceityRegister() {
   return (
     <div className="register-page">
       {/* ===== BACK BUTTON ===== */}
-  <button className="back-btn" onClick={() => navigate(-1)}>
-    ← 
-  </button>
+      <button className="back-btn" onClick={() => navigate(-1)}>
+        ← 
+      </button>
       <div className="register-container">
         <h1 className="register-title">Society Registration</h1>
 
-        {error && <p className="errorr-msg">{error}</p>}
+        {errors.general && <p className="errorr-msg">{errors.general}</p>}
         {success && <p className="successr-msg">{success}</p>}
 
         {/* KEEP PIN DISPLAY */}
@@ -104,56 +122,50 @@ function SoceityRegister() {
 
         {!success && (
           <form className="register-form" onSubmit={handleSubmit}>
-
-            {/* ----------- NEW DROPDOWN FOR SOCIETY NAME ----------- */}
             <div className="select-wrapper">
-              <select
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              >
+              <select name="name" value={formData.name} onChange={handleChange} required>
                 <option value="">Select Society</option>
-
                 {societyList.map((society) => (
-                  <option key={society.id} value={society.name}>
-                    {society.name}
-                  </option>
+                  <option key={society.id} value={society.name}>{society.name}</option>
                 ))}
               </select>
             </div>
+            {errors.name && <span className="reg-field-error">{errors.name}</span>}
 
-            {/* LINK TO ADD PAGE */}
-            <p
-              className="add-society-link"
-              onClick={() => navigate("/addsocieties")}
-              style={{ cursor: "pointer", fontSize: "13px", marginBottom: "10px" }}
-            >
+            <p className="add-society-link" onClick={() => navigate("/addsocieties")}
+              style={{ cursor: "pointer", fontSize: "13px", marginBottom: "10px" }}>
               If society name not in list, add your society name
             </p>
 
-            {/* FACULTY DROPDOWN (UNCHANGED) */}
             <div className="select-wrapper">
-              <select
-                name="faculty"
-                value={formData.faculty}
-                onChange={handleChange}
-                required
-              >
+              <select name="faculty" value={formData.faculty} onChange={handleChange} required>
                 <option value="">Select Faculty</option>
                 {faculties.map((faculty, index) => (
-                  <option key={index} value={faculty}>
-                    {faculty}
-                  </option>
+                  <option key={index} value={faculty}>{faculty}</option>
                 ))}
               </select>
             </div>
+            {errors.faculty && <span className="reg-field-error">{errors.faculty}</span>}
 
-            <input type="text" name="presidentName" placeholder="President Name" onChange={handleChange} required />
-            <input type="email" name="email" placeholder="Email Address" onChange={handleChange} required />
-            <input type="text" name="contactNumber" placeholder="Contact Number" onChange={handleChange} required />
-            <input type="text" name="advisorName" placeholder="Advisor Name" onChange={handleChange} required />
-            <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+            <input type="text" name="presidentName" placeholder="President Name"
+              onChange={handleChange} value={formData.presidentName} />
+            {errors.presidentName && <span className="reg-field-error">{errors.presidentName}</span>}
+
+            <input type="email" name="email" placeholder="Email Address"
+              onChange={handleChange} value={formData.email} />
+            {errors.email && <span className="reg-field-error">{errors.email}</span>}
+
+            <input type="text" name="contactNumber" placeholder="Contact Number"
+              onChange={handleChange} value={formData.contactNumber} />
+            {errors.contactNumber && <span className="reg-field-error">{errors.contactNumber}</span>}
+
+            <input type="text" name="advisorName" placeholder="Advisor Name"
+              onChange={handleChange} value={formData.advisorName} />
+            {errors.advisorName && <span className="reg-field-error">{errors.advisorName}</span>}
+
+            <input type="password" name="password" placeholder="Password"
+              onChange={handleChange} value={formData.password} />
+            {errors.password && <span className="reg-field-error">{errors.password}</span>}
 
             <button type="submit" className="register-btn">
               Register Society

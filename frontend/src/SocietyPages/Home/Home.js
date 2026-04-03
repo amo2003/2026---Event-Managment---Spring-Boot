@@ -130,7 +130,7 @@ const Home = () => {
 
           <div className="menu-events">
             <button className="menu-link" onClick={() => setEventsDropdown(!eventsDropdown)}>
-              Events ▾
+              Conduct Event ▾
             </button>
             {eventsDropdown && (
               <div className="dropdown">
@@ -180,15 +180,9 @@ const Home = () => {
                   <span className="menu-user">Admin Panel</span>
                   <button
                     className="menu-link"
-                    onClick={() => handleNavigate("/admin/pending-payments")}
+                    onClick={() => handleNavigate("/admin-dashboard")}
                   >
-                    Stall Payments
-                  </button>
-                  <button
-                    className="menu-link"
-                    onClick={() => handleNavigate("/ad")}
-                  >
-                    Event Requests
+                    Admin Dashboard
                   </button>
                 </>
               )}
@@ -206,7 +200,7 @@ const Home = () => {
           ) : (
             <>
               <button className="menu-link" onClick={() => handleNavigate("/login")}>Society Login</button>
-              <button className="menu-link" onClick={() => handleNavigate("/slogin")}>Stall Owner Login</button>
+              <button className="menu-link" onClick={() => handleNavigate("/slogin")}>Stall Owner's Login</button>
             </>
           )}
 
