@@ -133,6 +133,21 @@ const EventDetail = () => {
             </div>
           )}
 
+          {/* ── Artists ── */}
+          {event.artists && (
+            <div className="ed-card">
+              <h2 className="ed-card-title">🎤 Performing Artists</h2>
+              <div className="ed-artists-list">
+                {event.artists.split(",").map((a, i) => (
+                  <div key={i} className="ed-artist-item">
+                    <span className="ed-artist-num">{i + 1}</span>
+                    <span className="ed-artist-name">{a.trim()}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* ── Stall Opportunities ── */}
           <div className="ed-card ed-stall-card">
             <div className="ed-stall-text">

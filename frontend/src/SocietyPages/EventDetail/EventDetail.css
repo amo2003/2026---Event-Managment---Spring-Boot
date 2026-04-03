@@ -348,6 +348,43 @@
   .ed-card { padding: 22px 20px; }
 }
 
+/* ── Artists Section ── */
+.ed-artists-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.ed-artist-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+}
+
+.ed-artist-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.ed-artist-name {
+  font-size: 15px;
+  color: #e2e8f0;
+  font-weight: 500;
+
 /* ===== RISK MANAGEMENT CARD ===== */
 .ed-risk-card {
   display: flex;

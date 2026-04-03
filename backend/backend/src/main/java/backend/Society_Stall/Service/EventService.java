@@ -107,6 +107,13 @@ public class EventService {
         return eventRepo.save(event);
     }
 
+    // UPDATE ARTISTS (admin can add/remove)
+    public EventModel updateArtists(Long id, String artists) {
+        EventModel event = getEvent(id);
+        event.setArtists(artists);
+        return eventRepo.save(event);
+    }
+
     // DELETE EVENT
     @Transactional
     public void deleteEvent(Long id) {

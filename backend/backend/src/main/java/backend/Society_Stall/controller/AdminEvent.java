@@ -6,11 +6,15 @@ import backend.Society_Stall.Service.model.EventModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/admin/events")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", methods = {
+        RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,
+        RequestMethod.DELETE, RequestMethod.OPTIONS
+})
 public class AdminEvent {
 
     private final EventService eventService;
@@ -32,6 +36,12 @@ public class AdminEvent {
         return eventService.getAllEvents().stream()
                 .map(e -> eventService.getEventWithSociety(e.getId()))
                 .collect(Collectors.toList());
+    }
+
+    @PutMapping("/{id}/artists")
+    public EventModel updateArtists(@PathVariable Long id,
+                                    @RequestBody Map<String, String> body) {
+        return eventService.updateArtists(id, body.get("artists"));
     }
 
     @PutMapping("/approve/{id}")

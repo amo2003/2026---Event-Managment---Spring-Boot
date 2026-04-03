@@ -490,6 +490,91 @@
   .admin-events-table td { font-size: 0.75rem; padding: 10px 8px; }
 }
 
+/* ── Artist Edit in Detail Modal ── */
+.aer-artists-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.aer-edit-artists-btn {
+  background: rgba(99,102,241,0.15);
+  border: 1px solid rgba(99,102,241,0.4);
+  color: #a5b4fc;
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.aer-edit-artists-btn:hover { background: rgba(99,102,241,0.3); }
+
+.aer-artists-actions { display: flex; gap: 6px; }
+
+.aer-save-artists-btn {
+  background: rgba(34,197,94,0.15);
+  border: 1px solid rgba(34,197,94,0.4);
+  color: #86efac;
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.aer-save-artists-btn:hover { background: rgba(34,197,94,0.3); }
+
+.aer-cancel-artists-btn {
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.3);
+  color: #fca5a5;
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.aer-artists-edit-list { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+
+.aer-artist-edit-row { display: flex; align-items: center; gap: 8px; }
+
+.aer-artist-num { color: #94a3b8; font-size: 13px; min-width: 20px; }
+
+.aer-artist-input {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px;
+  color: #f1f5f9;
+  padding: 6px 10px;
+  font-size: 13px;
+  outline: none;
+}
+.aer-artist-input:focus { border-color: rgba(99,102,241,0.5); }
+
+.aer-remove-artist-btn {
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.25);
+  color: #fca5a5;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.aer-add-artist-btn {
+  align-self: flex-start;
+  background: rgba(99,102,241,0.1);
+  border: 1px dashed rgba(99,102,241,0.4);
+  color: #a5b4fc;
+  border-radius: 6px;
+  padding: 5px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.aer-add-artist-btn:hover { background: rgba(99,102,241,0.2); }
+
 /* ===== ARTIST VOTE BUTTON ===== */
 .aer-vote-btn {
   padding: 5px 14px;
