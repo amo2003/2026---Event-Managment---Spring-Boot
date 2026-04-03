@@ -5,7 +5,7 @@ import { AuthContext } from "../../context/AuthContext";
 import "./Home.css";
 
 import heroImg from "../../assets/m4.jpg";
-import defaultEventImg from "../../assets/m4.jpg"; // fallback image
+import defaultEventImg from "../../assets/m4.jpg";
 
 const Home = () => {
   const { user, logout } = useContext(AuthContext);
@@ -18,14 +18,13 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Fetch events from backend
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         setLoading(true);
         const [upcomingRes, pastRes] = await Promise.all([
           axios.get("http://localhost:8080/api/public/events/upcoming"),
-          axios.get("http://localhost:8080/api/public/events/past")
+          axios.get("http://localhost:8080/api/public/events/past"),
         ]);
         setUpcomingEvents(upcomingRes.data);
         setPastEvents(pastRes.data);
@@ -35,6 +34,7 @@ const Home = () => {
         setLoading(false);
       }
     };
+
     fetchEvents();
   }, []);
 
@@ -87,7 +87,6 @@ const Home = () => {
     navigate(path);
   };
 
-  // Helper to get event image URL
   const getEventImage = (event) => {
     if (event.imageUrl) {
       return `http://localhost:8080/images/events/${event.imageUrl}`;
@@ -95,7 +94,6 @@ const Home = () => {
     return defaultEventImg;
   };
 
-  // Get current events based on toggle
   const currentEvents = showUpcoming ? upcomingEvents : pastEvents;
 
   return (
@@ -104,7 +102,6 @@ const Home = () => {
         <span className="site-mark-main">Uni Festivo</span>
       </div>
 
-      {/* Hamburger */}
       <button
         className={`menu-toggle ${menuAnimating ? "open" : ""}`}
         onClick={handleMenuToggle}
@@ -114,7 +111,6 @@ const Home = () => {
         <span />
       </button>
 
-      {/* Cloud Animation */}
       <div className={`cloud-transition ${menuAnimating ? "active" : ""}`}>
         <div className="cloud c1" />
         <div className="cloud c2" />
@@ -122,43 +118,64 @@ const Home = () => {
         <div className="cloud c4" />
       </div>
 
-      {/* Fullscreen Navigation */}
       {menuOpen && (
         <div className="menu-fullscreen">
-          <button className="menu-close" onClick={handleMenuToggle}>✕</button>
-          <button className="menu-link" onClick={() => handleNavigate("/")}>Home</button>
+          <button className="menu-close" onClick={handleMenuToggle}>
+            ✕
+          </button>
+
+          <button className="menu-link" onClick={() => handleNavigate("/")}>
+            Home
+          </button>
 
           <div className="menu-events">
-            <button className="menu-link" onClick={() => setEventsDropdown(!eventsDropdown)}>
+            <button
+              className="menu-link"
+              onClick={() => setEventsDropdown(!eventsDropdown)}
+            >
               Events ▾
             </button>
+
             {eventsDropdown && (
               <div className="dropdown">
-                <button className="dropdown-item" onClick={() => handleNavigate("/register")}>Societies Register</button>
-                <button className="dropdown-item" onClick={() => handleNavigate("/sregister")}>Shops Owners Register</button>
+                <button
+                  className="dropdown-item"
+                  onClick={() => handleNavigate("/register")}
+                >
+                  Societies Register
+                </button>
+                <button
+                  className="dropdown-item"
+                  onClick={() => handleNavigate("/sregister")}
+                >
+                  Shops Owners Register
+                </button>
               </div>
             )}
           </div>
 
           {user ? (
             <>
-              {/* Society User Navigation */}
               {user.userType === "society" && (
                 <>
-                  <span className="menu-user">{user.societyName || user.faculty}</span>
+                  <span className="menu-user">
+                    {user.societyName || user.faculty}
+                  </span>
                   <button
                     className="menu-link"
                     onClick={() => handleNavigate(`/society/${user.id}`)}
                   >
                     Profile
                   </button>
-                  <button className="menu-link" onClick={() => handleNavigate("/dashboard")}>
+                  <button
+                    className="menu-link"
+                    onClick={() => handleNavigate("/dashboard")}
+                  >
                     Dashboard
                   </button>
                 </>
               )}
 
-              {/* Stall Owner Navigation */}
               {user.userType === "stallOwner" && (
                 <>
                   <span className="menu-user">Welcome, {user.ownerName}</span>
@@ -168,13 +185,15 @@ const Home = () => {
                   >
                     My Stalls
                   </button>
-                  <button className="menu-link" onClick={() => handleNavigate("/calendar")}>
+                  <button
+                    className="menu-link"
+                    onClick={() => handleNavigate("/calendar")}
+                  >
                     Browse Events
                   </button>
                 </>
               )}
 
-              {/* Admin Navigation */}
               {user.userType === "admin" && (
                 <>
                   <span className="menu-user">Admin Panel</span>
@@ -193,6 +212,20 @@ const Home = () => {
                 </>
               )}
 
+              {user.userType === "artist" && (
+                <>
+                  <span className="menu-user">
+                    Welcome, {user.name || user.artistName || "Artist"}
+                  </span>
+                  <button
+                    className="menu-link"
+                    onClick={() => handleNavigate("/artist-dashboard")}
+                  >
+                    Artist Dashboard
+                  </button>
+                </>
+              )}
+
               <button
                 className="menu-link"
                 onClick={() => {
@@ -205,18 +238,50 @@ const Home = () => {
             </>
           ) : (
             <>
-              <button className="menu-link" onClick={() => handleNavigate("/login")}>Society Login</button>
-              <button className="menu-link" onClick={() => handleNavigate("/slogin")}>Stall Owner Login</button>
+              <button
+                className="menu-link"
+                onClick={() => handleNavigate("/login")}
+              >
+                Society Login
+              </button>
+
+              <button
+                className="menu-link"
+                onClick={() => handleNavigate("/slogin")}
+              >
+                Stall Owner Login
+              </button>
+
+              <button
+                className="menu-link"
+                onClick={() => handleNavigate("/artist-profile")}
+              >
+                Artist Profile
+              </button>
             </>
           )}
 
-          <button className="menu-link" onClick={() => handleNavigate("/calendar")}>Event Calendar</button>
-          <button className="menu-link" onClick={() => handleNavigate("/about")}>About</button>
-          <button className="menu-link" onClick={() => handleNavigate("/contact")}>Contact</button>
+          <button
+            className="menu-link"
+            onClick={() => handleNavigate("/calendar")}
+          >
+            Event Calendar
+          </button>
+          <button
+            className="menu-link"
+            onClick={() => handleNavigate("/about")}
+          >
+            About
+          </button>
+          <button
+            className="menu-link"
+            onClick={() => handleNavigate("/contact")}
+          >
+            Contact
+          </button>
         </div>
       )}
 
-      {/* HERO SECTION */}
       <section className="hero">
         <div className="hero-image-wrapper">
           <img src={heroImg} alt="Hero" className="hero-image" />
@@ -227,7 +292,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* EVENTS SECTION WITH BUTTON TOGGLE */}
       <section className="events">
         <div className="event-buttons">
           <button
@@ -248,14 +312,16 @@ const Home = () => {
           <div className="loading-events">Loading events...</div>
         ) : currentEvents.length === 0 ? (
           <div className="no-events">
-            {showUpcoming ? "No upcoming events at the moment." : "No past events to show."}
+            {showUpcoming
+              ? "No upcoming events at the moment."
+              : "No past events to show."}
           </div>
         ) : (
           <div className="portfolio-grid">
             {currentEvents.map((event) => (
-              <div 
-                key={event.id} 
-                className="portfolio-card" 
+              <div
+                key={event.id}
+                className="portfolio-card"
                 onClick={() => navigate(`/events/${event.id}`)}
               >
                 <div className="portfolio-image-wrapper">
@@ -271,10 +337,9 @@ const Home = () => {
           </div>
         )}
       </section>
-            {/* FOOTER */}
+
       <footer className="site-footer">
         <div className="footer-content">
-
           <div className="footer-brand">
             <h2>Uni Festivo</h2>
             <p>Celebrating Innovation. Connecting Communities.</p>
@@ -283,9 +348,14 @@ const Home = () => {
           <div className="footer-links">
             <h3>Quick Links</h3>
             <button onClick={() => navigate("/")}>Home</button>
-            <button onClick={() => navigate("/calendar")}>Event Calendar</button>
+            <button onClick={() => navigate("/calendar")}>
+              Event Calendar
+            </button>
             <button onClick={() => navigate("/about")}>About</button>
             <button onClick={() => navigate("/contact")}>Contact</button>
+            <button onClick={() => navigate("/organizer/search-artists")}>
+              Artist Module
+            </button>
           </div>
 
           <div className="footer-contact">
@@ -294,7 +364,6 @@ const Home = () => {
             <p>+94 77 123 4567</p>
             <p>Negombo, Sri Lanka</p>
           </div>
-
         </div>
 
         <div className="footer-bottom">
