@@ -95,6 +95,7 @@ const AdminPendingEvents = () => {
                   <th>Date</th>
                   <th>Time</th>
                   <th>Venue</th>
+                  <th>Artists</th>
                   <th>Description</th>
                   <th>Image</th>
                   <th>Status</th>
@@ -109,6 +110,7 @@ const AdminPendingEvents = () => {
                     <td>{event.eventDate}</td>
                     <td>{event.startTime} – {event.endTime}</td>
                     <td>{event.venue}</td>
+                    <td>{event.artists || "—"}</td>
                     <td
                       className="aer-desc-cell"
                       onClick={(e) => { e.stopPropagation(); if (event.description) setDescEvent(event); }}
@@ -199,6 +201,12 @@ const AdminPendingEvents = () => {
                   <span className="aer-detail-label">Contact</span>
                   <span className="aer-detail-value">{detailEvent.contactNumber || "—"}</span>
                 </div>
+                {detailEvent.artists && (
+                  <div className="aer-detail-field aer-detail-full">
+                    <span className="aer-detail-label">Artists</span>
+                    <span className="aer-detail-value">{detailEvent.artists}</span>
+                  </div>
+                )}
                 {detailEvent.adminMessage && (
                   <div className="aer-detail-field aer-detail-full">
                     <span className="aer-detail-label">Admin Note</span>

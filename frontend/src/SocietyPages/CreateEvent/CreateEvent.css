@@ -180,14 +180,14 @@
   background-color: rgba(255,255,255,0.2);
 }
 
-/* ===== FIELD WRAPPER ===== */
+/*  FIELD WRAPPER  */
 .ce-field {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-/* ===== INLINE ERROR ===== */
+/*  INLINE ERROR  */
 .ce-field-error {
   font-size: 0.72rem;
   color: #ef4444;
@@ -195,7 +195,7 @@
   padding-left: 6px;
 }
 
-/* ===== DESCRIPTION FOOTER ===== */
+/*  DESCRIPTION FOOTER  */
 .ce-desc-footer {
   display: flex;
   justify-content: space-between;
@@ -212,4 +212,55 @@
 .ce-char-warn {
   color: #ef4444;
   font-weight: 600;
+}
+
+/* ARTISTS */
+.ce-artists-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ce-artist-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ce-artist-input {
+  flex: 1;
+}
+
+.ce-artist-remove {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.08);
+  color: #ef4444;
+  font-size: 0.8rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: 0.2s;
+}
+
+.ce-artist-remove:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.ce-artist-add {
+  align-self: flex-start;
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 47, 202, 0.668);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(0, 29, 145, 0.8);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: 0.2s;
+  font-family: 'Poppins', sans-serif;
+}
+
+.ce-artist-add:hover {
+  background: rgba(255, 255, 255, 0.12);
 }
