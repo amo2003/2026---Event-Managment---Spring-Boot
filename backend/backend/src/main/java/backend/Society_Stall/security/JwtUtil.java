@@ -1,4 +1,4 @@
-package backend.Society_Stall.Service.security;
+package backend.Society_Stall.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
