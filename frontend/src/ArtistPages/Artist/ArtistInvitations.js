@@ -44,7 +44,7 @@ function ArtistInvitations() {
     }
   };
 
-  useEffect(() => { fetchInvitations(); }, [artistId]);
+  useEffect(() => { fetchInvitations(); }, [artistId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const pending  = invitations.filter((i) => i.status === "PENDING").length;
   const accepted = invitations.filter((i) => i.status === "ACCEPTED").length;

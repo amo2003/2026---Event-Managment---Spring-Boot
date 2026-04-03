@@ -1,9 +1,8 @@
 import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "../../assets/artistModule.css";
 
 function ArtistModuleLayout({ title, subtitle, children }) {
-  const navigate = useNavigate();
 
   return (
     <div className="artist-module-page">

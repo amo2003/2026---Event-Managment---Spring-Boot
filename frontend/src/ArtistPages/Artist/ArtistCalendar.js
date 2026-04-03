@@ -26,7 +26,7 @@ function ArtistCalendar() {
     }
   };
 
-  useEffect(() => { fetchCalendar(); }, [artistId]);
+  useEffect(() => { fetchCalendar(); }, [artistId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <ArtistModuleLayout title="My Calendar" subtitle="Confirmed events synced to your schedule.">

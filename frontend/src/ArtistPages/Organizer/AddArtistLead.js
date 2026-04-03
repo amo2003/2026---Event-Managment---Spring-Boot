@@ -90,7 +90,7 @@ function AddArtistLead() {
       newErrors.artistName = "Artist name must be at least 2 characters.";
     } else if (artistName.length > MAX_ARTIST_NAME_LENGTH) {
       newErrors.artistName = `Artist name cannot exceed ${MAX_ARTIST_NAME_LENGTH} characters.`;
-    } else if (!/^[a-zA-Z0-9 .,'&()\/\-]+$/.test(artistName)) {
+    } else if (!/^[a-zA-Z0-9 .,'&()/\-]+$/.test(artistName)) {
       newErrors.artistName = "Artist name contains invalid characters.";
     }
 
@@ -108,7 +108,7 @@ function AddArtistLead() {
           "Custom category must be at least 2 characters.";
       } else if (customCategory.length > MAX_CUSTOM_CATEGORY_LENGTH) {
         newErrors.customCategory = `Custom category cannot exceed ${MAX_CUSTOM_CATEGORY_LENGTH} characters.`;
-      } else if (!/^[a-zA-Z0-9 .,'&()\/\-]+$/.test(customCategory)) {
+      } else if (!/^[a-zA-Z0-9 .,'&()/\-]+$/.test(customCategory)) {
         newErrors.customCategory =
           "Custom category contains invalid characters.";
       }

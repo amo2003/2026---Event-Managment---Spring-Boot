@@ -47,7 +47,7 @@ function ArtistInquiries() {
     }
   };
 
-  useEffect(() => { fetchInquiries(); }, [artistId]);
+  useEffect(() => { fetchInquiries(); }, [artistId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const pending = inquiries.filter((i) => i.status === "PENDING").length;
   const interested = inquiries.filter((i) => i.status === "INTERESTED").length;

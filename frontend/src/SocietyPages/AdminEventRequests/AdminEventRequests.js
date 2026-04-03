@@ -241,13 +241,6 @@ const AdminPendingEvents = () => {
                         <button className="aer-cancel-artists-btn" onClick={() => setEditArtists(null)}>✕</button>
                       </div>
                     )}
-
-                    <span className="aer-detail-value">
-                      {detailEvent.artists.split(",").map((a, i) => (
-                        <div key={i}>{i + 1}) {a.trim()}</div>
-                      ))}
-                    </span>
- 
                   </div>
                   {editArtists === null ? (
                     <div className="aer-detail-value">
