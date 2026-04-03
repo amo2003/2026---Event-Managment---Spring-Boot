@@ -489,3 +489,23 @@
   .admin-events-table th,
   .admin-events-table td { font-size: 0.75rem; padding: 10px 8px; }
 }
+
+/* ===== ARTIST VOTE BUTTON ===== */
+.aer-vote-btn {
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: 0.25s ease;
+  white-space: nowrap;
+  background: rgba(236,72,153,0.1);
+  color: #ec4899;
+  border: 1px solid rgba(236,72,153,0.35);
+}
+
+.aer-vote-btn:hover {
+  background: rgba(236,72,153,0.22);
+  transform: translateY(-1px);
+}

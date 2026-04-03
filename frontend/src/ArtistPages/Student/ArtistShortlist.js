@@ -1,7 +1,7 @@
 /* ---- ArtistShortlist.js ---- */
 import React, { useEffect, useMemo, useState } from "react";
+import axios from "axios";
 import artistService from "../../services/artistService";
-import eventService from "../../services/eventService";
 import ArtistModuleLayout from "../ArtistModule/ArtistModuleLayout";
 import "../../assets/artistModule.css";
 
@@ -48,7 +48,7 @@ export function ArtistShortlist() {
 
   const fetchEvents = async () => {
     try {
-      const response = await eventService.getAllEvents();
+      const response = await axios.get("http://localhost:8080/api/admin/events");
       setEvents(response.data || []);
     } catch (error) {
       console.error("Failed to fetch events:", error);
