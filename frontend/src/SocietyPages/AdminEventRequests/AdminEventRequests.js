@@ -132,7 +132,13 @@ const AdminPendingEvents = () => {
                     <td>{event.eventDate}</td>
                     <td>{event.startTime} – {event.endTime}</td>
                     <td>{event.venue}</td>
-                    <td>{event.artists || "—"}</td>
+                    <td>
+                      {event.artists
+                        ? event.artists.split(",").map((a, i) => (
+                            <div key={i}>{i + 1}) {a.trim()}</div>
+                          ))
+                        : "—"}
+                    </td>
                     <td
                       className="aer-desc-cell"
                       onClick={(e) => { e.stopPropagation(); if (event.description) setDescEvent(event); }}
@@ -235,6 +241,13 @@ const AdminPendingEvents = () => {
                         <button className="aer-cancel-artists-btn" onClick={() => setEditArtists(null)}>✕</button>
                       </div>
                     )}
+
+                    <span className="aer-detail-value">
+                      {detailEvent.artists.split(",").map((a, i) => (
+                        <div key={i}>{i + 1}) {a.trim()}</div>
+                      ))}
+                    </span>
+ 
                   </div>
                   {editArtists === null ? (
                     <div className="aer-detail-value">

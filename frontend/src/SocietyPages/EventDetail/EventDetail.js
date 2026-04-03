@@ -168,6 +168,34 @@ const EventDetail = () => {
             </button>
           </div>
 
+          {/* ── Friend Tracker ── */}
+          <div className="ed-card ed-friend-card">
+            <div className="ed-stall-text">
+              <h2 className="ed-card-title">👥 Friend Tracker</h2>
+              <p className="ed-stall-desc">Find and connect with friends attending this event. Track who's going and meet up on the day.</p>
+            </div>
+            <button
+              className="ed-friend-btn"
+              onClick={() => navigate("/friend-tracker")}
+            >
+              Open Friend Tracker →
+            </button>
+          </div>
+
+          {/* ── Risk Management ── */}
+          <div className="ed-card ed-risk-card">
+            <div className="ed-stall-text">
+              <h2 className="ed-card-title">⚠️ Risk Management</h2>
+              <p className="ed-stall-desc">Report or track safety incidents related to this event. Help keep the event safe for everyone.</p>
+            </div>
+            <button
+              className="ed-risk-btn"
+              onClick={() => navigate("/riskhome-page")}
+            >
+              Open Risk Portal →
+            </button>
+          </div>
+
           {/* ── Organizer ── */}
           <div className="ed-card">
             <h2 className="ed-card-title">About the Organizer</h2>

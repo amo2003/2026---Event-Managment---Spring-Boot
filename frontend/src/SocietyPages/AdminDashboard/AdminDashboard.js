@@ -18,6 +18,13 @@ const cards = [
     path: "/admin/pending-payments",
     accent: "#0062ffff",
   },
+  {
+    icon: "🎤",
+    title: "Artist Management",
+    desc: "Search artists, manage leads, send invitations, track votes and finalize performers.",
+    path: "/organizer/search-artists",
+    accent: "#ec4899",
+  },
 ];
 
 const AdminDashboard = () => {

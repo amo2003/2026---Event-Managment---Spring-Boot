@@ -1,0 +1,4 @@
+.rm-table-wrap { overflow-x: auto; }
+.rm-app-table { width: 100%; border-collapse: collapse; background: transparent; }
+.rm-app-table th { text-align: left; padding: 16px; background: rgba(255,255,255,0.08); color: #fff; text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; }
+.rm-app-table td { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.84); }

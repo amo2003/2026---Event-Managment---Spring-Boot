@@ -265,7 +265,45 @@ const Home = () => {
           </div>
         )}
       </section>
-            {/* FOOTER */}
+            {/* ARTIST VOTING SECTION */}
+      <section className="home-vote-section">
+        <div className="home-vote-inner">
+          <div className="home-vote-left">
+            <span className="home-vote-eyebrow">🎤 Student Voting</span>
+            <h2 className="home-vote-title">Vote for Your Favourite Artist</h2>
+            <p className="home-vote-desc">
+              Help shape the lineup. Browse shortlisted artists for upcoming events and cast your vote for who you want to see perform.
+            </p>
+            <div className="home-vote-actions">
+              <button className="home-vote-btn-primary" onClick={() => navigate("/student/vote-artist")}>
+                Vote Now →
+              </button>
+              <button className="home-vote-btn-secondary" onClick={() => navigate("/student/artist-shortlist")}>
+                View Shortlist
+              </button>
+            </div>
+          </div>
+          <div className="home-vote-right">
+            <div className="home-vote-card">
+              <span className="home-vote-card-icon">🏆</span>
+              <span className="home-vote-card-label">Top Voted</span>
+              <span className="home-vote-card-sub">See who's leading the polls</span>
+            </div>
+            <div className="home-vote-card">
+              <span className="home-vote-card-icon">🎵</span>
+              <span className="home-vote-card-label">Multiple Events</span>
+              <span className="home-vote-card-sub">Vote per event separately</span>
+            </div>
+            <div className="home-vote-card">
+              <span className="home-vote-card-icon">✅</span>
+              <span className="home-vote-card-label">One Vote Each</span>
+              <span className="home-vote-card-sub">Fair and transparent process</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
       <footer className="site-footer">
         <div className="footer-content">
 
