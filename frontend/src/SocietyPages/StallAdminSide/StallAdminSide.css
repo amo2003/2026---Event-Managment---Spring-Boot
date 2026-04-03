@@ -349,3 +349,52 @@
   color: rgb(0, 0, 0);
   transform: scale(1.05);
 }
+
+/*  TOTAL SUMMARY BAR  */
+.sas-total-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-top: 24px;
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 16px;
+  padding: 20px 28px;
+}
+
+.sas-total-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  min-width: 120px;
+  padding: 8px 0;
+}
+
+.sas-total-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.12);
+  flex-shrink: 0;
+}
+
+.sas-total-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.sas-total-value {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #111;
+}
+
+.sas-approved { color: #00ff08; }
+.sas-pending  { color: #ffee00; }
+.sas-grand    { color: #0044ff; }

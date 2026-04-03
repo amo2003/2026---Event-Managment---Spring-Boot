@@ -143,11 +143,13 @@ const PendingPayments = () => {
         {filteredStalls.length === 0 ? (
           <p className="no-stalls">No stalls found</p>
         ) : (
+          <>
           <table className="pending-payments-table">
             <thead>
               <tr>
                 <th>Business Name</th>
                 <th>Owner</th>
+                <th>Contact Number</th>
                 <th>Package</th>
                 <th>Amount</th>
                 <th>Payment Method</th>
@@ -163,6 +165,7 @@ const PendingPayments = () => {
                 <tr key={stall.id}>
                   <td>{stall.businessName}</td>
                   <td>{stall.owner?.ownerName || "-"}</td>
+                  <td>{stall.owner?.contactNumber || "-"}</td>
                   <td>{stall.packageType || "-"}</td>
 
                   <td className="amount-cell">
@@ -224,6 +227,44 @@ const PendingPayments = () => {
               ))}
             </tbody>
           </table>
+
+          {/* ── Total Summary ── */}
+          <div className="sas-total-bar">
+            <div className="sas-total-item">
+              <span className="sas-total-label">Total Stalls</span>
+              <span className="sas-total-value">{filteredStalls.length}</span>
+            </div>
+            <div className="sas-total-divider" />
+            <div className="sas-total-item">
+              <span className="sas-total-label">Approved Revenue</span>
+              <span className="sas-total-value sas-approved">
+                Rs. {filteredStalls
+                  .filter(s => s.paymentStatus === "APPROVED")
+                  .reduce((sum, s) => sum + (s.amount || 0), 0)
+                  .toLocaleString()}
+              </span>
+            </div>
+            <div className="sas-total-divider" />
+            <div className="sas-total-item">
+              <span className="sas-total-label">Pending Amount</span>
+              <span className="sas-total-value sas-pending">
+                Rs. {filteredStalls
+                  .filter(s => s.paymentStatus === "PENDING")
+                  .reduce((sum, s) => sum + (s.amount || 0), 0)
+                  .toLocaleString()}
+              </span>
+            </div>
+            <div className="sas-total-divider" />
+            <div className="sas-total-item">
+              <span className="sas-total-label">Total (All)</span>
+              <span className="sas-total-value sas-grand">
+                Rs. {filteredStalls
+                  .reduce((sum, s) => sum + (s.amount || 0), 0)
+                  .toLocaleString()}
+              </span>
+            </div>
+          </div>
+          </>
         )}
 
         {/* Image Modal */}
