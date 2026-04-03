@@ -29,6 +29,34 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
 
+        // Only apply this filter to risk management API paths
+        String path = request.getRequestURI();
+        boolean isRiskPath = path.startsWith("/api/auth/")
+                || path.startsWith("/api/incidents")
+                || path.startsWith("/api/alerts")
+                || path.startsWith("/api/analytics")
+                || path.startsWith("/api/officers")
+                || path.startsWith("/api/place-areas")
+                || path.startsWith("/api/resolution-reports");
+
+        if (!isRiskPath) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // Public risk endpoints — skip token check
+        boolean isPublicRiskPath = path.equals("/api/auth/login")
+                || path.equals("/api/auth/officer/register")
+                || path.equals("/api/auth/forgot-password")
+                || path.equals("/api/auth/reset-password")
+                || (path.startsWith("/api/incidents") && request.getMethod().equals("POST") && !path.contains("/status") && !path.contains("/evidence"))
+                || path.equals("/api/place-areas");
+
+        if (isPublicRiskPath) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userEmail;
@@ -39,7 +67,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         jwt = authHeader.substring(7);
-        userEmail = jwtService.extractUsername(jwt);
+
+        try {
+            userEmail = jwtService.extractUsername(jwt);
+        } catch (Exception e) {
+            // Token not signed by risk secret — skip
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(userEmail);
