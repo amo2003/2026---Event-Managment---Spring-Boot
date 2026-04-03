@@ -7,7 +7,7 @@ const PublicNavbar = () => (
       <p className="rm-brand-subtitle">Event Safety Portal</p>
     </div>
     <nav className="rm-public-nav-links">
-      <NavLink to="/r">Home</NavLink>
+      <NavLink to="/">Home</NavLink>
       <NavLink to="/rreport-incident">Report</NavLink>
       <NavLink to="/rtrack-incident">Track</NavLink>
       <NavLink to="/rlogin" className="rm-nav-portal-btn">Officer Portal</NavLink>
