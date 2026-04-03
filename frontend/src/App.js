@@ -29,6 +29,31 @@ import Contact from './SocietyPages/ContactUs/Contact';
 import FriendTrackerPage from "./SocietyPages/FriendTracker/FriendTrackerPage";
 import About from './SocietyPages/AboutUs/About';
 
+
+import ProtectedRoute from "./RiskManagePages/components/auth/ProtectedRoute";
+import MainLayout from "./RiskManagePages/components/layout/MainLayout";
+import PublicLayout from "./RiskManagePages/components/layout/PublicLayout";
+import AlertPage from "./RiskManagePages/pages/AlertPage";
+import ChangePasswordPage from "./RiskManagePages/pages/ChangePasswordPage";
+import DashboardPage from "./RiskManagePages/pages/DashboardPage";
+import ForgotPasswordPage from "./RiskManagePages/pages/ForgotPasswordPage";
+import IncidentDetailsPage from "./RiskManagePages/pages/IncidentDetailsPage";
+import IncidentListPage from "./RiskManagePages/pages/IncidentListPage";
+import LoginPage from "./RiskManagePages/pages/LoginPage";
+import PublicHomePage from "./RiskManagePages/pages/PublicHomePage";
+import ReportIncidentPage from "./RiskManagePages/pages/ReportIncidentPage";
+import ResetPasswordPage from "./RiskManagePages/pages/ResetPasswordPage";
+import TrackIncidentPage from "./RiskManagePages/pages/TrackIncidentPage";
+import "./RiskManagePages/styles/public.css";
+import "./RiskManagePages/styles/auth.css";
+import "./RiskManagePages/styles/dashboard.css";
+import "./RiskManagePages/styles/app.css";
+import "./RiskManagePages/styles/form.css";
+import "./RiskManagePages/styles/layout.css";
+import "./RiskManagePages/styles/detail.css";
+import "./RiskManagePages/styles/table.css";
+
+
 function App() {
   return (
     <Routes>
@@ -69,6 +94,31 @@ function App() {
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/friend-tracker" element={<FriendTrackerPage />} />
+
+      {/** Risk */}
+          <Route element={<PublicLayout />}>
+            <Route path="/" element={<PublicHomePage />} />
+            <Route path="/report-incident" element={<ReportIncidentPage />} />
+            <Route path="/track-incident" element={<TrackIncidentPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+          </Route>
+
+          <Route
+            element={
+              <ProtectedRoute>
+                <MainLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/incidents" element={<IncidentListPage />} />
+            <Route path="/incidents/:id" element={<IncidentDetailsPage />} />
+            <Route path="/alerts" element={<AlertPage />} />
+            <Route path="/change-password" element={<ChangePasswordPage />} />
+          </Route>
+
     </Routes>
   );
 }
