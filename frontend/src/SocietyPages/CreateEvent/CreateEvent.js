@@ -13,6 +13,7 @@ const CreateEvent = () => {
     startTime: "", endTime: "", contactNumber: "", description: "",
   });
 
+  const [artists, setArtists] = useState([""]);
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [errors, setErrors] = useState({});
@@ -41,6 +42,20 @@ const CreateEvent = () => {
     setForm(prev => ({ ...prev, contactNumber: value }));
   };
 
+  const handleArtistChange = (index, value) => {
+    const updated = [...artists];
+    updated[index] = value.replace(/[0-9]/g, ""); // no numbers
+    setArtists(updated);
+    setErrors(prev => ({ ...prev, artists: "" }));
+  };
+
+  const addArtist = () => setArtists(prev => [...prev, ""]);
+
+  const removeArtist = (index) => {
+    if (artists.length === 1) return; // keep at least one
+    setArtists(prev => prev.filter((_, i) => i !== index));
+  };
+
   const handleDescChange = (e) => {
     const value = e.target.value;
     if (value.length > 200) return;
@@ -60,6 +75,8 @@ const CreateEvent = () => {
     if (!form.contactNumber.trim()) e.contactNumber = "Contact number is required.";
     else if (form.contactNumber.length !== 10)
                                     e.contactNumber = "Contact number must be exactly 10 digits.";
+    const filledArtists = artists.filter(a => a.trim());
+    if (filledArtists.length === 0) e.artists = "At least one artist is required.";
     if (!form.description.trim())   e.description   = "Description is required.";
     if (!image)                      e.image         = "Please upload a feature image.";
     return e;
@@ -73,6 +90,7 @@ const CreateEvent = () => {
     try {
       const data = new FormData();
       Object.keys(form).forEach((key) => data.append(key, form[key]));
+      data.append("artists", artists.filter(a => a.trim()).join(", "));
       data.append("societyId", user.id);
       if (image) data.append("image", image);
 
@@ -82,6 +100,7 @@ const CreateEvent = () => {
 
       alert("Event Submitted! Waiting for Admin Approval.");
       setForm({ eventName: "", venue: "", eventDate: "", startTime: "", endTime: "", contactNumber: "", description: "" });
+      setArtists([""]);
       setImage(null);
       setPreview(null);
       navigate("/my-events");
@@ -150,6 +169,27 @@ const CreateEvent = () => {
             <input className="event-input" placeholder="Contact Number"
               value={form.contactNumber} onChange={handleContactChange} />
             <FE name="contactNumber" />
+          </div>
+
+          {/* Artists */}
+          <div className="ce-field">
+            <div className="ce-artists-list">
+              {artists.map((artist, index) => (
+                <div key={index} className="ce-artist-row">
+                  <input
+                    className="event-input ce-artist-input"
+                    placeholder={`Artist ${index + 1} name`}
+                    value={artist}
+                    onChange={(e) => handleArtistChange(index, e.target.value)}
+                  />
+                  {artists.length > 1 && (
+                    <button type="button" className="ce-artist-remove" onClick={() => removeArtist(index)}>✕</button>
+                  )}
+                </div>
+              ))}
+              <button type="button" className="ce-artist-add" onClick={addArtist}>+ Add Artist</button>
+            </div>
+            <FE name="artists" />
           </div>
 
           <div className="ce-field">

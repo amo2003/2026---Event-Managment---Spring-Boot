@@ -44,6 +44,9 @@ public class EventModel {
 
     private String imageUrl;
 
+    @Column(columnDefinition = "TEXT")
+    private String artists;
+
     public EventModel() {}
 
     public EventModel(Long societyId, String eventName, String description,
@@ -106,4 +109,7 @@ public class EventModel {
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public String getArtists() { return artists; }
+    public void setArtists(String artists) { this.artists = artists; }
 }
