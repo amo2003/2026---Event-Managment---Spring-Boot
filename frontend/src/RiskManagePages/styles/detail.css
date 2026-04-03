@@ -1,42 +1,7 @@
-.detail-page-grid {
-  display: grid;
-  gap: 24px;
-}
-
-.detail-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  color: rgba(255,255,255,0.82);
-}
-
-.detail-description {
-  margin-top: 20px;
-  padding: 18px;
-  border-radius: 20px;
-  background: rgba(255,255,255,0.05);
-}
-
-.timeline-list {
-  display: grid;
-  gap: 14px;
-}
-
-.timeline-item {
-  padding: 16px;
-  border-radius: 18px;
-  background: rgba(255,255,255,0.05);
-  border-left: 3px solid rgba(255,255,255,0.42);
-}
-
-.timeline-item p,
-.timeline-item span {
-  margin: 6px 0 0;
-  color: rgba(255,255,255,0.58);
-}
-
-.report-view {
-  display: grid;
-  gap: 12px;
-  color: rgba(255,255,255,0.82);
-}
+.rm-detail-page-grid { display: grid; gap: 24px; }
+.rm-detail-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; color: rgba(255,255,255,0.82); }
+.rm-detail-description { margin-top: 20px; padding: 18px; border-radius: 20px; background: rgba(255,255,255,0.05); }
+.rm-timeline-list { display: grid; gap: 14px; }
+.rm-timeline-item { padding: 16px; border-radius: 18px; background: rgba(255,255,255,0.05); border-left: 3px solid rgba(255,255,255,0.42); }
+.rm-timeline-item p, .rm-timeline-item span { margin: 6px 0 0; color: rgba(255,255,255,0.58); }
+.rm-report-view { display: grid; gap: 12px; color: rgba(255,255,255,0.82); }
