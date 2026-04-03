@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface StallOwnerRepository extends JpaRepository<StallOwner, Long> {
     List<StallOwner> findByEmail(String email);
-
+    boolean existsByEmail(String email);
 }
