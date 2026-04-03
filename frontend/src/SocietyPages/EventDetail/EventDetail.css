@@ -384,8 +384,7 @@
   font-size: 15px;
   color: #e2e8f0;
   font-weight: 500;
-
-/* ===== RISK MANAGEMENT CARD ===== */
+}
 .ed-risk-card {
   display: flex;
   align-items: center;
