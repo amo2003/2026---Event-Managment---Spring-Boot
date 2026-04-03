@@ -97,6 +97,10 @@ function App() {
 
       {/** Risk */}
           <Route element={<PublicLayout />}>
+            <Route path="/r" element={<PublicHomePage />} />
+            <Route path="/rreport-incident" element={<ReportIncidentPage />} />
+            <Route path="/rtrack-incident" element={<TrackIncidentPage />} />
+
             <Route path="/riskhome-page" element={<PublicHomePage />} />
             <Route path="/report-incident" element={<ReportIncidentPage />} />
             <Route path="/track-incident" element={<TrackIncidentPage />} />

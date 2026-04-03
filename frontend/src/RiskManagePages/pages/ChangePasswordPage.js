@@ -13,7 +13,7 @@ const ChangePasswordPage = () => {
     e.preventDefault(); setError(""); setMessage("");
     const ve = validateChangePasswordForm(form); setErrors(ve);
     if (Object.keys(ve).length > 0) return;
-    try { const r = await completePasswordChange(form); setMessage(r || "Password changed successfully"); setTimeout(() => navigate("/dashboard"), 1200); }
+    try { const r = await completePasswordChange(form); setMessage(r || "Password changed successfully"); setTimeout(() => navigate("/rdashboard"), 1200); }
     catch (err) { setError(err.response?.data?.message || "Failed to change password"); }
   };
   return (

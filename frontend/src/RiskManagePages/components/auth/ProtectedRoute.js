@@ -7,11 +7,11 @@ const ProtectedRoute = ({ children }) => {
   const location = useLocation();
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace state={{ from: location }} />;
+    return <Navigate to="/rlogin" replace state={{ from: location }} />;
   }
 
-  if (user?.mustChangePassword && location.pathname !== "/change-password") {
-    return <Navigate to="/change-password" replace />;
+  if (user?.mustChangePassword && location.pathname !== "/rchange-password") {
+    return <Navigate to="/rchange-password" replace />;
   }
 
   return children;
