@@ -55,18 +55,20 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/auth/change-password").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/officer/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/forgot-password").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/reset-password").permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/api/incidents").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/incidents/track").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/incidents/*/evidence").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/place-areas").permitAll()
 
-                        .requestMatchers("/api/officers/**").hasRole("ADMIN")
-
-                        .requestMatchers("/api/analytics/**").hasAnyRole("OFFICER", "ADMIN")
-                        .requestMatchers("/api/alerts/**").hasAnyRole("OFFICER", "ADMIN")
-                        .requestMatchers("/api/resolution-reports/**").hasAnyRole("OFFICER", "ADMIN")
-                        .requestMatchers("/api/incidents/**").hasAnyRole("OFFICER", "ADMIN")
+                        .requestMatchers("/api/analytics/**").hasRole("OFFICER")
+                        .requestMatchers("/api/alerts/**").hasRole("OFFICER")
+                        .requestMatchers("/api/resolution-reports/**").hasRole("OFFICER")
+                        .requestMatchers("/api/incidents/**").hasRole("OFFICER")
+                        .requestMatchers("/api/officers/**").hasRole("OFFICER")
 
                         .anyRequest().authenticated()
                 )

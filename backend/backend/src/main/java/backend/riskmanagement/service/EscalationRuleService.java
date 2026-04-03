@@ -1,5 +1,6 @@
 package backend.riskmanagement.service;
 
+
 import backend.riskmanagement.entity.EscalationRule;
 import backend.riskmanagement.repository.EscalationRuleRepository;
 import lombok.RequiredArgsConstructor;

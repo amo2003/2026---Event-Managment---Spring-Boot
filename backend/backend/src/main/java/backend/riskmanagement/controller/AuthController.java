@@ -1,7 +1,12 @@
 package backend.riskmanagement.controller;
 
-
-import backend.riskmanagement.dto.*;
+import backend.riskmanagement.dto.AuthResponse;
+import backend.riskmanagement.dto.ChangePasswordRequest;
+import backend.riskmanagement.dto.ForgotPasswordRequest;
+import backend.riskmanagement.dto.ForgotPasswordResponse;
+import backend.riskmanagement.dto.LoginRequest;
+import backend.riskmanagement.dto.OfficerRegisterRequest;
+import backend.riskmanagement.dto.ResetPasswordRequest;
 import backend.riskmanagement.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +31,17 @@ public class AuthController {
     }
 
     @PostMapping("/change-password")
-    public String changePassword(Authentication authentication,
-                                 @Valid @RequestBody ChangePasswordRequest request) {
+    public String changePassword(
+            Authentication authentication,
+            @Valid @RequestBody ChangePasswordRequest request
+    ) {
         return authService.changePassword(authentication.getName(), request);
     }
 
     @PostMapping("/forgot-password")
-    public ForgotPasswordResponse forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+    public ForgotPasswordResponse forgotPassword(
+            @Valid @RequestBody ForgotPasswordRequest request
+    ) {
         return authService.forgotPassword(request);
     }
 
