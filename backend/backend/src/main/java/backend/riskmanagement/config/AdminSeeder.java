@@ -17,13 +17,13 @@ public class AdminSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        String adminEmail = "admin@risk.com";
+        String adminEmail = "";
 
         if (!appUserRepository.existsByEmail(adminEmail)) {
             AppUser admin = new AppUser();
             admin.setFullName("System Admin");
             admin.setEmail(adminEmail);
-            admin.setPassword(passwordEncoder.encode("Admin@123"));
+            admin.setPassword(passwordEncoder.encode(""));
             admin.setRole(SystemRole.ADMIN);
             admin.setEnabled(true);
             admin.setMustChangePassword(false);
