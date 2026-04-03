@@ -33,12 +33,23 @@ const LoginPage = () => {
   const handleRegister = async (e) => {
     e.preventDefault(); setLoading(true); setError(""); setSuccess("");
     const ve = validateOfficerRegisterForm(registerForm); setRegisterErrors(ve);
+    console.log("Form:", registerForm);
+    console.log("Validation:", ve);
     if (Object.keys(ve).length > 0) { setLoading(false); return; }
+    console.log("Sending to backend...");
     try {
-      setSuccess(await register(registerForm) || "Officer registered successfully");
+      const result = await register(registerForm);
+      console.log("Success:", result);
+      setSuccess(result || "Officer registered successfully");
       setRegisterForm(initialRegister); setRegisterErrors({}); setMode("login");
-    } catch (err) { setError(err.response?.data?.message || "Registration failed"); }
-    finally { setLoading(false); }
+    } catch (err) {
+      console.error("REGISTER FAIL status:", err.response?.status);
+      console.error("REGISTER FAIL data:", JSON.stringify(err.response?.data));
+      console.error("REGISTER FAIL message:", err.message);
+      const data = err.response?.data;
+      if (data?.validationErrors) setRegisterErrors(data.validationErrors);
+      setError(data?.message || err.message || "Registration failed.");
+    } finally { setLoading(false); }
   };
 
   const switchMode = (m) => { setMode(m); setError(""); setSuccess(""); };
@@ -71,7 +82,7 @@ const LoginPage = () => {
             </form>
           ) : (
             <form onSubmit={handleRegister} className="rm-form-grid rm-compact-form">
-              {[["fullName","text","Full Name"],["email","email","Email"],["password","password","Password"],["confirmPassword","password","Confirm Password"],["phoneNumber","text","Phone Number"]].map(([k,t,ph]) => (
+              {[["fullName","text","Full Name"],["email","email","Email"],["password","password","Password (min 8 chars, upper, lower, number)"],["confirmPassword","password","Confirm Password"],["phoneNumber","text","Phone Number (e.g. +94771234567)"]].map(([k,t,ph]) => (
                 <div key={k} className="rm-form-group">
                   <input type={t} value={registerForm[k]} onChange={e => { setRegisterForm({...registerForm,[k]:e.target.value}); setRegisterErrors({...registerErrors,[k]:""}); }} placeholder={ph} className={registerErrors[k] ? "rm-input-error" : ""} />
                   {registerErrors[k] && <small className="rm-field-error">{registerErrors[k]}</small>}

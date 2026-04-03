@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:3000")
 public class RiskAuthController {
 
     private final RiskAuthService authService;

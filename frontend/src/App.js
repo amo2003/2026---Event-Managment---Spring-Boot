@@ -96,26 +96,18 @@ function App() {
       <Route path="/contact" element={<Contact />} />
       <Route path="/friend-tracker" element={<FriendTrackerPage />} />
 
-      {/** Risk */}
+      {/** Risk — all wrapped in RiskAuthProvider so context is available everywhere */}
       <Route element={<RiskAuthProvider><PublicLayout /></RiskAuthProvider>}>
             <Route path="/r" element={<PublicHomePage />} />
+            <Route path="/riskhome-page" element={<PublicHomePage />} />
             <Route path="/rreport-incident" element={<ReportIncidentPage />} />
             <Route path="/rtrack-incident" element={<TrackIncidentPage />} />
-            <Route path="/riskhome-page" element={<PublicHomePage />} />
-            <Route path="/report-incident" element={<ReportIncidentPage />} />
-            <Route path="/track-incident" element={<TrackIncidentPage />} />
             <Route path="/rlogin" element={<LoginPage />} />
             <Route path="/rforgot-password" element={<ForgotPasswordPage />} />
             <Route path="/rreset-password" element={<ResetPasswordPage />} />
           </Route>
 
-          <Route element={
-            <RiskAuthProvider>
-              <ProtectedRoute>
-                <MainLayout />
-              </ProtectedRoute>
-            </RiskAuthProvider>
-          }>
+          <Route element={<RiskAuthProvider><ProtectedRoute><MainLayout /></ProtectedRoute></RiskAuthProvider>}>
             <Route path="/rdashboard" element={<DashboardPage />} />
             <Route path="/rincidents" element={<IncidentListPage />} />
             <Route path="/rincidents/:id" element={<IncidentDetailsPage />} />

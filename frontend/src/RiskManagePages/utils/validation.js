@@ -58,7 +58,7 @@ export const validateOfficerRegisterForm = (values) => {
 
   if (!values.phoneNumber?.trim()) {
     errors.phoneNumber = "Phone number is required";
-  } else if (!phoneRegex.test(values.phoneNumber.trim())) {
+  } else if (!/^\+?[\d\s\-]{7,20}$/.test(values.phoneNumber.trim())) {
     errors.phoneNumber = "Enter a valid phone number";
   }
 
@@ -122,8 +122,6 @@ export const validateTrackIncidentForm = (trackingCode) => {
 
   if (!trackingCode?.trim()) {
     errors.trackingCode = "Tracking code is required";
-  } else if (!trackingCodeRegex.test(trackingCode.trim().toUpperCase())) {
-    errors.trackingCode = "Tracking code must look like RISK-2026-ABC123";
   }
 
   return errors;

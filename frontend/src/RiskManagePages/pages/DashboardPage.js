@@ -15,6 +15,9 @@ const DashboardPage = () => {
   useEffect(() => {
     Promise.all([getAnalyticsSummary(), getPlaceCounts(), getAllIncidents(), getAlerts()])
       .then(([s, p, i, a]) => { setSummary(s); setPlaceCounts(p); setRecentIncidents(i.slice(0,5)); setAlerts(a.slice(0,4)); })
+      .catch((err) => {
+        console.error("Dashboard load error:", err.response?.status, err.message);
+      })
       .finally(() => setLoading(false));
   }, []);
 
