@@ -167,6 +167,20 @@ const EventDetail = () => {
             </button>
           </div>
 
+          {/* ── Risk Management ── */}
+          <div className="ed-card ed-risk-card">
+            <div className="ed-stall-text">
+              <h2 className="ed-card-title">⚠️ Risk Management</h2>
+              <p className="ed-stall-desc">Report or track safety incidents related to this event. Help keep the event safe for everyone.</p>
+            </div>
+            <button
+              className="ed-risk-btn"
+              onClick={() => navigate("/riskhome-page")}
+            >
+              Open Risk Portal →
+            </button>
+          </div>
+
           {/* ── Organizer ── */}
           <div className="ed-card">
             <h2 className="ed-card-title">About the Organizer</h2>

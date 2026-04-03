@@ -100,6 +100,10 @@ function App() {
             <Route path="/r" element={<PublicHomePage />} />
             <Route path="/rreport-incident" element={<ReportIncidentPage />} />
             <Route path="/rtrack-incident" element={<TrackIncidentPage />} />
+
+            <Route path="/riskhome-page" element={<PublicHomePage />} />
+            <Route path="/report-incident" element={<ReportIncidentPage />} />
+            <Route path="/track-incident" element={<TrackIncidentPage />} />
             <Route path="/rlogin" element={<LoginPage />} />
             <Route path="/rforgot-password" element={<ForgotPasswordPage />} />
             <Route path="/rreset-password" element={<ResetPasswordPage />} />
