@@ -3,7 +3,7 @@ import inquiryService from "../../services/inquiryService";
 import artistService from "../../services/artistService";
 import artistLeadService from "../../services/artistLeadService";
 import eventService from "../../services/eventService";
-import ArtistModuleLayout from "../../ArtistPages/ArtistModule/ArtistModuleLayout";
+import ArtistModuleLayout from "../ArtistModule/ArtistModuleLayout";
 import "../../assets/artistModule.css";
 
 function SendInquiry() {

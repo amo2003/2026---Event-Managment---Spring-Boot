@@ -6,8 +6,10 @@ const getAllLeads = () => axios.get(API_URL);
 const getLeadById = (id) => axios.get(`${API_URL}/${id}`);
 const createLead = (leadData) => axios.post(API_URL, leadData);
 
-export default {
+const artistLeadService = {
   getAllLeads,
   getLeadById,
   createLead,
 };
+
+export default artistLeadService;

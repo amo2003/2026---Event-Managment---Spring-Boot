@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import artistService from "../../services/artistService";
 import eventService from "../../services/eventService";
-import ArtistModuleLayout from "../../ArtistPages/ArtistModule/ArtistModuleLayout";
+import ArtistModuleLayout from "../ArtistModule/ArtistModuleLayout";
 import "../../assets/artistModule.css";
 
 function getInitials(name = "") {

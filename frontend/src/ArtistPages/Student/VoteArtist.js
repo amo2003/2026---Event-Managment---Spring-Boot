@@ -5,7 +5,7 @@ import eventService from "../../services/eventService";
 import artistService from "../../services/artistService";
 import artistLeadService from "../../services/artistLeadService";
 import { AuthContext } from "../../context/AuthContext";
-import ArtistModuleLayout from "../../ArtistPages/ArtistModule/ArtistModuleLayout";
+import ArtistModuleLayout from "../ArtistModule/ArtistModuleLayout";
 import "../../assets/artistModule.css";
 
 function getInitials(name = "") {

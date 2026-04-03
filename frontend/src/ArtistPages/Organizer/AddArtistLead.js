@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import artistLeadService from "../../services/artistLeadService";
-import ArtistModuleLayout from "../../ArtistPages/ArtistModule/ArtistModuleLayout";
+import ArtistModuleLayout from "../ArtistModule/ArtistModuleLayout";
 import "../../assets/artistModule.css";
 
 const CATEGORY_OPTIONS = [

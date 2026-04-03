@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import invitationService from "../../services/invitationService";
 import artistLeadService from "../../services/artistLeadService";
-import ArtistModuleLayout from "../../ArtistPages/ArtistModule/ArtistModuleLayout";
+import ArtistModuleLayout from "../ArtistModule/ArtistModuleLayout";
 import "../../assets/artistModule.css";
 
 function statusBadge(status) {
