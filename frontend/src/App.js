@@ -44,6 +44,7 @@ import PublicHomePage from "./RiskManagePages/pages/PublicHomePage";
 import ReportIncidentPage from "./RiskManagePages/pages/ReportIncidentPage";
 import ResetPasswordPage from "./RiskManagePages/pages/ResetPasswordPage";
 import TrackIncidentPage from "./RiskManagePages/pages/TrackIncidentPage";
+import { AuthProvider as RiskAuthProvider } from "./RiskManagePages/context/AuthContext";
 import "./RiskManagePages/styles/public.css";
 import "./RiskManagePages/styles/auth.css";
 import "./RiskManagePages/styles/dashboard.css";
@@ -96,11 +97,10 @@ function App() {
       <Route path="/friend-tracker" element={<FriendTrackerPage />} />
 
       {/** Risk */}
-          <Route element={<PublicLayout />}>
+      <Route element={<RiskAuthProvider><PublicLayout /></RiskAuthProvider>}>
             <Route path="/r" element={<PublicHomePage />} />
             <Route path="/rreport-incident" element={<ReportIncidentPage />} />
             <Route path="/rtrack-incident" element={<TrackIncidentPage />} />
-
             <Route path="/riskhome-page" element={<PublicHomePage />} />
             <Route path="/report-incident" element={<ReportIncidentPage />} />
             <Route path="/track-incident" element={<TrackIncidentPage />} />
@@ -109,13 +109,13 @@ function App() {
             <Route path="/rreset-password" element={<ResetPasswordPage />} />
           </Route>
 
-          <Route
-            element={
+          <Route element={
+            <RiskAuthProvider>
               <ProtectedRoute>
                 <MainLayout />
               </ProtectedRoute>
-            }
-          >
+            </RiskAuthProvider>
+          }>
             <Route path="/rdashboard" element={<DashboardPage />} />
             <Route path="/rincidents" element={<IncidentListPage />} />
             <Route path="/rincidents/:id" element={<IncidentDetailsPage />} />
