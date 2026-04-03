@@ -1,0 +1,11 @@
+.rm-form-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 18px; }
+.rm-form-grid.rm-one-column { grid-template-columns: 1fr; }
+.rm-compact-form { gap: 16px; }
+.rm-form-group { display: grid; gap: 8px; }
+.rm-form-group label { font-weight: 700; color: rgba(255,255,255,0.88); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; }
+.rm-form-group input, .rm-form-group select, .rm-form-group textarea { width: 100%; padding: 16px 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); background: rgba(230,239,255,0.95); color: #111; font-size: 15px; outline: none; }
+.rm-form-group textarea { border-radius: 22px; resize: vertical; }
+.rm-form-group select { appearance: none; }
+.rm-full-span { grid-column: 1 / -1; }
+.rm-input-error { border: 1px solid #ff7a7a !important; background: #fff1f1 !important; }
+.rm-field-error { color: #ff9f9f; font-size: 12px; font-weight: 700; }
