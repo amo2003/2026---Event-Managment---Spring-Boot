@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import dashboardService from "../../services/dashboardService";
-import ArtistModuleLayout from "../../ArtistPages/ArtistModule/ArtistModuleLayout";
+import ArtistModuleLayout from "../ArtistModule/ArtistModuleLayout";
 import "../../assets/artistModule.css";
 
 function HistoryLogs() {

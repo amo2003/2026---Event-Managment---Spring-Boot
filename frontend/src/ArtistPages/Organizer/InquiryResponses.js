@@ -1,7 +1,7 @@
 /* ---- InquiryResponses.js ---- */
 import React, { useState } from "react";
 import inquiryService from "../../services/inquiryService";
-import ArtistModuleLayout from "../../ArtistPages/ArtistModule/ArtistModuleLayout";
+import ArtistModuleLayout from "../ArtistModule/ArtistModuleLayout";
 import "../../assets/artistModule.css";
 
 export function InquiryResponses() {

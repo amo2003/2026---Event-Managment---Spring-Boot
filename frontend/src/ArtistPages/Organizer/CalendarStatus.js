@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import calendarService from "../../services/calendarService";
-import ArtistModuleLayout from "../../ArtistPages/ArtistModule/ArtistModuleLayout";
+import ArtistModuleLayout from "../ArtistModule/ArtistModuleLayout";
 import "../../assets/artistModule.css";
 
 function CalendarStatus() {

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import artistService from "../../services/artistService";
 import { AuthContext } from "../../context/AuthContext";
-import ArtistModuleLayout from "../ArtistModule/ArtistModuleLayout";
+import ArtistModuleLayout from "../../Pages/ArtistModule/ArtistModuleLayout";
 import "../../assets/artistModule.css";
 
 function EditArtistProfile() {
