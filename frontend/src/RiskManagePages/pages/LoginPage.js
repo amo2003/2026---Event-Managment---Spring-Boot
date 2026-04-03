@@ -24,8 +24,8 @@ const LoginPage = () => {
     if (Object.keys(ve).length > 0) { setLoading(false); return; }
     try {
       const data = await login(loginForm);
-      const from = location.state?.from?.pathname || "/dashboard";
-      data.mustChangePassword ? navigate("/change-password") : navigate(from);
+      const from = location.state?.from?.pathname || "/rdashboard";
+      data.mustChangePassword ? navigate("/rchange-password") : navigate(from);
     } catch (err) { setError(err.response?.data?.message || "Login failed"); }
     finally { setLoading(false); }
   };
@@ -45,7 +45,7 @@ const LoginPage = () => {
 
   return (
     <div className="rm-auth-scene">
-      <div className="rm-auth-back-link"><Link to="/">← Back</Link></div>
+      <div className="rm-auth-back-link"><Link to="/r">← Back</Link></div>
       <div className="rm-auth-center-wrap">
         <div className="rm-auth-panel rm-mono">
           <h2>{mode === "login" ? "OFFICER LOGIN" : "OFFICER REGISTER"}</h2>
@@ -67,7 +67,7 @@ const LoginPage = () => {
                 {loginErrors.password && <small className="rm-field-error">{loginErrors.password}</small>}
               </div>
               <button type="submit" className="rm-btn rm-btn-light rm-wide-btn" disabled={loading}>{loading ? "Signing In..." : "LOGIN"}</button>
-              <div className="rm-auth-helper-links rm-center-links"><Link to="/forgot-password">Forgot Password?</Link></div>
+              <div className="rm-auth-helper-links rm-center-links"><Link to="/rforgot-password">Forgot Password?</Link></div>
             </form>
           ) : (
             <form onSubmit={handleRegister} className="rm-form-grid rm-compact-form">

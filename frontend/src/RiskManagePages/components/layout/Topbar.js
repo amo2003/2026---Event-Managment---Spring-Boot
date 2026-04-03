@@ -15,7 +15,7 @@ const Topbar = () => {
           <strong>{user?.fullName || "Officer"}</strong>
           <span>{user?.role || "OFFICER"}</span>
         </div>
-        <button className="rm-btn rm-btn-ghost" onClick={() => { logout(); navigate("/login"); }}>Logout</button>
+        <button className="rm-btn rm-btn-ghost" onClick={() => { logout(); navigate("/rlogin"); }}>Logout</button>
       </div>
     </header>
   );

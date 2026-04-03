@@ -16,7 +16,7 @@ const ForgotPasswordPage = () => {
   };
   return (
     <div className="rm-auth-scene">
-      <div className="rm-auth-back-link"><Link to="/login">← Back</Link></div>
+      <div className="rm-auth-back-link"><Link to="/rlogin">← Back</Link></div>
       <div className="rm-auth-center-wrap">
         <div className="rm-auth-panel rm-mono">
           <h2>FORGOT PASSWORD</h2>
@@ -29,7 +29,7 @@ const ForgotPasswordPage = () => {
             </div>
             <button type="submit" className="rm-btn rm-btn-light rm-wide-btn">GENERATE CODE</button>
           </form>
-          <div className="rm-auth-helper-links rm-center-links"><Link to="/reset-password">Go to Reset Password</Link></div>
+          <div className="rm-auth-helper-links rm-center-links"><Link to="/rreset-password">Go to Reset Password</Link></div>
         </div>
       </div>
     </div>

@@ -97,12 +97,12 @@ function App() {
 
       {/** Risk */}
           <Route element={<PublicLayout />}>
-            <Route path="/" element={<PublicHomePage />} />
-            <Route path="/report-incident" element={<ReportIncidentPage />} />
-            <Route path="/track-incident" element={<TrackIncidentPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/r" element={<PublicHomePage />} />
+            <Route path="/rreport-incident" element={<ReportIncidentPage />} />
+            <Route path="/rtrack-incident" element={<TrackIncidentPage />} />
+            <Route path="/rlogin" element={<LoginPage />} />
+            <Route path="/rforgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/rreset-password" element={<ResetPasswordPage />} />
           </Route>
 
           <Route
@@ -112,11 +112,11 @@ function App() {
               </ProtectedRoute>
             }
           >
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/incidents" element={<IncidentListPage />} />
-            <Route path="/incidents/:id" element={<IncidentDetailsPage />} />
-            <Route path="/alerts" element={<AlertPage />} />
-            <Route path="/change-password" element={<ChangePasswordPage />} />
+            <Route path="/rdashboard" element={<DashboardPage />} />
+            <Route path="/rincidents" element={<IncidentListPage />} />
+            <Route path="/rincidents/:id" element={<IncidentDetailsPage />} />
+            <Route path="/ralerts" element={<AlertPage />} />
+            <Route path="/rchange-password" element={<ChangePasswordPage />} />
           </Route>
 
     </Routes>

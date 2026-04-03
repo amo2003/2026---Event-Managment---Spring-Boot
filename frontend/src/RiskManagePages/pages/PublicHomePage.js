@@ -8,8 +8,8 @@ const PublicHomePage = () => (
         <h1>REPORT.<br />TRACK.<br />RESPOND.</h1>
         <p className="rm-hero-text">A smart incident reporting and tracking portal designed to support safer university events with fast reporting, structured response, and clear progress visibility.</p>
         <div className="rm-hero-actions-v2">
-          <Link to="/report-incident" className="rm-btn rm-btn-light rm-hero-main-btn">Report Incident</Link>
-          <Link to="/track-incident" className="rm-btn rm-btn-outline rm-hero-main-btn">Track Incident</Link>
+          <Link to="/rreport-incident" className="rm-btn rm-btn-light rm-hero-main-btn">Report Incident</Link>
+          <Link to="/rtrack-incident" className="rm-btn rm-btn-outline rm-hero-main-btn">Track Incident</Link>
         </div>
         <div className="rm-hero-points">
           <div className="rm-hero-point"><strong>Fast Public Reporting</strong><span>Submit incidents in seconds</span></div>

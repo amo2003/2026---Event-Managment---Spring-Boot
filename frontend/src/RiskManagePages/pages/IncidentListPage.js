@@ -110,7 +110,7 @@ const IncidentListPage = () => {
                     <td>{item.reportedBy}</td><td>{item.placeAreaName}</td>
                     <td>{item.assignedOfficerName || "Pending"}</td>
                     <td>{renderAction(item)}</td>
-                    <td><Link to={`/incidents/${item.id}`} className="rm-mini-btn rm-dark">Open</Link></td>
+                    <td><Link to={`/rincidents/${item.id}`} className="rm-mini-btn rm-dark">Open</Link></td>
                   </tr>
                 ))}
             </tbody>

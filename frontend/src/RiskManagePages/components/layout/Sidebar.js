@@ -8,9 +8,9 @@ const Sidebar = () => (
     </div>
     <nav className="rm-sidebar-nav">
       <span className="rm-sidebar-section">Menu</span>
-      <NavLink to="/dashboard">Dashboard</NavLink>
-      <NavLink to="/incidents">Incidents</NavLink>
-      <NavLink to="/alerts">Alerts</NavLink>
+      <NavLink to="/rdashboard">Dashboard</NavLink>
+      <NavLink to="/rincidents">Incidents</NavLink>
+      <NavLink to="/ralerts">Alerts</NavLink>
     </nav>
   </aside>
 );

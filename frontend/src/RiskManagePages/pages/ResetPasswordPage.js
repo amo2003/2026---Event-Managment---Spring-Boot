@@ -12,13 +12,13 @@ const ResetPasswordPage = () => {
     e.preventDefault(); setError(""); setMessage("");
     const ve = validateResetPasswordForm(form); setErrors(ve);
     if (Object.keys(ve).length > 0) return;
-    try { setMessage(await resetPassword(form) || "Password reset successfully"); setTimeout(() => navigate("/login"), 1200); }
+    try { setMessage(await resetPassword(form) || "Password reset successfully"); setTimeout(() => navigate("/rlogin"), 1200); }
     catch (err) { setError(err.response?.data?.message || "Failed to reset password"); }
   };
   const fields = [["email","email","Officer Email"],["resetCode","text","Reset Code"],["newPassword","password","New Password"],["confirmPassword","password","Confirm Password"]];
   return (
     <div className="rm-auth-scene">
-      <div className="rm-auth-back-link"><Link to="/login">← Back</Link></div>
+      <div className="rm-auth-back-link"><Link to="/rlogin">← Back</Link></div>
       <div className="rm-auth-center-wrap">
         <div className="rm-auth-panel rm-mono">
           <h2>RESET PASSWORD</h2>
