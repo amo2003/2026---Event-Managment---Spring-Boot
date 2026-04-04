@@ -132,10 +132,13 @@ function SoceityRegister() {
             </div>
             {errors.name && <span className="reg-field-error">{errors.name}</span>}
 
-            <p className="add-society-link" onClick={() => navigate("/addsocieties")}
-              style={{ cursor: "pointer", fontSize: "13px", marginBottom: "10px" }}>
-              If society name not in list, add your society name
-            </p>
+            <button
+              type="button"
+              className="add-society-btn"
+              onClick={() => navigate("/addsocieties")}
+            >
+              + Society not in list? Add it here
+            </button>
 
             <div className="select-wrapper">
               <select name="faculty" value={formData.faculty} onChange={handleChange} required>
