@@ -1,4 +1,4 @@
-package backend.Society_Stall.Service.enums;
+package backend.Society_Stall.enums;
 
 public enum EventStatus {
     PENDING,

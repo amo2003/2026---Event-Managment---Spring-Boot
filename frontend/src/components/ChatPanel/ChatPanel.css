@@ -217,3 +217,58 @@
 }
 
 .cp-send-btn:hover { opacity: 0.85; }
+
+/* ===== IMAGE ATTACHMENT ===== */
+.cp-msg-img {
+  max-width: 220px;
+  max-height: 180px;
+  border-radius: 10px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 4px;
+  transition: opacity 0.2s;
+}
+.cp-msg-img:hover { opacity: 0.85; }
+
+.cp-img-preview {
+  position: relative;
+  padding: 8px 16px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.cp-img-preview img {
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid rgba(168,85,247,0.4);
+}
+
+.cp-img-remove {
+  background: rgba(239,68,68,0.15);
+  border: 1px solid rgba(239,68,68,0.3);
+  color: #fca5a5;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 0.65rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cp-img-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0 4px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+}
+.cp-img-btn:hover { opacity: 1; }

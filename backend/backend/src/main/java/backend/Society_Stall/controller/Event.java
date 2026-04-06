@@ -1,8 +1,8 @@
-package backend.Society_Stall.Service.controller;
+package backend.Society_Stall.controller;
 
 import backend.Society_Stall.Service.EventService;
-import backend.Society_Stall.Service.enums.EventStatus;
-import backend.Society_Stall.Service.model.EventModel;
+import backend.Society_Stall.enums.EventStatus;
+import backend.Society_Stall.model.EventModel;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

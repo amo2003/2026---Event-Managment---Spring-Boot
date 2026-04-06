@@ -1,15 +1,15 @@
 package backend.Society_Stall.Service;
 
-import backend.Society_Stall.Service.dto.EventDTO;
-import backend.Society_Stall.Service.enums.EventStatus;
-import backend.Society_Stall.Service.exception.EventNotFoundException;
-import backend.Society_Stall.Service.exception.SlotUnavailableException;
-import backend.Society_Stall.Service.model.EventCalender;
-import backend.Society_Stall.Service.model.EventModel;
-import backend.Society_Stall.Service.model.SocietyModel;
-import backend.Society_Stall.Service.repository.EventCalendarRepository;
-import backend.Society_Stall.Service.repository.SocietyEventRepository;
-import backend.Society_Stall.Service.repository.SocietyRepository;
+import backend.Society_Stall.dto.EventDTO;
+import backend.Society_Stall.enums.EventStatus;
+import backend.Society_Stall.exception.EventNotFoundException;
+import backend.Society_Stall.exception.SlotUnavailableException;
+import backend.Society_Stall.model.EventCalender;
+import backend.Society_Stall.model.EventModel;
+import backend.Society_Stall.model.SocietyModel;
+import backend.Society_Stall.repository.EventCalendarRepository;
+import backend.Society_Stall.repository.SocietyEventRepository;
+import backend.Society_Stall.repository.SocietyRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

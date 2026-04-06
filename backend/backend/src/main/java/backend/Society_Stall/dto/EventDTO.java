@@ -1,7 +1,7 @@
-package backend.Society_Stall.Service.dto;
+package backend.Society_Stall.dto;
 
-import backend.Society_Stall.Service.enums.EventStatus;
-import backend.Society_Stall.Service.model.EventModel;
+import backend.Society_Stall.enums.EventStatus;
+import backend.Society_Stall.model.EventModel;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

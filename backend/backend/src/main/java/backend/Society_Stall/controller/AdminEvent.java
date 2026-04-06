@@ -2,9 +2,9 @@ package backend.Society_Stall.controller;
 
 import backend.Society_Stall.Service.EmailService;
 import backend.Society_Stall.Service.EventService;
-import backend.Society_Stall.Service.dto.EventDTO;
+import backend.Society_Stall.dto.EventDTO;
 import backend.Society_Stall.model.DeanApproval;
-import backend.Society_Stall.Service.model.EventModel;
+import backend.Society_Stall.model.EventModel;
 import backend.Society_Stall.repository.DeanApprovalRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -114,6 +114,16 @@ public class AdminEvent {
     @GetMapping("/dean-approvals")
     public List<DeanApproval> getDeanApprovals() {
         return deanApprovalRepo.findAllByOrderBySentAtDesc();
+    }
+
+    // ── Admin: delete a dean approval ──
+    @DeleteMapping("/dean-approvals/{id}")
+    public org.springframework.http.ResponseEntity<Void> deleteDeanApproval(@PathVariable Long id) {
+        if (!deanApprovalRepo.existsById(id)) {
+            return org.springframework.http.ResponseEntity.notFound().build();
+        }
+        deanApprovalRepo.deleteById(id);
+        return org.springframework.http.ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}/artists")

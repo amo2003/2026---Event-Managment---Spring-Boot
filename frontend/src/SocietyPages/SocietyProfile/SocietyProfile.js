@@ -120,7 +120,7 @@ const SocietyProfile = () => {
   const handleChange = (field, value) => {
     // Validation rules
     if (field === "name" || field === "presidentName" || field === "advisorName") {
-      if (/\d/.test(value)) return; // prevent numbers
+      if (/\d/.test(value)) return; 
     } else if (field === "contactNumber") {
       if (/[^0-9]/.test(value)) return;
       if (value.length > 10) return;
@@ -257,7 +257,7 @@ const SocietyProfile = () => {
                   {event.status === "REJECTED" && <span className="sp-badge sp-badge-rejected">❌ Rejected - {event.adminMessage}</span>}
                   {event.status === "CONFIRMED" && <span className="sp-badge sp-badge-confirmed">Scheduled</span>}
                   <button className="sp-btn-delete-event" onClick={() => handleEventDelete(event.id)}>
-                    🗑 Delete Event
+                    Delete Event
                   </button>
                   <div className="sp-chat-wrapper">
                     {unreadMap[event.id] > 0 && (

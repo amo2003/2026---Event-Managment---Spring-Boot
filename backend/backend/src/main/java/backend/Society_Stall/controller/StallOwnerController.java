@@ -1,12 +1,12 @@
-package backend.Society_Stall.Service.controller;
+package backend.Society_Stall.controller;
 
 import backend.Society_Stall.Service.EmailService;
 import backend.Society_Stall.Service.QRCodeService;
-import backend.Society_Stall.Service.config.PayHereConfig;
-import backend.Society_Stall.Service.model.StallOwner;
-import backend.Society_Stall.Service.model.StallRegistration;
-import backend.Society_Stall.Service.repository.StallOwnerRepository;
-import backend.Society_Stall.Service.repository.StallRegistrationRepository;
+import backend.Society_Stall.config.PayHereConfig;
+import backend.Society_Stall.model.StallOwner;
+import backend.Society_Stall.model.StallRegistration;
+import backend.Society_Stall.repository.StallOwnerRepository;
+import backend.Society_Stall.repository.StallRegistrationRepository;
 import com.google.zxing.WriterException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

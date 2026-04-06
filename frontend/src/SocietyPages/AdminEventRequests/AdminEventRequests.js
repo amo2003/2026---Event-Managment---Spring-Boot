@@ -305,7 +305,7 @@ const AdminPendingEvents = () => {
         </div>
       )}
 
-      {/* ── Description Popup ── */}
+      {/*  Description Popup  */}
       {descEvent && (
         <div className="aer-detail-overlay" onClick={() => setDescEvent(null)}>
           <div className="aer-desc-modal" onClick={(e) => e.stopPropagation()}>
@@ -316,14 +316,14 @@ const AdminPendingEvents = () => {
         </div>
       )}
 
-      {/* ── Image Modal ── */}
+      {/*  Image Modal  */}
       {modalImage && (
         <div className="aer-image-modal" onClick={() => setModalImage(null)}>
           <img src={modalImage} alt="Preview" />
         </div>
       )}
 
-      {/* ── Chat Panel ── */}
+      {/*  Chat Panel  */}
       {chatEventId && (
         <ChatPanel
           eventId={chatEventId}

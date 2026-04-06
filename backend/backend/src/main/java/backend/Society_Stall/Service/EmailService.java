@@ -1,7 +1,7 @@
 package backend.Society_Stall.Service;
 
-import backend.Society_Stall.Service.model.StallOwner;
-import backend.Society_Stall.Service.model.StallRegistration;
+import backend.Society_Stall.model.StallOwner;
+import backend.Society_Stall.model.StallRegistration;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;

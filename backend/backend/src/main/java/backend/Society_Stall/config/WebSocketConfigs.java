@@ -1,4 +1,4 @@
-package backend.Society_Stall.Service.config;
+package backend.Society_Stall.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

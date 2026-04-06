@@ -1,7 +1,7 @@
 package backend.Society_Stall.Service;
 
-import backend.Society_Stall.Service.model.StallModel;
-import backend.Society_Stall.Service.repository.StallAreaRepository;
+import backend.Society_Stall.model.StallModel;
+import backend.Society_Stall.repository.StallAreaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

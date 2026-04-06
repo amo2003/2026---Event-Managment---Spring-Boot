@@ -74,6 +74,12 @@ const AdminFacultyNotify = () => {
     }
   };
 
+  const deleteApproval = (id) => {
+    axios.delete(`http://localhost:8080/api/admin/events/dean-approvals/${id}`)
+      .then(() => { setApprovals(p => p.filter(a => a.id !== id)); showToast("Response deleted"); })
+      .catch(() => showToast("Failed to delete", "error"));
+  };
+
   const formatDate = (d) => {
     if (!d) return "—";
     if (Array.isArray(d)) return `${d[0]}-${String(d[1]).padStart(2,"0")}-${String(d[2]).padStart(2,"0")}`;
@@ -224,6 +230,7 @@ const AdminFacultyNotify = () => {
                       ? `Responded: ${new Date(a.respondedAt).toLocaleDateString()}`
                       : `Sent: ${new Date(a.sentAt).toLocaleDateString()}`}
                   </span>
+                  <button className="afn-delete-btn" onClick={() => deleteApproval(a.id)} title="Delete">Delete</button>
                 </div>
               </div>
             ))}

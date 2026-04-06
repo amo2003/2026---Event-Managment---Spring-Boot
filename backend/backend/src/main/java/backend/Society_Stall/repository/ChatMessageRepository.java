@@ -1,6 +1,6 @@
-package backend.Society_Stall.Service.repository;
+package backend.Society_Stall.repository;
 
-import backend.Society_Stall.Service.model.ChatMessage;
+import backend.Society_Stall.model.ChatMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

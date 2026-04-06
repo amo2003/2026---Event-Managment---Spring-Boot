@@ -1,7 +1,7 @@
-package backend.Society_Stall.Service.controller;
+package backend.Society_Stall.controller;
 
 import backend.Society_Stall.Service.StallAreaService;
-import backend.Society_Stall.Service.model.StallModel;
+import backend.Society_Stall.model.StallModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
