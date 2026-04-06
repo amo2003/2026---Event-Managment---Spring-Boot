@@ -1,0 +1,389 @@
+/*  FACULTY NOTIFY PAGE  */
+.afn-page {
+  min-height: 100vh;
+  background: #0b0b14;
+  font-family: 'Poppins', sans-serif;
+  color: #f1f5f9;
+  padding: 60px 32px 100px;
+  position: relative;
+}
+
+.afn-back {
+  position: fixed;
+  top: 20px; left: 20px;
+  padding: 8px 16px;
+  border-radius: 50px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(10px);
+  color: #94a3b8;
+  font-size: 13px;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  z-index: 100;
+  transition: 0.2s;
+}
+.afn-back:hover { color: #fff; border-color: rgba(255,255,255,0.3); }
+
+/* Toast */
+.afn-toast {
+  position: fixed;
+  top: 24px; right: 24px;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  z-index: 999;
+  animation: afn-slide-in 0.3s ease;
+}
+.afn-toast--success { background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.35); color: #86efac; }
+.afn-toast--error   { background: rgba(239,68,68,0.15);  border: 1px solid rgba(239,68,68,0.35);  color: #fca5a5; }
+
+@keyframes afn-slide-in {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Header */
+.afn-header {
+  max-width: 700px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.afn-eyebrow {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #a855f7;
+  background: rgba(168,85,247,0.1);
+  border: 1px solid rgba(168,85,247,0.28);
+  border-radius: 20px;
+  padding: 4px 14px;
+  margin-bottom: 14px;
+}
+
+.afn-title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 600;
+  margin: 0 0 10px;
+  background: linear-gradient(135deg, #e2e8f0, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.afn-sub { font-size: 0.88rem; color: #aeb0b3; margin: 0; }
+
+/* Layout */
+.afn-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Panel */
+.afn-panel {
+  background: linear-gradient(145deg,
+    rgba(227, 227, 227, 0.908) 0%,
+    rgba(205, 207, 209, 0.913) 100%);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 20px;
+  padding: 24px;
+  backdrop-filter: blur(12px);
+}
+
+.afn-panel-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #2b2c2d;
+  margin: 0 0 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.afn-count {
+  background: rgba(169, 85, 247, 0.506);
+  color: #8000ff;
+  border-radius: 20px;
+  padding: 1px 9px;
+  font-size: 0.75rem;
+}
+
+.afn-empty { color: #37404d; font-size: 0.88rem; text-align: center; padding: 20px 0; }
+
+/* Event cards */
+.afn-event-card {
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(42, 32, 32, 0.758);
+  background: rgba(128, 128, 128, 0.495);
+  color: #0b0b14;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.afn-event-card:hover { border-color: rgba(169, 85, 247, 0.816); background: rgba(168,85,247,0.05); }
+
+.afn-event-card--active {
+  border-color: rgba(168,85,247,0.5) !important;
+  background: rgba(168,85,247,0.08) !important;
+}
+
+.afn-event-card--sent { opacity: 0.65; }
+
+.afn-event-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.afn-event-name { font-size: 0.92rem; font-weight: 600; color: #0e0e0e; }
+
+.afn-sent-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #86efac;
+  background: rgba(34,197,94,0.1);
+  border: 1px solid rgba(34,197,94,0.25);
+  border-radius: 20px;
+  padding: 2px 9px;
+}
+
+.afn-event-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 0.78rem;
+  color: #011b40;
+}
+
+/* Form panel */
+.afn-no-select {
+  text-align: center;
+  color: #05080b;
+  font-size: 0.88rem;
+  padding: 20px 0 24px;
+  border: 1px dashed rgba(255,255,255,0.08);
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+/* Preview */
+.afn-preview {
+  background: rgba(143, 143, 143, 0.812);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+}
+
+.afn-preview-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8707ff;
+  margin-bottom: 6px;
+}
+
+.afn-preview-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #353739;
+  margin-bottom: 12px;
+}
+
+.afn-preview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.afn-preview-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.afn-preview-full { grid-column: 1 / -1; }
+
+.afn-preview-grid span { font-size: 0.7rem; color: #1b1d1f; }
+.afn-preview-grid strong { font-size: 0.82rem; color: #1c1e20; font-weight: 500; }
+
+/* Fields */
+.afn-field { margin-bottom: 16px; }
+
+.afn-field label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #060606;
+  margin-bottom: 6px;
+}
+
+.afn-field input,
+.afn-field select {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(183, 80, 80, 0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  color: #31363b;
+  font-size: 0.88rem;
+  font-family: 'Poppins', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.afn-field input:focus,
+.afn-field select:focus { border-color: rgba(168,85,247,0.5); }
+
+.afn-field select option { background: #8989b9; }
+
+.afn-error { font-size: 0.75rem; color: #f87171; margin: 4px 0 0; }
+
+/* Send button */
+.afn-send-btn {
+  width: 100%;
+  padding: 13px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #8000f8, #a855f7);
+  color: #fff;
+  font-size: 0.92rem;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: opacity 0.2s, transform 0.2s;
+  box-shadow: 0 4px 20px rgba(128,0,248,0.35);
+}
+
+.afn-send-btn:hover:not(:disabled) { opacity: 0.88; transform: translateY(-2px); }
+.afn-send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .afn-layout { grid-template-columns: 1fr; }
+  .afn-page { padding: 60px 16px 80px; }
+}
+
+/*  Dean Approval Responses  */
+.afn-approvals-section {
+  max-width: 1100px;
+  margin: 36px auto 0;
+}
+
+.afn-approvals-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.afn-approvals-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #dbdbdb;
+  margin: 0;
+}
+
+.afn-approvals-counts {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.afn-acount {
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 20px;
+  padding: 3px 12px;
+  border: 1px solid;
+}
+
+.afn-acount--pending  { color: #fbbf24; background: rgba(245,158,11,0.1);  border-color: rgba(245,158,11,0.25); }
+.afn-acount--approved { color: #86efac; background: rgba(34,197,94,0.1);   border-color: rgba(34,197,94,0.25); }
+.afn-acount--rejected { color: #fca5a5; background: rgba(239,68,68,0.1);   border-color: rgba(239,68,68,0.25); }
+
+.afn-approvals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.afn-approval-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.07);
+  background: linear-gradient(145deg,
+    rgba(255,255,255,0.06) 0%,
+    rgba(200,210,230,0.02) 100%);
+  backdrop-filter: blur(10px);
+  transition: border-color 0.2s;
+}
+
+.afn-approval-row--approved { border-left: 3px solid rgba(34,197,94,0.5); }
+.afn-approval-row--rejected { border-left: 3px solid rgba(239,68,68,0.5); }
+.afn-approval-row--pending  { border-left: 3px solid rgba(245,158,11,0.5); }
+
+.afn-approval-left { display: flex; flex-direction: column; gap: 6px; }
+
+.afn-approval-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 20px;
+  padding: 3px 10px;
+  width: fit-content;
+  border: 1px solid;
+}
+
+.afn-approval-badge--approved { color: #86efac; background: rgba(34,197,94,0.12);  border-color: rgba(34,197,94,0.25); }
+.afn-approval-badge--rejected { color: #fca5a5; background: rgba(239,68,68,0.12);  border-color: rgba(239,68,68,0.25); }
+.afn-approval-badge--pending  { color: #fbbf24; background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.25); }
+
+.afn-approval-event {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+
+.afn-approval-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.78rem;
+  color: #cfcfcf;
+}
+
+.afn-approval-comment {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  font-style: italic;
+  background: rgba(255,255,255,0.03);
+  border-left: 2px solid rgba(168,85,247,0.4);
+  padding: 6px 12px;
+  border-radius: 0 6px 6px 0;
+}
+
+.afn-approval-right { flex-shrink: 0; }
+
+.afn-approval-date {
+  font-size: 0.85rem;
+  color: #8fbeff;
+  white-space: nowrap;
+}

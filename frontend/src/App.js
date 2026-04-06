@@ -25,6 +25,8 @@ import SocietyForgotPassword from './SocietyPages/ForgotPassword/SocietyForgotPa
 import StallOwnerForgotPassword from './SocietyPages/ForgotPassword/StallOwnerForgotPassword';
 import AdminLogin from './SocietyPages/AdminLogin/AdminLogin';
 import AdminDashboard from './SocietyPages/AdminDashboard/AdminDashboard';
+import AdminFacultyNotify from './SocietyPages/AdminFacultyNotify/AdminFacultyNotify';
+import DeanRespond from './SocietyPages/DeanRespond/DeanRespond';
 import Contact from './SocietyPages/ContactUs/Contact';
 import FriendTrackerPage from './SocietyPages/FriendTracker/FriendTrackerPage';
 import About from './SocietyPages/AboutUs/About';
@@ -110,6 +112,8 @@ function App() {
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
       <Route path="/ad" element={<AdminEventRequests />} />
       <Route path="/admin/pending-payments" element={<PendingPayments />} />
+      <Route path="/admin/faculty-notify" element={<AdminFacultyNotify />} />
+      <Route path="/dean/respond/:token" element={<DeanRespond />} />
 
       {/* Other */}
       <Route path="/about" element={<About />} />

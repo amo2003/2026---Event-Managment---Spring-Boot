@@ -4,10 +4,11 @@ import axios from "axios";
 import "./AdminDashboard.css";
 
 const navItems = [
-  { icon: "⊞", label: "Dashboard",       path: "/admin",                    id: "dashboard" },
-  { icon: "📋", label: "Event Approvals", path: "/ad",                       id: "events" },
-  { icon: "💳", label: "Stall Payments",  path: "/admin/pending-payments",   id: "payments" },
-  { icon: "🎤", label: "Artist Mgmt",     path: "/organizer/search-artists", id: "artists" },
+  { icon: "⊞", label: "Dashboard",        path: "/admin",                    id: "dashboard" },
+  { icon: "📋", label: "Event Approvals",  path: "/ad",                       id: "events" },
+  { icon: "💳", label: "Stall Payments",   path: "/admin/pending-payments",   id: "payments" },
+  { icon: "🎤", label: "Artist Mgmt",      path: "/organizer/search-artists", id: "artists" },
+  { icon: "📧", label: "Faculty Notify",   path: "/admin/faculty-notify",     id: "faculty" },
 ];
 
 const quickCards = [
@@ -34,6 +35,14 @@ const quickCards = [
     path: "/organizer/search-artists",
     accent: "#ec4899",
     tag: "Artists",
+  },
+  {
+    icon: "📧",
+    title: "Faculty Notify",
+    desc: "Send event details to faculty deans via email before approving events.",
+    path: "/admin/faculty-notify",
+    accent: "#f59e0b",
+    tag: "Email",
   },
 ];
 
