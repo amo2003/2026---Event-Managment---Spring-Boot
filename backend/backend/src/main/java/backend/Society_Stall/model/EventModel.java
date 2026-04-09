@@ -1,6 +1,6 @@
-package backend.Society_Stall.Service.model;
+package backend.Society_Stall.model;
 
-import backend.Society_Stall.Service.enums.EventStatus;
+import backend.Society_Stall.enums.EventStatus;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;

@@ -1,9 +1,9 @@
-package backend.Society_Stall.Service.controller;
+package backend.Society_Stall.controller;
 
 import backend.Society_Stall.Service.EmailService;
 import backend.Society_Stall.Service.QRCodeService;
-import backend.Society_Stall.Service.model.StallRegistration;
-import backend.Society_Stall.Service.repository.StallRegistrationRepository;
+import backend.Society_Stall.model.StallRegistration;
+import backend.Society_Stall.repository.StallRegistrationRepository;
 import com.google.zxing.WriterException;
 import org.springframework.web.bind.annotation.*;
 

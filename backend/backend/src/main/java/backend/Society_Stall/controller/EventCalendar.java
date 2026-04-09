@@ -1,7 +1,7 @@
-package backend.Society_Stall.Service.controller;
+package backend.Society_Stall.controller;
 
-import backend.Society_Stall.Service.model.EventCalender;
-import backend.Society_Stall.Service.repository.EventCalendarRepository;
+import backend.Society_Stall.model.EventCalender;
+import backend.Society_Stall.repository.EventCalendarRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -1,6 +1,6 @@
-package backend.Society_Stall.Service.repository;
+package backend.Society_Stall.repository;
 
-import backend.Society_Stall.Service.model.SocietyModel;
+import backend.Society_Stall.model.SocietyModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

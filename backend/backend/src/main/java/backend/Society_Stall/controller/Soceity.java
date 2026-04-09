@@ -1,9 +1,9 @@
 package backend.Society_Stall.controller;
 
-import backend.Society_Stall.Service.dto.LoginResponse;
-import backend.Society_Stall.Service.exception.SoceityNotFoundException;
-import backend.Society_Stall.Service.model.SocietyModel;
-import backend.Society_Stall.Service.repository.SocietyRepository;
+import backend.Society_Stall.dto.LoginResponse;
+import backend.Society_Stall.exception.SoceityNotFoundException;
+import backend.Society_Stall.model.SocietyModel;
+import backend.Society_Stall.repository.SocietyRepository;
 import backend.Society_Stall.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

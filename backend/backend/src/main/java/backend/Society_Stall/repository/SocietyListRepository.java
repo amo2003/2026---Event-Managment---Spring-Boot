@@ -1,6 +1,6 @@
-package backend.Society_Stall.Service.repository;
+package backend.Society_Stall.repository;
 
-import backend.Society_Stall.Service.model.SocietyListModel;
+import backend.Society_Stall.model.SocietyListModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SocietyListRepository extends JpaRepository<SocietyListModel, Long> {

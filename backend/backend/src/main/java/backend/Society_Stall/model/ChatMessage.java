@@ -1,4 +1,4 @@
-package backend.Society_Stall.Service.model;
+package backend.Society_Stall.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -21,6 +21,8 @@ public class ChatMessage {
 
     @Column(columnDefinition = "TEXT")
     private String content;
+
+    private String imageUrl; // optional image attachment
 
     private LocalDateTime sentAt;
 
@@ -54,6 +56,8 @@ public class ChatMessage {
     public void setSenderName(String senderName) { this.senderName = senderName; }
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
     public LocalDateTime getSentAt() { return sentAt; }
     public void setSentAt(LocalDateTime sentAt) { this.sentAt = sentAt; }
     public boolean isReadByAdmin() { return readByAdmin; }
