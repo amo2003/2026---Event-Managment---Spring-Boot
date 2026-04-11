@@ -15,8 +15,8 @@
 .adm-sidebar {
   width: 340px;
   min-height: 100vh;
-  background: linear-gradient(180deg, #a9a9b38c 0%, #0d0d1c 100%);
-  border-right: 1px solid rgba(255,255,255,0.07);
+  background: linear-gradient(180deg, #0000008c 0%, #0d0d1c 100%);
+  border-right: 1px solid rgba(255, 255, 255, 0.65);
   display: flex;
   flex-direction: column;
   transition: width 0.25s ease;
@@ -261,9 +261,9 @@
 
   /* glassy whitish-ash gradient */
   background: linear-gradient(145deg,
-    rgba(182, 178, 178, 0.764) 0%,
-    rgba(200,210,230,0.05) 60%,
-    rgba(160, 180, 210, 0.635) 100%);
+    rgba(85, 133, 255, 0.764) 0%,
+    rgba(214, 9, 246, 0.728) 60%,
+    rgba(58, 156, 248, 0.635) 100%);
   border: 1px solid rgba(255,255,255,0.13);
   backdrop-filter: blur(12px);
   box-shadow:
@@ -307,14 +307,14 @@
   font-size: 1.7rem;
   font-weight: 800;
   line-height: 1;
-  color: #f1f5f9;
+  color: #000000;
 }
 
 .adm-stat-label {
-  font-size: 0.76rem;
-  color: #94a3b8;
+  font-size: 0.86rem;
+  color: #e7e7e7;
   margin-top: 5px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 /* 
@@ -350,8 +350,8 @@
 
   /* glassy whitish-ash gradient — slightly lighter than stat cards */
   background: linear-gradient(150deg,
-    rgba(241, 246, 205, 0.858) 0%,
-    rgba(93, 127, 178, 0.68) 50%,
+    rgba(22, 166, 255, 0.858) 0%,
+    rgba(179, 39, 255, 0.68) 50%,
     rgba(187, 187, 188, 0.745) 100%);
   border: 1px solid rgba(255,255,255,0.11);
   backdrop-filter: blur(14px);
@@ -410,15 +410,15 @@
 .adm-card-icon { font-size: 2.2rem; margin-bottom: 14px; }
 
 .adm-card-title {
-  font-size: 1.05rem;
-  font-weight: 700;
+  font-size: 1.5rem;
+  font-weight: 600;
   margin: 0 0 10px;
   color: #f1f5f9;
 }
 
 .adm-card-desc {
-  font-size: 0.84rem;
-  color: #94a3b8;
+  font-size: 0.94rem;
+  color: #cccccc;
   line-height: 1.75;
   margin: 0 0 22px;
   flex: 1;
@@ -431,9 +431,9 @@
   margin-top: auto;
 }
 
-/* ─────────────────────────────
+/* 
    LOADING SKELETON
-───────────────────────────── */
+ */
 .adm-stat-loading {
   display: inline-block;
   width: 36px;
@@ -449,9 +449,9 @@
   50%       { opacity: 0.8; }
 }
 
-/* ─────────────────────────────
+/* 
    RESPONSIVE
-───────────────────────────── */
+ */
 @media (max-width: 768px) {
   .adm-sidebar { position: fixed; height: 100vh; }
   .adm-sidebar:not(.adm-sidebar--collapsed) {
@@ -469,9 +469,9 @@
   .adm-cards  { grid-template-columns: 1fr; }
 }
 
-/* ─────────────────────────────
+/* 
    DEAN RESPONSES SECTION
-───────────────────────────── */
+ */
 .adm-dean-pending-badge {
   margin-left: 10px;
   font-size: 0.7rem;

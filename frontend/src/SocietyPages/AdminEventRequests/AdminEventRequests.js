@@ -137,7 +137,7 @@ const AdminPendingEvents = () => {
                         ? event.artists.split(",").map((a, i) => (
                             <div key={i}>{i + 1}) {a.trim()}</div>
                           ))
-                        : "—"}
+                        : <span className="aer-no-artist">No artists — event without artists</span>}
                     </td>
                     <td
                       className="aer-desc-cell"
@@ -241,19 +241,12 @@ const AdminPendingEvents = () => {
                         <button className="aer-cancel-artists-btn" onClick={() => setEditArtists(null)}>✕</button>
                       </div>
                     )}
-
-                    <span className="aer-detail-value">
-                      {detailEvent.artists.split(",").map((a, i) => (
-                        <div key={i}>{i + 1}) {a.trim()}</div>
-                      ))}
-                    </span>
- 
                   </div>
                   {editArtists === null ? (
                     <div className="aer-detail-value">
                       {detailEvent.artists
                         ? detailEvent.artists.split(",").map((a, i) => <div key={i}>{i + 1}) {a.trim()}</div>)
-                        : "—"}
+                        : <span className="aer-no-artist">This event is conducted without artists</span>}
                     </div>
                   ) : (
                     <div className="aer-artists-edit-list">
