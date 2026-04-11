@@ -17,7 +17,7 @@ const quickCards = [
     title: "Event Approvals",
     desc: "Review, approve or reject event requests submitted by societies.",
     path: "/ad",
-    accent: "#8000f8",
+    accent: "#000000ff",
     tag: "Events",
   },
   {
@@ -25,7 +25,7 @@ const quickCards = [
     title: "Stall Payments",
     desc: "Review pending bank slip payments from stall owners.",
     path: "/admin/pending-payments",
-    accent: "#0062ff",
+    accent: "#000000ff",
     tag: "Payments",
   },
   {
@@ -33,7 +33,7 @@ const quickCards = [
     title: "Artist Management",
     desc: "Search artists, manage leads, send invitations and finalize performers.",
     path: "/organizer/search-artists",
-    accent: "#ec4899",
+    accent: "#000000ff",
     tag: "Artists",
   },
   {
@@ -41,7 +41,7 @@ const quickCards = [
     title: "Faculty Notify",
     desc: "Send event details to faculty deans via email before approving events.",
     path: "/admin/faculty-notify",
-    accent: "#f59e0b",
+    accent: "#000000ff",
     tag: "Email",
   },
 ];

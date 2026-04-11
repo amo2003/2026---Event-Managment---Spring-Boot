@@ -594,3 +594,15 @@
   background: rgba(236,72,153,0.22);
   transform: translateY(-1px);
 }
+
+/* No artist message */
+.aer-no-artist {
+  font-size: 0.78rem;
+  color: #f50b0b;
+  font-style: italic;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(245, 11, 11, 0.2);
+  border-radius: 6px;
+  padding: 4px 10px;
+  display: inline-block;
+}

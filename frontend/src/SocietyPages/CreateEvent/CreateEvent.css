@@ -264,3 +264,35 @@
 .ce-artist-add:hover {
   background: rgba(255, 255, 255, 0.12);
 }
+
+/* ── Artist toggle ── */
+.ce-artist-toggle {
+  display: flex;
+  gap: 10px;
+}
+
+.ce-toggle-btn {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.83);
+  background: rgba(58, 56, 56, 0.816);
+  color: #e3e3e3;
+  font-size: 0.88rem;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ce-toggle-btn:hover {
+  border-color: rgba(168,85,247,0.4);
+  color: #e2e8f0;
+}
+
+.ce-toggle-btn--active {
+  background: rgba(168,85,247,0.15);
+  border-color: rgba(169, 85, 247, 0.909);
+  color: #1c1c1c;
+  font-weight: 600;
+}

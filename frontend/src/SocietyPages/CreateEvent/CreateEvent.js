@@ -14,6 +14,7 @@ const CreateEvent = () => {
   });
 
   const [artists, setArtists] = useState([""]);
+  const [hasArtists, setHasArtists] = useState(null); // null=not chosen, true=with, false=without
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [errors, setErrors] = useState({});
@@ -75,10 +76,13 @@ const CreateEvent = () => {
     if (!form.contactNumber.trim()) e.contactNumber = "Contact number is required.";
     else if (form.contactNumber.length !== 10)
                                     e.contactNumber = "Contact number must be exactly 10 digits.";
-    const filledArtists = artists.filter(a => a.trim());
-    if (filledArtists.length === 0) e.artists = "At least one artist is required.";
+    if (hasArtists === null)        e.hasArtists    = "Please select whether this event has artists.";
+    if (hasArtists === true) {
+      const filledArtists = artists.filter(a => a.trim());
+      if (filledArtists.length === 0) e.artists = "At least one artist name is required.";
+    }
     if (!form.description.trim())   e.description   = "Description is required.";
-    if (!image)                      e.image         = "Please upload a feature image.";
+    if (!image)                     e.image         = "Please upload a feature image.";
     return e;
   };
 
@@ -90,7 +94,7 @@ const CreateEvent = () => {
     try {
       const data = new FormData();
       Object.keys(form).forEach((key) => data.append(key, form[key]));
-      data.append("artists", artists.filter(a => a.trim()).join(", "));
+      data.append("artists", hasArtists ? artists.filter(a => a.trim()).join(", ") : "");
       data.append("societyId", user.id);
       if (image) data.append("image", image);
 
@@ -101,6 +105,7 @@ const CreateEvent = () => {
       alert("Event Submitted! Waiting for Admin Approval.");
       setForm({ eventName: "", venue: "", eventDate: "", startTime: "", endTime: "", contactNumber: "", description: "" });
       setArtists([""]);
+      setHasArtists(null);
       setImage(null);
       setPreview(null);
       navigate("/my-events");
@@ -171,26 +176,49 @@ const CreateEvent = () => {
             <FE name="contactNumber" />
           </div>
 
-          {/* Artists */}
+          {/* Artist toggle */}
           <div className="ce-field">
-            <div className="ce-artists-list">
-              {artists.map((artist, index) => (
-                <div key={index} className="ce-artist-row">
-                  <input
-                    className="event-input ce-artist-input"
-                    placeholder={`Artist ${index + 1} name`}
-                    value={artist}
-                    onChange={(e) => handleArtistChange(index, e.target.value)}
-                  />
-                  {artists.length > 1 && (
-                    <button type="button" className="ce-artist-remove" onClick={() => removeArtist(index)}>✕</button>
-                  )}
-                </div>
-              ))}
-              <button type="button" className="ce-artist-add" onClick={addArtist}>+ Add Artist</button>
+            <div className="ce-artist-toggle">
+              <button
+                type="button"
+                className={`ce-toggle-btn ${hasArtists === true ? "ce-toggle-btn--active" : ""}`}
+                onClick={() => { setHasArtists(true); setErrors(p => ({ ...p, hasArtists: "" })); }}
+              >
+                🎤 With Artists
+              </button>
+              <button
+                type="button"
+                className={`ce-toggle-btn ${hasArtists === false ? "ce-toggle-btn--active" : ""}`}
+                onClick={() => { setHasArtists(false); setArtists([""]); setErrors(p => ({ ...p, hasArtists: "", artists: "" })); }}
+              >
+                🚫 Without Artists
+              </button>
             </div>
-            <FE name="artists" />
+            {errors.hasArtists && <span className="ce-field-error">{errors.hasArtists}</span>}
           </div>
+
+          {/* Artist inputs — only when "With Artists" selected */}
+          {hasArtists === true && (
+            <div className="ce-field">
+              <div className="ce-artists-list">
+                {artists.map((artist, index) => (
+                  <div key={index} className="ce-artist-row">
+                    <input
+                      className="event-input ce-artist-input"
+                      placeholder={`Artist ${index + 1} name`}
+                      value={artist}
+                      onChange={(e) => handleArtistChange(index, e.target.value)}
+                    />
+                    {artists.length > 1 && (
+                      <button type="button" className="ce-artist-remove" onClick={() => removeArtist(index)}>✕</button>
+                    )}
+                  </div>
+                ))}
+                <button type="button" className="ce-artist-add" onClick={addArtist}>+ Add Artist</button>
+              </div>
+              <FE name="artists" />
+            </div>
+          )}
 
           <div className="ce-field">
             <textarea className="event-textarea" placeholder="Description (max 200 characters)"
