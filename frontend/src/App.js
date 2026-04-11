@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route } from "react-router-dom";
+import Chatbot from './SocietyPages/Chatbot/Chatbot';
 
 import Register from './SocietyPages/SocietyRegister/SoceityRegister';
 import Login from './SocietyPages/Login/SoceityLogin';
@@ -79,6 +80,7 @@ import './RiskManagePages/styles/table.css';
 
 function App() {
   return (
+    <>
     <Routes>
       <Route path="/" element={<Home />} />
 
@@ -164,6 +166,8 @@ function App() {
         <Route path="/rchange-password" element={<ChangePasswordPage />} />
       </Route>
     </Routes>
+    <Chatbot />
+  </>
   );
 }
 
