@@ -1,121 +1,167 @@
-// src/Pages/ForgotPassword/StallOwnerForgotPassword.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./StallOwnerForgotPassword.css"; // updated CSS
+import "./StallOwnerForgotPassword.css";
+
+const STEPS = { EMAIL: 1, OTP: 2, PASSWORD: 3 };
 
 const StallOwnerForgotPassword = () => {
   const navigate = useNavigate();
+  const [step, setStep] = useState(STEPS.EMAIL);
   const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [resendTimer, setResendTimer] = useState(0);
+
+  const startResendTimer = () => {
+    setResendTimer(60);
+    const t = setInterval(() => {
+      setResendTimer(p => { if (p <= 1) { clearInterval(t); return 0; } return p - 1; });
+    }, 1000);
+  };
+
+  const handleSendOtp = async (e) => {
+    e.preventDefault();
+    setError("");
+    if (!email.trim()) { setError("Email is required."); return; }
+    setLoading(true);
+    try {
+      await axios.post("http://localhost:8080/api/stall-owner/send-otp", { email });
+      setStep(STEPS.OTP);
+      startResendTimer();
+    } catch (err) {
+      setError(err.response?.data?.message || "Email not found.");
+    } finally { setLoading(false); }
+  };
+
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    setError("");
+    if (otp.length !== 6) { setError("Enter the 6-digit OTP."); return; }
+    // Just move to step 3 — actual verify+reset happens on final submit
+    setStep(STEPS.PASSWORD);
+  };
 
   const handleReset = async (e) => {
     e.preventDefault();
     setError("");
-    setSuccess("");
-
-    if (!email || !newPassword || !confirmPassword) {
-      setError("All fields are required!");
-      return;
-    }
-
-    if (newPassword !== confirmPassword) {
-      setError("Passwords do not match!");
-      return;
-    }
-
-    if (newPassword.length < 6) {
-      setError("Password must be at least 6 characters!");
-      return;
-    }
-
+    if (!newPassword) { setError("Password is required."); return; }
+    if (newPassword.length < 6) { setError("Password must be at least 6 characters."); return; }
+    if (newPassword !== confirmPassword) { setError("Passwords do not match."); return; }
+    setLoading(true);
     try {
-      await axios.post(
-        "http://localhost:8080/api/stall-owner/forgot-password",
-        {
-          email: email,
-          password: newPassword,
-        }
-      );
-
-      setSuccess("Password reset successfully! Redirecting to login...");
-      setTimeout(() => {
-        navigate("/slogin");
-      }, 2000);
+      await axios.post("http://localhost:8080/api/stall-owner/verify-otp-reset", {
+        email, otp, password: newPassword
+      });
+      setStep("done");
+      setTimeout(() => navigate("/slogin"), 2500);
     } catch (err) {
-      console.error("Forgot password error:", err);
+      setError(err.response?.data?.message || "Reset failed. Please try again.");
+    } finally { setLoading(false); }
+  };
 
-      if (err.response) {
-        const errorMsg =
-          err.response.data?.message ||
-          (typeof err.response.data === "string"
-            ? err.response.data
-            : "Password reset failed!");
-        setError(errorMsg);
-      } else if (err.request) {
-        setError("No response from server. Please check if the backend is running.");
-      } else {
-        setError("An error occurred: " + err.message);
-      }
-    }
+  const handleResend = async () => {
+    if (resendTimer > 0) return;
+    setError("");
+    try {
+      await axios.post("http://localhost:8080/api/stall-owner/send-otp", { email });
+      startResendTimer();
+    } catch { setError("Failed to resend OTP."); }
   };
 
   return (
     <div className="sofp-page">
-      <button className="sofp-back-btn" onClick={() => navigate("/slogin")}>
-        ←
-      </button>
+      <button className="sofp-back-btn" onClick={() => navigate("/slogin")}>←</button>
+
       <div className="sofp-container">
-        <h1 className="sofp-title">Reset Stall Owner Password</h1>
+        {/* Progress */}
+        <div className="sofp-steps">
+          {[1,2,3].map(n => (
+            <div key={n} className={`sofp-step ${step >= n ? "sofp-step--active" : ""} ${step > n ? "sofp-step--done" : ""}`}>
+              <div className="sofp-step-circle">{step > n ? "✓" : n}</div>
+              <span>{n === 1 ? "Email" : n === 2 ? "OTP" : "Password"}</span>
+            </div>
+          ))}
+        </div>
+
+        <h1 className="sofp-title">
+          {step === STEPS.EMAIL && "Forgot Password"}
+          {step === STEPS.OTP && "Enter OTP"}
+          {step === STEPS.PASSWORD && "New Password"}
+          {step === "done" && "Password Reset!"}
+        </h1>
 
         {error && <p className="sofp-error-msg">{error}</p>}
-        {success && <p className="sofp-success-msg">{success}</p>}
 
-        <form onSubmit={handleReset} className="sofp-form">
-          <div className="sofp-form-group">
-            <label>Email Address</label>
-            <input
-              type="email"
-              placeholder="Enter your registered email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+        {step === STEPS.EMAIL && (
+          <form onSubmit={handleSendOtp} className="sofp-form">
+            <p className="sofp-hint">Enter your registered email and we'll send you a 6-digit OTP.</p>
+            <div className="sofp-form-group">
+              <label>Email Address</label>
+              <input type="email" placeholder="your@email.com" value={email}
+                onChange={e => setEmail(e.target.value)} required />
+            </div>
+            <button type="submit" className="sofp-reset-btn" disabled={loading}>
+              {loading ? "Sending…" : "Send OTP"}
+            </button>
+          </form>
+        )}
+
+        {step === STEPS.OTP && (
+          <form onSubmit={handleVerifyOtp} className="sofp-form">
+            <p className="sofp-hint">A 6-digit OTP was sent to <strong>{email}</strong>. Valid for 10 minutes.</p>
+            <div className="sofp-form-group">
+              <label>OTP Code</label>
+              <input
+                className="sofp-otp-input"
+                type="text"
+                placeholder="000000"
+                maxLength={6}
+                value={otp}
+                onChange={e => setOtp(e.target.value.replace(/\D/g, ""))}
+                required
+              />
+            </div>
+            <button type="submit" className="sofp-reset-btn" disabled={loading}>
+              {loading ? "Verifying…" : "Verify OTP"}
+            </button>
+            <button type="button" className="sofp-resend-btn" onClick={handleResend} disabled={resendTimer > 0}>
+              {resendTimer > 0 ? `Resend in ${resendTimer}s` : "Resend OTP"}
+            </button>
+          </form>
+        )}
+
+        {step === STEPS.PASSWORD && (
+          <form onSubmit={handleReset} className="sofp-form">
+            <p className="sofp-hint">OTP verified. Set your new password.</p>
+            <div className="sofp-form-group">
+              <label>New Password</label>
+              <input type="password" placeholder="Min 6 characters" value={newPassword}
+                onChange={e => setNewPassword(e.target.value)} required />
+            </div>
+            <div className="sofp-form-group">
+              <label>Confirm Password</label>
+              <input type="password" placeholder="Repeat password" value={confirmPassword}
+                onChange={e => setConfirmPassword(e.target.value)} required />
+            </div>
+            <button type="submit" className="sofp-reset-btn" disabled={loading}>
+              {loading ? "Resetting…" : "Reset Password"}
+            </button>
+          </form>
+        )}
+
+        {step === "done" && (
+          <div className="sofp-done">
+            <div className="sofp-done-icon">✅</div>
+            <p>Password reset successfully! Redirecting to login…</p>
           </div>
-
-          <div className="sofp-form-group">
-            <label>New Password</label>
-            <input
-              type="password"
-              placeholder="Enter new password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="sofp-form-group">
-            <label>Confirm Password</label>
-            <input
-              type="password"
-              placeholder="Confirm new password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <button type="submit" className="sofp-reset-btn">
-            Reset Password
-          </button>
-        </form>
+        )}
 
         <p className="sofp-back-to-login">
-          Remember your password?{" "}
-          <span onClick={() => navigate("/slogin")}>Back to Login</span>
+          Remember your password? <span onClick={() => navigate("/slogin")}>Back to Login</span>
         </p>
       </div>
     </div>

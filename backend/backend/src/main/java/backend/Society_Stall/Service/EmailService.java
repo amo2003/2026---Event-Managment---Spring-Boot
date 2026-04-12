@@ -15,6 +15,21 @@ public class EmailService {
         this.mailSender = mailSender;
     }
 
+    public void sendOtpEmail(String toEmail, String otp, String name) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(toEmail);
+        message.setSubject("Uni Festivo — Password Reset OTP");
+        message.setText(
+            "Dear " + name + ",\n\n" +
+            "Your OTP for password reset is:\n\n" +
+            "  " + otp + "\n\n" +
+            "This OTP is valid for 10 minutes.\n" +
+            "If you did not request this, please ignore this email.\n\n" +
+            "Regards,\nUni Festivo Team"
+        );
+        mailSender.send(message);
+    }
+
     public void sendStallPlacedEmail(StallOwner owner, StallRegistration stall) {
         if (owner == null || owner.getEmail() == null || owner.getEmail().isBlank()) {
             return;

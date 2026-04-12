@@ -43,7 +43,7 @@ const StallOwnerLogin = () => {
     <div className="stall-login-container">
       <button className="back-btn" onClick={() => navigate("/")}>←</button>
       <div className="stall-login-card">
-        <h2>Stall Owner Login</h2>
+        <h2>Stall Owner's Login</h2>
 
         {errors.general && <p className="stall-login-error">{errors.general}</p>}
 

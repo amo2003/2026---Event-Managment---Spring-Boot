@@ -70,7 +70,11 @@ const StallOwnerRegister = () => {
     : null;
 
   return (
+    
     <div className="stall-register-page">
+      <button className="back-btn" onClick={() => navigate(-1)}>
+        ← 
+      </button>
       <div className="stall-register-card">
         <h2>Stall Owner Registration</h2>
 

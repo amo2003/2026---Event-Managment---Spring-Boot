@@ -10,7 +10,7 @@
   padding: 40px;
 }
 
-/* ===== GLASS CONTAINER ===== */
+/*  GLASS CONTAINER  */
 
 .register-container {
   width: 100%;
@@ -42,7 +42,7 @@
   100% { filter: hue-rotate(360deg); }
 }
 
-/* ===== TITLE ===== */
+/*  TITLE  */
 
 .register-title {
   text-align: center;
@@ -53,7 +53,7 @@
   color: rgb(0, 0, 0);
 }
 
-/* ===== FORM ===== */
+/*  FORM  */
 
 .register-form {
   display: flex;
@@ -73,7 +73,8 @@
 }
 
 .register-form input::placeholder {
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.723);
+  font-weight: 600;
 }
 
 .register-form input:focus {
@@ -81,7 +82,7 @@
   box-shadow: 0 0 15px rgba(255,255,255,0.4);
 }
 
-/* ===== BUTTONS ===== */
+/*  BUTTONS  */
 
 .register-btn,
 .login-btn {
@@ -117,7 +118,7 @@
   color: black;
 }
 
-/* ===== SUCCESS & ERROR ===== */
+/*  SUCCESS & ERROR  */
 
 .errorr-msg {
   color: #ff4d4d;
@@ -131,7 +132,7 @@
   margin-bottom: 10px;
 }
 
-/* ===== PIN BOX ===== */
+/*  PIN BOX  */
 
 .pin-box {
   text-align: center;
@@ -154,7 +155,7 @@
   opacity: 0.7;
 }
 
-/* ===== SELECT DROPDOWN ===== */
+/*  SELECT DROPDOWN  */
 
 .select-wrapper {
   position: relative;
@@ -166,8 +167,9 @@
   border-radius: 30px;
   border: 1px solid rgba(0, 0, 0, 0.462);
   background: transparent;
-  color: rgba(0, 0, 0, 0.508);
+  color: rgba(0, 0, 0, 0.854);
   font-size: 14px;
+  font-weight: 600;
   outline: none;
   appearance: none;
   cursor: pointer;
@@ -199,7 +201,7 @@
   opacity: 0.7;
 }
 
-/* ===== BACK BUTTON ===== */
+/*  BACK BUTTON  */
 .back-btn {
   position: absolute;
   top: 20px;
@@ -238,7 +240,7 @@
   margin: 6px 0 12px;
   padding: 7px 14px;
   background: transparent;
-  border: 1px dashed rgba(67, 59, 59, 0.35);
+  border: 1px dashed rgba(23, 23, 23, 0.837);
   border-radius: 8px;
   color: #3006af;
   font-size: 13.5px;
@@ -251,5 +253,5 @@
 .add-society-btn:hover {
   background: rgba(99, 102, 241, 0.12);
   border-color: rgba(99, 102, 241, 0.55);
-  color: #c7d2fe;
+  color: #000000;
 }
