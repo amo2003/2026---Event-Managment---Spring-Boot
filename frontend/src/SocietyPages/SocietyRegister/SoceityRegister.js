@@ -101,7 +101,7 @@ function SoceityRegister() {
 
   return (
     <div className="register-page">
-      {/* ===== BACK BUTTON ===== */}
+      {/*  BACK BUTTON  */}
       <button className="back-btn" onClick={() => navigate(-1)}>
         ← 
       </button>

@@ -8,7 +8,7 @@
   font-family: 'Poppins', sans-serif;
 }
 
-/* ===== GLASS CARD ===== */
+/*  GLASS CARD  */
 
 .event-create-container {
   width: 100%;
@@ -38,7 +38,7 @@
   100% { filter: hue-rotate(360deg); }
 }
 
-/* ===== TITLE ===== */
+/*  TITLE  */
 
 .event-create-title {
   text-align: center;
@@ -49,7 +49,7 @@
   color: rgb(4, 4, 4);
 }
 
-/* ===== FORM ===== */
+/*  FORM  */
 
 .event-create-form {
   display: flex;
@@ -62,9 +62,9 @@
 .event-select {
   padding: 14px 18px;
   border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.44);
   background: rgba(255,255,255,0.1);
-  color: rgba(0, 0, 0, 0.829);
+  color: rgba(0, 0, 0, 0.844);
   font-size: 14px;
   outline: none;
   transition: 0.3s ease;
@@ -72,7 +72,8 @@
 
 .event-input::placeholder,
 .event-textarea::placeholder {
-  color: rgba(0, 0, 0, 0.699);
+  color: rgba(0, 0, 0, 0.813);
+  font-weight: 600;
 }
 
 .event-input:focus,
@@ -87,7 +88,7 @@
   height: 100px;
 }
 
-/* ===== FILE UPLOAD ===== */
+/*  FILE UPLOAD  */
 
 .image-upload-wrapper {
   text-align: center;
@@ -128,7 +129,7 @@
   border: 1px solid rgba(255,255,255,0.2);
 }
 
-/* ===== BUTTON ===== */
+/*  BUTTON */
 
 .event-submit-btn {
   margin-top: 20px;
@@ -149,7 +150,7 @@
   box-shadow: 0 0 30px rgba(255,255,255,0.8);
 }
 
-/* ===== CUSTOM DROPDOWN ICON ===== */
+/*  CUSTOM DROPDOWN ICON  */
 
 .event-select {
   appearance: none;
