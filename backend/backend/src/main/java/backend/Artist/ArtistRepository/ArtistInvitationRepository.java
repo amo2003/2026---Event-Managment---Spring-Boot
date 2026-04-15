@@ -1,6 +1,6 @@
-package backend.repository.ArtistRepository;
+package backend.Artist.ArtistRepository;
 
-import backend.model.ArtistModel.ArtistInvitation;
+import backend.Artist.ArtistModel.ArtistInvitation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

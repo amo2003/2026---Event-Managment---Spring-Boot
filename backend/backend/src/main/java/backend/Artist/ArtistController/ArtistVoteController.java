@@ -1,12 +1,14 @@
-package backend.controller.ArtistController;
+package backend.Artist.ArtistController;
 
-import backend.Service.ArtistService.ArtistVoteService;
-import backend.dto.ArtistDTO.ArtistVoteRequestDTO;
-import backend.dto.ArtistDTO.ArtistVoteResponseDTO;
+import backend.Artist.ArtistDTO.ArtistVoteRequestDTO;
+import backend.Artist.ArtistDTO.ArtistVoteResponseDTO;
+import backend.Artist.ArtistService.ArtistVoteService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/artist-votes")
@@ -25,8 +27,24 @@ public class ArtistVoteController {
     }
 
     @PostMapping
-    public ResponseEntity<String> vote(@RequestBody ArtistVoteRequestDTO requestDTO) {
-        return ResponseEntity.ok(artistVoteService.voteForArtist(requestDTO));
+    public ResponseEntity<?> vote(@RequestBody ArtistVoteRequestDTO requestDTO) {
+        try {
+            String message = artistVoteService.voteForArtist(requestDTO);
+            return ResponseEntity.ok(message);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("message", ex.getMessage()));
+        } catch (IllegalStateException ex) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(Map.of("message", ex.getMessage()));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Failed to submit vote."));
+        }
     }
 
     @GetMapping("/{eventId}")

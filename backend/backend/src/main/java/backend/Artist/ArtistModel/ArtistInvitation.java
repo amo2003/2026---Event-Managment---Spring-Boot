@@ -1,6 +1,6 @@
-package backend.model.ArtistModel;
+package backend.Artist.ArtistModel;
 
-import backend.enums.ArtistEnums.InvitationStatus;
+import backend.Artist.ArtistEnums.InvitationStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

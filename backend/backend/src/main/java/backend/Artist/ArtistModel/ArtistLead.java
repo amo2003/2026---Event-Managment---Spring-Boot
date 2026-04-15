@@ -1,6 +1,6 @@
-package backend.model.ArtistModel;
+package backend.Artist.ArtistModel;
 
-import backend.enums.ArtistEnums.ArtistCategory;
+import backend.Artist.ArtistEnums.ArtistCategory;
 import jakarta.persistence.*;
 
 @Entity

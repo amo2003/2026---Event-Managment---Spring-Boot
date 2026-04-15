@@ -1,0 +1,129 @@
+.modern-inquiries {
+  color: white;
+}
+
+/* HERO */
+.modern-hero {
+  margin-bottom: 30px;
+}
+
+.modern-tag {
+  background: rgba(255, 79, 195, 0.15);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.modern-hero h1 {
+  font-size: 2.4rem;
+  margin: 10px 0;
+}
+
+.modern-hero p {
+  color: rgba(255,255,255,0.7);
+}
+
+/* GRID */
+.modern-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+/* CARD */
+.modern-card {
+  background: rgba(255,255,255,0.05);
+  padding: 20px;
+  border-radius: 20px;
+  transition: 0.2s;
+}
+
+.modern-card:hover {
+  transform: translateY(-3px);
+}
+
+/* HEADER */
+.modern-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* META */
+.modern-meta {
+  color: rgba(255,255,255,0.7);
+  margin: 8px 0;
+}
+
+/* MESSAGE */
+.modern-message {
+  background: rgba(255,255,255,0.06);
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+/* RESPONSE */
+.modern-response {
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+}
+
+/* BUTTONS */
+.modern-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.modern-actions button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+}
+
+/* ACCEPT */
+.accept {
+  background: linear-gradient(90deg,#34d399,#22c55e);
+  color: black;
+}
+
+/* REJECT */
+.reject {
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+/* STATUS */
+.status {
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.status.pending {
+  background: rgba(251,191,36,0.2);
+}
+
+.status.interested {
+  background: rgba(34,197,94,0.2);
+}
+
+.status.not_interested {
+  background: rgba(239,68,68,0.2);
+}
+
+/* EMPTY */
+.modern-empty {
+  text-align: center;
+  margin-top: 40px;
+  color: rgba(255,255,255,0.6);
+}
+
+/* ERROR */
+.modern-error {
+  color: #fca5a5;
+  margin-bottom: 10px;
+}

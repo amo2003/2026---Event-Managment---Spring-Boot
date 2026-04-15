@@ -1,4 +1,4 @@
-package backend.model.ArtistModel;
+package backend.Artist.ArtistModel;
 
 import jakarta.persistence.*;
 

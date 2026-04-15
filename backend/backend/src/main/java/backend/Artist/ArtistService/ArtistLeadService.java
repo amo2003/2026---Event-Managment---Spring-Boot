@@ -1,9 +1,9 @@
-package backend.Service.ArtistService;
+package backend.Artist.ArtistService;
 
-import backend.dto.ArtistDTO.ArtistLeadRequestDTO;
-import backend.dto.ArtistDTO.ArtistLeadResponseDTO;
-import backend.model.ArtistModel.ArtistLead;
-import backend.repository.ArtistRepository.ArtistLeadRepository;
+import backend.Artist.ArtistDTO.ArtistLeadRequestDTO;
+import backend.Artist.ArtistDTO.ArtistLeadResponseDTO;
+import backend.Artist.ArtistModel.ArtistLead;
+import backend.Artist.ArtistRepository.ArtistLeadRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

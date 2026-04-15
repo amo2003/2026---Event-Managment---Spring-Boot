@@ -1,6 +1,6 @@
-package backend.dto.ArtistDTO;
+package backend.Artist.ArtistDTO;
 
-import backend.enums.ArtistEnums.ArtistCategory;
+import backend.Artist.ArtistEnums.ArtistCategory;
 
 public class ArtistResponseDTO {
 

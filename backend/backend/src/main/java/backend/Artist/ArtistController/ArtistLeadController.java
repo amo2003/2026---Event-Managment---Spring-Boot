@@ -1,8 +1,8 @@
-package backend.controller.ArtistController;
+package backend.Artist.ArtistController;
 
-import backend.Service.ArtistService.ArtistLeadService;
-import backend.dto.ArtistDTO.ArtistLeadRequestDTO;
-import backend.dto.ArtistDTO.ArtistLeadResponseDTO;
+import backend.Artist.ArtistService.ArtistLeadService;
+import backend.Artist.ArtistDTO.ArtistLeadRequestDTO;
+import backend.Artist.ArtistDTO.ArtistLeadResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
