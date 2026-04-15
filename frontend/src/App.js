@@ -28,6 +28,7 @@ import AdminLogin from './SocietyPages/AdminLogin/AdminLogin';
 import AdminDashboard from './SocietyPages/AdminDashboard/AdminDashboard';
 import AdminFacultyNotify from './SocietyPages/AdminFacultyNotify/AdminFacultyNotify';
 import DeanRespond from './SocietyPages/DeanRespond/DeanRespond';
+import AdminUsersPage from './SocietyPages/AdminUsersPage/AdminUsersPage';
 import Contact from './SocietyPages/ContactUs/Contact';
 import FriendTrackerPage from './SocietyPages/FriendTracker/FriendTrackerPage';
 import About from './SocietyPages/AboutUs/About';
@@ -123,6 +124,7 @@ function App() {
       <Route path="/admin/pending-payments" element={<PendingPayments />} />
       <Route path="/admin/faculty-notify" element={<AdminFacultyNotify />} />
       <Route path="/dean/respond/:token" element={<DeanRespond />} />
+      <Route path="/admin/users" element={<AdminUsersPage />} />
 
       {/* Other */}
       <Route path="/about" element={<About />} />

@@ -9,6 +9,7 @@ const navItems = [
   { icon: "💳", label: "Stall Payments",   path: "/admin/pending-payments",   id: "payments" },
   { icon: "🎤", label: "Artist Mgmt",      path: "/organizer/search-artists", id: "artists" },
   { icon: "📧", label: "Faculty Notify",   path: "/admin/faculty-notify",     id: "faculty" },
+  { icon: "👥", label: "Registered Users", path: "/admin/users",              id: "users" },
 ];
 
 const quickCards = [
@@ -22,7 +23,7 @@ const quickCards = [
   },
   {
     icon: "💳",
-    title: "Stall Payments",
+    title: "Stalls Payments",
     desc: "Review pending bank slip payments from stall owners.",
     path: "/admin/pending-payments",
     accent: "#000000ff",
@@ -38,11 +39,19 @@ const quickCards = [
   },
   {
     icon: "📧",
-    title: "Faculty Notify",
+    title: "Deans & Faculty Approvals",
     desc: "Send event details to faculty deans via email before approving events.",
     path: "/admin/faculty-notify",
     accent: "#000000ff",
     tag: "Email",
+  },
+  {
+    icon: "👥",
+    title: "Registered Societies & Stall Owners",
+    desc: "View all registered societies and stall owners with search and details.",
+    path: "/admin/users",
+    accent: "#000000ff",
+    tag: "Users",
   },
 ];
 
