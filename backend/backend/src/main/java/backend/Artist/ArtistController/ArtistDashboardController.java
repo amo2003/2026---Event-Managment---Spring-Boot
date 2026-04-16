@@ -1,7 +1,7 @@
-package backend.controller.ArtistController;
+package backend.Artist.ArtistController;
 
-import backend.Service.ArtistService.DashboardService;
-import backend.dto.ArtistDTO.DashboardSummaryDTO;
+import backend.Artist.ArtistService.DashboardService;
+import backend.Artist.ArtistDTO.DashboardSummaryDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

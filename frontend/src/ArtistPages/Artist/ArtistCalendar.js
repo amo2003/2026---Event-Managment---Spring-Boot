@@ -1,68 +1,63 @@
-import React, { useContext, useEffect, useState } from "react";
-import calendarService from "../../services/calendarService";
-import { AuthContext } from "../../context/AuthContext";
-import ArtistModuleLayout from "../ArtistModule/ArtistModuleLayout";
-import "../../assets/artistModule.css";
+const mockCalendarData = [
+  {
+    id: 1,
+    artistId: 1,
+    eventName: "Viramaya",
+    venue: "Main Auditorium",
+    eventDateTime: "2026-04-23 18:00",
+    syncStatus: "SYNCED",
+  },
+  {
+    id: 2,
+    artistId: 1,
+    eventName: "Campus Beats",
+    venue: "Open Air Theatre",
+    eventDateTime: "2026-05-02 19:30",
+    syncStatus: "PENDING",
+  },
+  {
+    id: 3,
+    artistId: 2,
+    eventName: "Spring Fest",
+    venue: "Hall B",
+    eventDateTime: "2026-05-10 17:00",
+    syncStatus: "SYNCED",
+  },
+];
 
-function ArtistCalendar() {
-  const { user } = useContext(AuthContext);
-  const [calendarEvents, setCalendarEvents] = useState([]);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
+const calendarService = {
+  getCalendarByArtist(artistId) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const filtered = mockCalendarData.filter(
+          (event) => String(event.artistId) === String(artistId)
+        );
 
-  const artistId = user?.userType === "artist" ? user.id : null;
+        resolve({
+          data: filtered,
+        });
+      }, 300);
+    });
+  },
 
-  const fetchCalendar = async () => {
-    if (!artistId) { setError("Artist login required."); setLoading(false); return; }
-    setError("");
-    try {
-      const response = await calendarService.getCalendarByArtist(artistId);
-      setCalendarEvents(response.data);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to fetch calendar");
-    } finally {
-      setLoading(false);
-    }
-  };
+  addEventToCalendar(payload) {
+    return new Promise((resolve) => {
+      const newEvent = {
+        id: mockCalendarData.length + 1,
+        artistId: payload.artistId,
+        eventName: payload.eventName,
+        venue: payload.venue,
+        eventDateTime: payload.eventDateTime,
+        syncStatus: "SYNCED",
+      };
 
-  useEffect(() => { fetchCalendar(); }, [artistId]); // eslint-disable-line react-hooks/exhaustive-deps
+      mockCalendarData.push(newEvent);
 
-  return (
-    <ArtistModuleLayout title="My Calendar" subtitle="Confirmed events synced to your schedule.">
-      {error && <div className="ah-error">{error}</div>}
+      resolve({
+        data: newEvent,
+      });
+    });
+  },
+};
 
-      {loading ? (
-        <div className="ah-state"><div className="ah-state-icon">◌</div>Loading calendar…</div>
-      ) : calendarEvents.length === 0 ? (
-        <div className="ah-state">
-          <div className="ah-state-icon">📅</div>
-          No calendar events yet.
-        </div>
-      ) : (
-        calendarEvents.map((event) => (
-          <div className="ah-card" key={event.id}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
-              <div className="ah-card-title">{event.eventName}</div>
-              <span className={`ah-badge ${event.syncStatus === "SYNCED" ? "ah-badge-synced" : "ah-badge-pending"}`}>
-                {event.syncStatus}
-              </span>
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 20px" }}>
-              <div className="ah-card-row">
-                <span className="ah-card-label">Venue</span>
-                <span className="ah-card-value">{event.venue}</span>
-              </div>
-              <div className="ah-card-row">
-                <span className="ah-card-label">Date &amp; Time</span>
-                <span className="ah-card-value">{event.eventDateTime}</span>
-              </div>
-            </div>
-          </div>
-        ))
-      )}
-    </ArtistModuleLayout>
-  );
-}
-
-export default ArtistCalendar;
+export default calendarService;

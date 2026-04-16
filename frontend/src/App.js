@@ -52,6 +52,13 @@ import ArtistProfile from './ArtistPages/Artist/ArtistProfile';
 import ArtistShortlist from './ArtistPages/Student/ArtistShortlist';
 import VoteArtist from './ArtistPages/Student/VoteArtist';
 import VoteConfirmation from './ArtistPages/Student/VoteConfirmation';
+import VoteNow from './ArtistPages/Student/VoteNow';
+import FinalArtist from './ArtistPages/Student/FinalArtist';
+import ArtistRegister from "./ArtistPortal/ArtistRegister";
+import ArtistLogin from "./ArtistPortal/ArtistLogin";
+import ArtistPortalDashboard from "./ArtistPortal/ArtistPortalDashboard";
+import ArtistFeedback from "./ArtistPortal/ArtistFeedback";
+import ArtistForgotPassword from './ArtistPortal/ArtistForgotPassword';
 
 
 // ── Risk Management ──
@@ -147,6 +154,15 @@ function App() {
       <Route path="/student/artist-shortlist" element={<ArtistShortlist />} />
       <Route path="/student/vote-artist" element={<VoteArtist />} />
       <Route path="/student/vote-confirmation" element={<VoteConfirmation />} />
+      <Route path="/student/vote-now" element={<VoteNow />} />
+      <Route path="/student/final-artist" element={<FinalArtist />} />
+
+      {/* Artist Portal — Artist */}
+      <Route path="/artist-register" element={<ArtistRegister />} />
+      <Route path="/artist-login" element={<ArtistLogin />} />
+      <Route path="/artist-portal-dashboard" element={<ArtistPortalDashboard />} />
+      <Route path="/artist-feedback" element={<ArtistFeedback />} />
+      <Route path="/artist-forgot-password" element={<ArtistForgotPassword />} />
 
       {/* Risk Management — Public */}
       <Route element={<RiskAuthProvider><PublicLayout /></RiskAuthProvider>}>

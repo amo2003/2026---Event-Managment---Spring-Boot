@@ -2,12 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import inquiryService from "../../services/inquiryService";
 import { AuthContext } from "../../context/AuthContext";
 import ArtistModuleLayout from "../ArtistModule/ArtistModuleLayout";
-import "../../assets/artistModule.css";
-
-function statusBadge(status) {
-  const s = status?.toLowerCase();
-  return <span className={`ah-badge ah-badge-${s}`}>{status}</span>;
-}
+import "./artistInquiriesModern.css";
 
 function ArtistInquiries() {
   const { user } = useContext(AuthContext);
@@ -18,13 +13,16 @@ function ArtistInquiries() {
   const artistId = user?.userType === "artist" ? user.id : null;
 
   const fetchInquiries = async () => {
-    if (!artistId) { setError("Artist login required."); setLoading(false); return; }
-    setError("");
+    if (!artistId) {
+      setError("Artist login required.");
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await inquiryService.getInquiriesByArtist(artistId);
-      setInquiries(response.data);
-    } catch (err) {
-      console.error(err);
+      const res = await inquiryService.getInquiriesByArtist(artistId);
+      setInquiries(res.data || []);
+    } catch {
       setError("Failed to fetch inquiries");
     } finally {
       setLoading(false);
@@ -37,96 +35,93 @@ function ArtistInquiries() {
         status,
         responseMessage:
           status === "INTERESTED"
-            ? "Yes, I am interested in this event."
-            : "Sorry, I am not available for this event.",
+            ? "Yes, I am interested."
+            : "Not available.",
       });
       fetchInquiries();
-    } catch (err) {
-      console.error(err);
-      alert("Failed to respond to inquiry");
+    } catch {
+      alert("Failed to respond");
     }
   };
 
-  useEffect(() => { fetchInquiries(); }, [artistId]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    fetchInquiries();
+  }, [artistId]);
 
-  const pending = inquiries.filter((i) => i.status === "PENDING").length;
-  const interested = inquiries.filter((i) => i.status === "INTERESTED").length;
-  const notInterested = inquiries.filter((i) => i.status === "NOT_INTERESTED").length;
+  if (loading) return <div className="modern-loading">Loading...</div>;
 
   return (
-    <ArtistModuleLayout title="My Inquiries" subtitle="Event availability inquiries sent to you.">
-      {error && <div className="ah-error">{error}</div>}
+    <ArtistModuleLayout>
+      <div className="modern-inquiries">
 
-      {!loading && inquiries.length > 0 && (
-        <div className="ah-stats-grid">
-          <div className="ah-stat">
-            <div className="ah-stat-label">Total</div>
-            <div className="ah-stat-value accent">{inquiries.length}</div>
-          </div>
-          <div className="ah-stat">
-            <div className="ah-stat-label">Pending</div>
-            <div className="ah-stat-value amber">{pending}</div>
-          </div>
-          <div className="ah-stat">
-            <div className="ah-stat-label">Interested</div>
-            <div className="ah-stat-value green">{interested}</div>
-          </div>
-          <div className="ah-stat">
-            <div className="ah-stat-label">Declined</div>
-            <div className="ah-stat-value rose">{notInterested}</div>
+        {/* HERO */}
+        <div className="modern-hero">
+          <div>
+            <span className="modern-tag">INQUIRIES</span>
+            <h1>Your Event Requests</h1>
+            <p>Manage and respond to incoming event inquiries.</p>
           </div>
         </div>
-      )}
 
-      {loading ? (
-        <div className="ah-state"><div className="ah-state-icon">◌</div>Loading inquiries…</div>
-      ) : inquiries.length === 0 ? (
-        <div className="ah-state"><div className="ah-state-icon">⊘</div>No inquiries found.</div>
-      ) : (
-        inquiries.map((inquiry) => (
-          <div className="ah-card" key={inquiry.id}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
-              <div className="ah-card-title">{inquiry.eventName}</div>
-              {statusBadge(inquiry.status)}
-            </div>
+        {error && <div className="modern-error">{error}</div>}
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 20px", marginBottom: 8 }}>
-              <div className="ah-card-row">
-                <span className="ah-card-label">Venue</span>
-                <span className="ah-card-value">{inquiry.venue}</span>
+        {/* EMPTY */}
+        {inquiries.length === 0 ? (
+          <div className="modern-empty">No inquiries found.</div>
+        ) : (
+          <div className="modern-grid">
+            {inquiries.map((inq) => (
+              <div key={inq.id} className="modern-card">
+
+                <div className="modern-card-top">
+                  <h3>{inq.eventName}</h3>
+                  <span className={`status ${inq.status.toLowerCase()}`}>
+                    {inq.status}
+                  </span>
+                </div>
+
+                <p className="modern-meta">
+                  📍 {inq.venue} · 🗓 {inq.eventDateTime}
+                </p>
+
+                {inq.organizerMessage && (
+                  <div className="modern-message">
+                    "{inq.organizerMessage}"
+                  </div>
+                )}
+
+                {inq.responseMessage && (
+                  <p className="modern-response">
+                    Your response: {inq.responseMessage}
+                  </p>
+                )}
+
+                {inq.status === "PENDING" && (
+                  <div className="modern-actions">
+                    <button
+                      className="accept"
+                      onClick={() =>
+                        respondToInquiry(inq.id, "INTERESTED")
+                      }
+                    >
+                      ✓ Accept
+                    </button>
+
+                    <button
+                      className="reject"
+                      onClick={() =>
+                        respondToInquiry(inq.id, "NOT_INTERESTED")
+                      }
+                    >
+                      ✕ Decline
+                    </button>
+                  </div>
+                )}
               </div>
-              <div className="ah-card-row">
-                <span className="ah-card-label">Date</span>
-                <span className="ah-card-value">{inquiry.eventDateTime}</span>
-              </div>
-            </div>
-
-            {inquiry.organizerMessage && (
-              <p style={{ fontSize: 12, color: "var(--ah-text-2)", background: "rgba(255,255,255,0.03)", padding: "8px 12px", borderRadius: "var(--ah-radius-sm)", borderLeft: "2px solid var(--ah-accent-dim)", marginBottom: 8 }}>
-                "{inquiry.organizerMessage}"
-              </p>
-            )}
-
-            {inquiry.responseMessage && (
-              <p style={{ fontSize: 12, color: "var(--ah-text-3)", marginBottom: 8 }}>
-                <span style={{ color: "var(--ah-text-2)" }}>Your response: </span>
-                {inquiry.responseMessage}
-              </p>
-            )}
-
-            {inquiry.status === "PENDING" && (
-              <div className="ah-card-actions">
-                <button className="ah-btn ah-btn-success" onClick={() => respondToInquiry(inquiry.id, "INTERESTED")}>
-                  ✓ Interested
-                </button>
-                <button className="ah-btn ah-btn-danger" onClick={() => respondToInquiry(inquiry.id, "NOT_INTERESTED")}>
-                  ✕ Not Interested
-                </button>
-              </div>
-            )}
+            ))}
           </div>
-        ))
-      )}
+        )}
+      </div>
     </ArtistModuleLayout>
   );
 }

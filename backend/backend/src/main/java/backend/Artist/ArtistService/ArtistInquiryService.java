@@ -1,13 +1,13 @@
-package backend.Service.ArtistService;
+package backend.Artist.ArtistService;
 
-import backend.dto.ArtistDTO.ArtistInquiryActionDTO;
-import backend.dto.ArtistDTO.ArtistInquiryRequestDTO;
-import backend.dto.ArtistDTO.ArtistInquiryResponseDTO;
-import backend.enums.ArtistEnums.InquiryStatus;
-import backend.model.ArtistModel.Artist;
-import backend.model.ArtistModel.ArtistInquiry;
-import backend.repository.ArtistRepository.ArtistInquiryRepository;
-import backend.repository.ArtistRepository.ArtistRepository;
+import backend.Artist.ArtistDTO.ArtistInquiryActionDTO;
+import backend.Artist.ArtistDTO.ArtistInquiryRequestDTO;
+import backend.Artist.ArtistDTO.ArtistInquiryResponseDTO;
+import backend.Artist.ArtistEnums.InquiryStatus;
+import backend.Artist.ArtistModel.Artist;
+import backend.Artist.ArtistModel.ArtistInquiry;
+import backend.Artist.ArtistRepository.ArtistInquiryRepository;
+import backend.Artist.ArtistRepository.ArtistRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

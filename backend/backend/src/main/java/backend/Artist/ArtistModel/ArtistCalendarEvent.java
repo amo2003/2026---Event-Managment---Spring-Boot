@@ -1,6 +1,6 @@
-package backend.model.ArtistModel;
+package backend.Artist.ArtistModel;
 
-import backend.enums.ArtistEnums.CalendarSyncStatus;
+import backend.Artist.ArtistEnums.CalendarSyncStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

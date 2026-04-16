@@ -1,4 +1,4 @@
-package backend.Service.ArtistService;
+package backend.Artist.ArtistService;
 
 public class ArtistAvailabilityService {
     

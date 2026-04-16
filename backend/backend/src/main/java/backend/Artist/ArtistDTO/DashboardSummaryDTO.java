@@ -1,4 +1,4 @@
-package backend.dto.ArtistDTO;
+package backend.Artist.ArtistDTO;
 
 import java.util.List;
 

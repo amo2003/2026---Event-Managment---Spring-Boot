@@ -275,11 +275,11 @@ const Home = () => {
               Help shape the lineup. Browse shortlisted artists for upcoming events and cast your vote for who you want to see perform.
             </p>
             <div className="home-vote-actions">
-              <button className="home-vote-btn-primary" onClick={() => navigate("/student/vote-artist")}>
+              <button className="home-vote-btn-primary" onClick={() => navigate("/student/vote-now")}>
                 Vote Now →
               </button>
-              <button className="home-vote-btn-secondary" onClick={() => navigate("/student/artist-shortlist")}>
-                View Shortlist
+              <button className="home-vote-btn-secondary" onClick={() => navigate("/student/final-artist")}>
+                View Final Line Up
               </button>
             </div>
           </div>
@@ -318,6 +318,7 @@ const Home = () => {
             <button onClick={() => navigate("/calendar")}>Event Calendar</button>
             <button onClick={() => navigate("/about")}>About</button>
             <button onClick={() => navigate("/contact")}>Contact</button>
+            <button onClick={() => navigate("/artist-register")}>Artist Portal</button>
           </div>
 
           <div className="footer-contact">

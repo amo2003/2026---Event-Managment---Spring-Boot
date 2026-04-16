@@ -1,6 +1,6 @@
-package backend.dto.ArtistDTO;
+package backend.Artist.ArtistDTO;
 
-import backend.enums.ArtistEnums.CalendarSyncStatus;
+import backend.Artist.ArtistEnums.CalendarSyncStatus;
 
 import java.time.LocalDateTime;
 

@@ -1,11 +1,12 @@
-package backend.Service.ArtistService;
+package backend.Artist.ArtistService;
 
-import backend.dto.ArtistDTO.ArtistCalendarEventDTO;
-import backend.enums.ArtistEnums.CalendarSyncStatus;
-import backend.model.ArtistModel.ArtistCalendarEvent;
-import backend.repository.ArtistRepository.ArtistCalendarEventRepository;
+import backend.Artist.ArtistDTO.ArtistCalendarEventDTO;
+import backend.Artist.ArtistEnums.CalendarSyncStatus;
+import backend.Artist.ArtistModel.ArtistCalendarEvent;
+import backend.Artist.ArtistRepository.ArtistCalendarEventRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,13 +49,40 @@ public class ArtistCalendarService {
                 .collect(Collectors.toList());
     }
 
+    public List<ArtistCalendarEventDTO> getAllPublishedEvents() {
+        return artistCalendarEventRepository.findBySyncStatus(CalendarSyncStatus.SYNCED)
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
     public String checkConflict(Long artistId, String eventDateTime) {
         boolean exists = artistCalendarEventRepository.existsByArtistIdAndEventDateTime(
                 artistId,
-                java.time.LocalDateTime.parse(eventDateTime)
+                LocalDateTime.parse(eventDateTime)
         );
 
         return exists ? "Conflict exists" : "No conflict";
+    }
+
+    public ArtistCalendarEventDTO publishCalendarEvent(Long id) {
+        ArtistCalendarEvent calendarEvent = artistCalendarEventRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Calendar event not found with id: " + id));
+
+        calendarEvent.setSyncStatus(CalendarSyncStatus.SYNCED);
+
+        ArtistCalendarEvent updated = artistCalendarEventRepository.save(calendarEvent);
+        return mapToDTO(updated);
+    }
+
+    public ArtistCalendarEventDTO unpublishCalendarEvent(Long id) {
+        ArtistCalendarEvent calendarEvent = artistCalendarEventRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Calendar event not found with id: " + id));
+
+        calendarEvent.setSyncStatus(CalendarSyncStatus.INTERNAL_ONLY);
+
+        ArtistCalendarEvent updated = artistCalendarEventRepository.save(calendarEvent);
+        return mapToDTO(updated);
     }
 
     private ArtistCalendarEventDTO mapToDTO(ArtistCalendarEvent event) {

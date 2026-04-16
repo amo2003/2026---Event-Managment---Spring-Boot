@@ -1,15 +1,15 @@
-package backend.Service.ArtistService;
+package backend.Artist.ArtistService;
 
-import backend.dto.ArtistDTO.ArtistVoteResponseDTO;
-import backend.dto.ArtistDTO.DashboardSummaryDTO;
-import backend.enums.ArtistEnums.InquiryStatus;
-import backend.enums.ArtistEnums.InvitationStatus;
-import backend.model.ArtistModel.ArtistCalendarEvent;
-import backend.model.ArtistModel.ArtistInquiry;
-import backend.model.ArtistModel.ArtistInvitation;
-import backend.repository.ArtistRepository.ArtistCalendarEventRepository;
-import backend.repository.ArtistRepository.ArtistInquiryRepository;
-import backend.repository.ArtistRepository.ArtistInvitationRepository;
+import backend.Artist.ArtistDTO.ArtistVoteResponseDTO;
+import backend.Artist.ArtistDTO.DashboardSummaryDTO;
+import backend.Artist.ArtistEnums.InquiryStatus;
+import backend.Artist.ArtistEnums.InvitationStatus;
+import backend.Artist.ArtistModel.ArtistCalendarEvent;
+import backend.Artist.ArtistModel.ArtistInquiry;
+import backend.Artist.ArtistModel.ArtistInvitation;
+import backend.Artist.ArtistRepository.ArtistCalendarEventRepository;
+import backend.Artist.ArtistRepository.ArtistInquiryRepository;
+import backend.Artist.ArtistRepository.ArtistInvitationRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

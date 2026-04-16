@@ -1,4 +1,4 @@
-package backend.repository.ArtistRepository;
+package backend.Artist.ArtistRepository;
 
 public class ArtistAvailabilityRepository {
     

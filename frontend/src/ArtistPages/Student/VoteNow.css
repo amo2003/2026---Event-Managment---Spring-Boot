@@ -1,0 +1,228 @@
+.vote-now-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(255, 0, 153, 0.12), transparent 25%),
+    radial-gradient(circle at top right, rgba(139, 92, 246, 0.14), transparent 30%),
+    linear-gradient(135deg, #07010f 0%, #12021f 45%, #05010b 100%);
+  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+}
+
+/* HERO */
+
+.vote-now-hero {
+  padding: 60px 8% 20px;
+}
+
+.vote-now-back-btn {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: transparent;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.vote-now-back-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* LAYOUT */
+
+.vote-now-content {
+  padding: 20px 8% 80px;
+}
+
+.vote-now-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr;
+  gap: 24px;
+}
+
+/* CARDS */
+
+.vote-now-card,
+.vote-now-info-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(12px);
+}
+
+.vote-now-card {
+  padding: 28px;
+}
+
+.vote-now-info-card {
+  padding: 22px;
+  margin-bottom: 18px;
+}
+
+/* TEXT */
+
+.vote-now-card h2 {
+  margin-bottom: 10px;
+}
+
+.vote-now-card-text {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+
+/* FORM */
+
+.vote-now-form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+.vote-now-form-group label {
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* INPUT */
+
+.vote-now-form-group input {
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  outline: none;
+}
+
+.vote-now-form-group input:focus {
+  border-color: rgba(255, 0, 153, 0.6);
+  box-shadow: 0 0 0 3px rgba(255, 0, 153, 0.15);
+}
+
+/* 🔥 DROPDOWN FIX (IMPORTANT PART) */
+
+.vote-now-form-group select {
+  width: 100%;
+  padding: 14px 44px 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 0, 153, 0.35);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5 7.5L10 12.5L15 7.5' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, no-repeat;
+  background-position: center, right 16px center;
+  background-size: auto, 14px;
+  color: white;
+  font-size: 0.95rem;
+  outline: none;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Dropdown options */
+.vote-now-form-group select option {
+  background: #1a0b2e;
+  color: #ffffff;
+}
+
+/* Focus effect */
+.vote-now-form-group select:focus {
+  border-color: rgba(255, 0, 153, 0.7);
+  box-shadow: 0 0 0 3px rgba(255, 0, 153, 0.15);
+}
+
+/* BUTTON */
+
+.vote-now-submit-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(90deg, #ff4fc3, #b84dff);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.vote-now-submit-btn:hover {
+  transform: translateY(-1px);
+}
+
+.vote-now-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* MESSAGE */
+
+.vote-now-message {
+  margin-top: 16px;
+  padding: 10px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+}
+
+.vote-now-message.success {
+  background: rgba(34, 197, 94, 0.12);
+  color: #86efac;
+}
+
+.vote-now-message.error {
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+}
+
+/* SIDE PANEL */
+
+.vote-now-info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* ARTIST */
+
+.vote-now-artist-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.vote-now-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ff4fc3, #b84dff);
+  font-weight: 700;
+}
+
+/* STATUS */
+
+.status-ok {
+  color: #86efac;
+  font-size: 0.85rem;
+}
+
+.status-bad {
+  color: #fca5a5;
+  font-size: 0.85rem;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .vote-now-grid {
+    grid-template-columns: 1fr;
+  }
+}

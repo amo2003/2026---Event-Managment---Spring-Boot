@@ -1,7 +1,7 @@
-/* ---- ArtistShortlist.js ---- */
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import artistService from "../../services/artistService";
+import voteService from "../../services/voteService";
 import ArtistModuleLayout from "../ArtistModule/ArtistModuleLayout";
 import "../../assets/artistModule.css";
 
@@ -14,63 +14,103 @@ function getInitials(name = "") {
     .toUpperCase();
 }
 
-function getVoteCount(artist) {
-  return (
-    artist.voteCount ??
-    artist.votes ??
-    artist.totalVotes ??
-    artist.artistVotes ??
-    0
-  );
-}
-
-export function ArtistShortlist() {
+function ArtistShortlist() {
   const [artists, setArtists] = useState([]);
   const [events, setEvents] = useState([]);
   const [selectedEventId, setSelectedEventId] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [voteResults, setVoteResults] = useState([]);
+  const [loadingArtists, setLoadingArtists] = useState(true);
+  const [loadingEvents, setLoadingEvents] = useState(true);
+  const [loadingResults, setLoadingResults] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchArtists();
     fetchEvents();
   }, []);
 
+  useEffect(() => {
+    if (selectedEventId) {
+      fetchVoteResults(selectedEventId);
+    } else {
+      setVoteResults([]);
+    }
+  }, [selectedEventId]);
+
   const fetchArtists = async () => {
+    setLoadingArtists(true);
     try {
       const response = await artistService.getAllArtists();
       setArtists(response.data || []);
-    } catch (error) {
-      console.error("Failed to fetch artists:", error);
+    } catch (err) {
+      console.error("Failed to fetch artists:", err);
+      setArtists([]);
+      setError("Failed to load artists.");
     } finally {
-      setLoading(false);
+      setLoadingArtists(false);
     }
   };
 
   const fetchEvents = async () => {
+    setLoadingEvents(true);
     try {
       const response = await axios.get("http://localhost:8080/api/admin/events");
       setEvents(response.data || []);
-    } catch (error) {
-      console.error("Failed to fetch events:", error);
+    } catch (err) {
+      console.error("Failed to fetch events:", err);
+      setEvents([]);
+      setError("Failed to load events.");
+    } finally {
+      setLoadingEvents(false);
     }
   };
 
-  const filteredArtists = useMemo(() => {
-    let result = [...artists];
-
-    if (selectedEventId) {
-      result = result.filter(
-        (artist) =>
-          String(artist.eventId) === String(selectedEventId) ||
-          String(artist.id) === String(selectedEventId)
+  const fetchVoteResults = async (eventId) => {
+    setLoadingResults(true);
+    setError("");
+    try {
+      const response = await voteService.getVoteResults(eventId);
+      setVoteResults(response.data || []);
+    } catch (err) {
+      console.error("Failed to fetch vote results:", err);
+      setVoteResults([]);
+      setError(
+        err.response?.data?.message ||
+          err.response?.data ||
+          "Failed to load vote results."
       );
+    } finally {
+      setLoadingResults(false);
     }
+  };
 
-    result.sort((a, b) => getVoteCount(b) - getVoteCount(a));
-    return result;
-  }, [artists, selectedEventId]);
+  const selectedEvent = events.find(
+    (event) => String(event.id) === String(selectedEventId)
+  );
 
-  const topArtist = filteredArtists.length > 0 ? filteredArtists[0] : null;
+  const shortlist = useMemo(() => {
+    if (!selectedEventId) return [];
+
+    const merged = voteResults
+      .map((result) => {
+        const artist = artists.find(
+          (a) => String(a.id) === String(result.artistId)
+        );
+
+        if (!artist) return null;
+
+        return {
+          ...artist,
+          voteCount: result.voteCount || 0,
+        };
+      })
+      .filter(Boolean)
+      .sort((a, b) => (b.voteCount || 0) - (a.voteCount || 0));
+
+    return merged;
+  }, [voteResults, artists, selectedEventId]);
+
+  const topArtist = shortlist.length > 0 ? shortlist[0] : null;
 
   return (
     <ArtistModuleLayout
@@ -85,10 +125,13 @@ export function ArtistShortlist() {
             style={{ maxWidth: 360 }}
             value={selectedEventId}
             onChange={(e) => setSelectedEventId(e.target.value)}
+            disabled={loadingEvents}
           >
-            <option value="">All Events</option>
+            <option value="">
+              {loadingEvents ? "Loading events..." : "Select an event..."}
+            </option>
             {events.map((event) => (
-              <option key={event.id} value={event.id}>
+              <option key={event.id} value={String(event.id)}>
                 {event.eventName} — {event.venue}
               </option>
             ))}
@@ -96,25 +139,48 @@ export function ArtistShortlist() {
         </div>
       </div>
 
-      {loading ? (
+      {error && <p className="artist-form-message error">{error}</p>}
+
+      {loadingArtists || loadingEvents || loadingResults ? (
         <div className="ah-state">
           <div className="ah-state-icon">◌</div>
-          Loading artists…
+          Loading...
         </div>
-      ) : filteredArtists.length === 0 ? (
+      ) : !selectedEventId ? (
         <div className="ah-state">
           <div className="ah-state-icon">⊘</div>
-          No artists found.
+          Please select an event.
+        </div>
+      ) : shortlist.length === 0 ? (
+        <div className="ah-state">
+          <div className="ah-state-icon">⊘</div>
+          No artists found for this event.
         </div>
       ) : (
         <>
+          {selectedEvent && (
+            <div className="ah-card" style={{ marginBottom: 20 }}>
+              <div className="ah-card-title">{selectedEvent.eventName}</div>
+              <div className="ah-card-row">
+                <span className="ah-card-label">Venue</span>
+                <span className="ah-card-value">{selectedEvent.venue}</span>
+              </div>
+              {selectedEvent.eventDate && (
+                <div className="ah-card-row">
+                  <span className="ah-card-label">Date</span>
+                  <span className="ah-card-value">{selectedEvent.eventDate}</span>
+                </div>
+              )}
+            </div>
+          )}
+
           {topArtist && (
             <div
               className="ah-card"
               style={{
                 marginBottom: 20,
                 border: "1px solid var(--ah-accent)",
-                boxShadow: "0 0 0 1px rgba(139, 92, 246, 0.2)"
+                boxShadow: "0 0 0 1px rgba(139, 92, 246, 0.2)",
               }}
             >
               <div
@@ -123,7 +189,7 @@ export function ArtistShortlist() {
                   letterSpacing: 1,
                   textTransform: "uppercase",
                   color: "var(--ah-accent-light)",
-                  marginBottom: 12
+                  marginBottom: 12,
                 }}
               >
                 Most Voted Artist
@@ -147,10 +213,10 @@ export function ArtistShortlist() {
                     fontSize: 12,
                     padding: "6px 12px",
                     borderRadius: 20,
-                    fontWeight: 600
+                    fontWeight: 600,
                   }}
                 >
-                  {getVoteCount(topArtist)} Votes
+                  {topArtist.voteCount} Votes
                 </span>
               </div>
 
@@ -160,7 +226,7 @@ export function ArtistShortlist() {
                     fontSize: 12,
                     color: "var(--ah-text-3)",
                     marginBottom: 6,
-                    lineHeight: 1.5
+                    lineHeight: 1.5,
                   }}
                 >
                   {topArtist.bio}
@@ -178,9 +244,7 @@ export function ArtistShortlist() {
 
               {topArtist.email && (
                 <div style={{ marginTop: 8 }}>
-                  <span
-                    style={{ fontSize: 12, color: "var(--ah-text-3)" }}
-                  >
+                  <span style={{ fontSize: 12, color: "var(--ah-text-3)" }}>
                     {topArtist.email}
                   </span>
                 </div>
@@ -188,7 +252,7 @@ export function ArtistShortlist() {
             </div>
           )}
 
-          {filteredArtists.map((artist, index) => (
+          {shortlist.map((artist, index) => (
             <div className="ah-card" key={artist.id}>
               <div className="ah-artist-header">
                 <div className="ah-artist-avatar">
@@ -207,7 +271,7 @@ export function ArtistShortlist() {
                           borderRadius: 999,
                           background: "var(--ah-accent-dim)",
                           color: "var(--ah-accent-light)",
-                          verticalAlign: "middle"
+                          verticalAlign: "middle",
                         }}
                       >
                         TOP VOTED
@@ -225,10 +289,10 @@ export function ArtistShortlist() {
                     fontSize: 11,
                     padding: "3px 10px",
                     borderRadius: 20,
-                    fontWeight: 500
+                    fontWeight: 500,
                   }}
                 >
-                  {getVoteCount(artist)} Votes
+                  {artist.voteCount} Votes
                 </span>
               </div>
 
@@ -238,7 +302,7 @@ export function ArtistShortlist() {
                     fontSize: 12,
                     color: "var(--ah-text-3)",
                     marginBottom: 6,
-                    lineHeight: 1.5
+                    lineHeight: 1.5,
                   }}
                 >
                   {artist.bio}
@@ -254,13 +318,13 @@ export function ArtistShortlist() {
                 </p>
               )}
 
-              <div style={{ display: "flex", gap: 16, marginTop: 8 }}>
-                {artist.email && (
+              {artist.email && (
+                <div style={{ marginTop: 8 }}>
                   <span style={{ fontSize: 12, color: "var(--ah-text-3)" }}>
                     {artist.email}
                   </span>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           ))}
         </>

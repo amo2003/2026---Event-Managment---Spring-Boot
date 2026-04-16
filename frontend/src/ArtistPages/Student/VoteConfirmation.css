@@ -1,0 +1,147 @@
+.vote-confirmation-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(255, 0, 153, 0.12), transparent 25%),
+    radial-gradient(circle at top right, rgba(139, 92, 246, 0.14), transparent 30%),
+    linear-gradient(135deg, #07010f 0%, #12021f 45%, #05010b 100%);
+  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.vote-confirmation-hero {
+  padding: 40px 8% 20px;
+}
+
+.vote-confirmation-back-btn {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: transparent;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: 0.25s ease;
+  font-size: 0.95rem;
+}
+
+.vote-confirmation-back-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.vote-confirmation-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 8% 80px;
+}
+
+.vote-confirmation-card {
+  width: 100%;
+  max-width: 560px;
+  text-align: center;
+  padding: 48px 36px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(12px);
+}
+
+.vote-confirmation-icon {
+  width: 78px;
+  height: 78px;
+  margin: 0 auto 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.25), rgba(16, 185, 129, 0.18));
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  color: #86efac;
+  font-size: 2rem;
+  font-weight: 700;
+  box-shadow: 0 0 24px rgba(52, 211, 153, 0.15);
+}
+
+.vote-confirmation-badge {
+  display: inline-block;
+  margin: 0 0 16px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.22);
+  color: #86efac;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+
+.vote-confirmation-card h1 {
+  margin: 0 0 16px;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1.1;
+  font-weight: 800;
+}
+
+.vote-confirmation-text {
+  margin: 0 auto 30px;
+  max-width: 440px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.vote-confirmation-actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.vote-confirmation-primary-btn,
+.vote-confirmation-secondary-btn {
+  padding: 13px 24px;
+  border-radius: 999px;
+  font-size: 0.96rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.vote-confirmation-primary-btn {
+  border: none;
+  background: linear-gradient(90deg, #ff4fc3, #b84dff);
+  color: #ffffff;
+}
+
+.vote-confirmation-primary-btn:hover {
+  transform: translateY(-1px);
+}
+
+.vote-confirmation-secondary-btn {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: transparent;
+  color: #ffffff;
+}
+
+.vote-confirmation-secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 640px) {
+  .vote-confirmation-card {
+    padding: 36px 22px;
+    border-radius: 22px;
+  }
+
+  .vote-confirmation-actions {
+    flex-direction: column;
+  }
+
+  .vote-confirmation-primary-btn,
+  .vote-confirmation-secondary-btn {
+    width: 100%;
+  }
+}

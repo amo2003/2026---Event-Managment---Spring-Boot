@@ -22,12 +22,30 @@ const finalizeInvitation = (invitationId) => {
   return axios.put(`${API_URL}/${invitationId}/finalize`);
 };
 
+/* NEW: move finalized artist back to accepted/reviewable state */
+const reconsiderInvitation = (invitationId) => {
+  return axios.put(`${API_URL}/${invitationId}/reconsider`);
+};
+
+/* NEW: remove artist from finalized list */
+const removeInvitation = (invitationId) => {
+  return axios.put(`${API_URL}/${invitationId}/remove`);
+};
+
+/* OPTIONAL generic method if you want flexible status updates later */
+const updateInvitationStatus = (invitationId, payload) => {
+  return axios.put(`${API_URL}/${invitationId}/status`, payload);
+};
+
 const invitationService = {
   sendInvitation,
   getInvitationsByEvent,
   getInvitationsByLead,
   respondToInvitation,
   finalizeInvitation,
+  reconsiderInvitation,
+  removeInvitation,
+  updateInvitationStatus,
 };
 
 export default invitationService;

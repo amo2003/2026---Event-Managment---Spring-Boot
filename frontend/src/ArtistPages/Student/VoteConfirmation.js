@@ -1,56 +1,46 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import ArtistModuleLayout from "../ArtistModule/ArtistModuleLayout";
-import "../../assets/artistModule.css";
+import "./VoteConfirmation.css";
 
 function VoteConfirmation() {
   const navigate = useNavigate();
 
   return (
-    <ArtistModuleLayout title="Vote Submitted" subtitle="Thank you for participating.">
-      <div style={{
-        background: "var(--ah-card)",
-        border: "1px solid var(--ah-border)",
-        borderRadius: "var(--ah-radius-lg)",
-        padding: "48px 32px",
-        maxWidth: 440,
-        textAlign: "center",
-      }}>
-        <div style={{
-          width: 64,
-          height: 64,
-          borderRadius: "50%",
-          background: "var(--ah-green-dim)",
-          border: "1px solid rgba(52,211,153,0.25)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          margin: "0 auto 20px",
-          fontSize: 26,
-        }}>
-          ✓
+    <div className="vote-confirmation-page">
+      
+      <section className="vote-confirmation-content">
+        <div className="vote-confirmation-card">
+          <div className="vote-confirmation-icon">✓</div>
+
+          <p className="vote-confirmation-badge">VOTE SUBMITTED</p>
+
+          <h1>Vote Recorded Successfully</h1>
+
+          <p className="vote-confirmation-text">
+            Thank you for participating. Your vote has been successfully recorded.
+            The final results will be tallied once all student votes are in.
+          </p>
+
+          <div className="vote-confirmation-actions">
+            <button
+              className="vote-confirmation-primary-btn"
+              onClick={() => navigate("/student/final-artist")}
+              type="button"
+            >
+              Back to Shortlist
+            </button>
+
+            <button
+              className="vote-confirmation-secondary-btn"
+              onClick={() => navigate("/")}
+              type="button"
+            >
+              Back Home
+            </button>
+          </div>
         </div>
-        <h2 style={{
-          fontFamily: "var(--font-display)",
-          fontSize: 20,
-          fontWeight: 700,
-          color: "var(--ah-text-1)",
-          marginBottom: 10,
-        }}>
-          Vote Recorded
-        </h2>
-        <p style={{ fontSize: 13, color: "var(--ah-text-2)", marginBottom: 28, lineHeight: 1.6 }}>
-          Your vote has been successfully recorded. The results will be tallied once all votes are in.
-        </p>
-        <button
-          className="artist-form-button"
-          onClick={() => navigate("/student/artist-shortlist")}
-          style={{ width: "auto", padding: "10px 28px" }}
-        >
-          Back to Shortlist
-        </button>
-      </div>
-    </ArtistModuleLayout>
+      </section>
+    </div>
   );
 }
 

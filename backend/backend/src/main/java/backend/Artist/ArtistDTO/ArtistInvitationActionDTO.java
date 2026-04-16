@@ -1,6 +1,6 @@
-package backend.dto.ArtistDTO;
+package backend.Artist.ArtistDTO;
 
-import backend.enums.ArtistEnums.InvitationStatus;
+import backend.Artist.ArtistEnums.InvitationStatus;
 
 public class ArtistInvitationActionDTO {
 

@@ -1,26 +1,21 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8080/api/calendar";
-
-// Add event to calendar
-const addEventToCalendar = (payload) => {
-  return axios.post(API_BASE_URL, payload);
-};
-
-// Get calendar by artist
-const getCalendarByArtist = (artistId) => {
-  return axios.get(`${API_BASE_URL}/artist/${artistId}`);
-};
-
-// Get all published events
-const getAllPublishedEvents = () => {
-  return axios.get(`${API_BASE_URL}/published`);
-};
+const API_BASE_URL = "http://localhost:8080/api/admin/events";
+const INVITATION_API_URL = "http://localhost:8080/api/artist-invitations";
+const LEAD_API_URL = "http://localhost:8080/api/artist-leads";
 
 const calendarService = {
-  addEventToCalendar,
-  getCalendarByArtist,
-  getAllPublishedEvents
+  getAllEvents() {
+    return axios.get(API_BASE_URL);
+  },
+
+  getInvitationsByEvent(eventId) {
+    return axios.get(`${INVITATION_API_URL}/event/${eventId}`);
+  },
+
+  getAllLeads() {
+    return axios.get(LEAD_API_URL);
+  },
 };
 
 export default calendarService;

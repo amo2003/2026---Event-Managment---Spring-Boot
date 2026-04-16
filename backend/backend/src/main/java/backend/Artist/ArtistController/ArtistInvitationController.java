@@ -1,9 +1,9 @@
-package backend.controller.ArtistController;
+package backend.Artist.ArtistController;
 
-import backend.Service.ArtistService.ArtistInvitationService;
-import backend.dto.ArtistDTO.ArtistInvitationActionDTO;
-import backend.dto.ArtistDTO.ArtistInvitationRequestDTO;
-import backend.dto.ArtistDTO.ArtistInvitationResponseDTO;
+import backend.Artist.ArtistDTO.ArtistInvitationActionDTO;
+import backend.Artist.ArtistDTO.ArtistInvitationRequestDTO;
+import backend.Artist.ArtistDTO.ArtistInvitationResponseDTO;
+import backend.Artist.ArtistService.ArtistInvitationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,12 +34,14 @@ public class ArtistInvitationController {
     }
 
     @GetMapping("/lead/{leadId}")
-    public ResponseEntity<List<ArtistInvitationResponseDTO>> getInvitationsByLead(@PathVariable Long leadId) {
+    public ResponseEntity<List<ArtistInvitationResponseDTO>> getInvitationsByLead(
+            @PathVariable Long leadId) {
         return ResponseEntity.ok(artistInvitationService.getInvitationsByLead(leadId));
     }
 
     @GetMapping("/event/{eventId}")
-    public ResponseEntity<List<ArtistInvitationResponseDTO>> getInvitationsByEvent(@PathVariable Long eventId) {
+    public ResponseEntity<List<ArtistInvitationResponseDTO>> getInvitationsByEvent(
+            @PathVariable Long eventId) {
         return ResponseEntity.ok(artistInvitationService.getInvitationsByEvent(eventId));
     }
 
@@ -51,7 +53,20 @@ public class ArtistInvitationController {
     }
 
     @PutMapping("/{id}/finalize")
-    public ResponseEntity<ArtistInvitationResponseDTO> finalizeInvitation(@PathVariable Long id) {
+    public ResponseEntity<ArtistInvitationResponseDTO> finalizeInvitation(
+            @PathVariable Long id) {
         return ResponseEntity.ok(artistInvitationService.finalizeInvitation(id));
+    }
+
+    @PutMapping("/{id}/reconsider")
+    public ResponseEntity<ArtistInvitationResponseDTO> reconsiderInvitation(
+            @PathVariable Long id) {
+        return ResponseEntity.ok(artistInvitationService.reconsiderInvitation(id));
+    }
+
+    @PutMapping("/{id}/remove")
+    public ResponseEntity<ArtistInvitationResponseDTO> removeInvitation(
+            @PathVariable Long id) {
+        return ResponseEntity.ok(artistInvitationService.removeInvitation(id));
     }
 }

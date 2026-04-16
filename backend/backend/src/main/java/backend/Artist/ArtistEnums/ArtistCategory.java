@@ -1,4 +1,4 @@
-package backend.enums.ArtistEnums;
+package backend.Artist.ArtistEnums;
 
 public enum ArtistCategory {
     SINGER,
