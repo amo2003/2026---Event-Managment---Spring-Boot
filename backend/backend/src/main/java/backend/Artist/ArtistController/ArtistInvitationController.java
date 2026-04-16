@@ -45,6 +45,18 @@ public class ArtistInvitationController {
         return ResponseEntity.ok(artistInvitationService.getInvitationsByEvent(eventId));
     }
 
+    @GetMapping("/event/{eventId}/finalized")
+    public ResponseEntity<List<ArtistInvitationResponseDTO>> getFinalizedByEvent(
+            @PathVariable Long eventId) {
+        return ResponseEntity.ok(artistInvitationService.getFinalizedByEvent(eventId));
+    }
+
+    @GetMapping("/artist/{artistId}")
+    public ResponseEntity<List<ArtistInvitationResponseDTO>> getInvitationsByArtist(
+            @PathVariable Long artistId) {
+        return ResponseEntity.ok(artistInvitationService.getInvitationsByArtist(artistId));
+    }
+
     @PutMapping("/{id}/respond")
     public ResponseEntity<ArtistInvitationResponseDTO> respondToInvitation(
             @PathVariable Long id,

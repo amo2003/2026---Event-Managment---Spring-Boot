@@ -184,14 +184,14 @@ const CreateEvent = () => {
                 className={`ce-toggle-btn ${hasArtists === true ? "ce-toggle-btn--active" : ""}`}
                 onClick={() => { setHasArtists(true); setErrors(p => ({ ...p, hasArtists: "" })); }}
               >
-                🎤 With Artists
+                🎤 With Artists (Click)
               </button>
               <button
                 type="button"
                 className={`ce-toggle-btn ${hasArtists === false ? "ce-toggle-btn--active" : ""}`}
                 onClick={() => { setHasArtists(false); setArtists([""]); setErrors(p => ({ ...p, hasArtists: "", artists: "" })); }}
               >
-                🚫 Without Artists
+                🚫 Without Artists (Click)
               </button>
             </div>
             {errors.hasArtists && <span className="ce-field-error">{errors.hasArtists}</span>}

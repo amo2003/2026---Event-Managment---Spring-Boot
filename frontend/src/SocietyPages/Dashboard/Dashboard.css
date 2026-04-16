@@ -1,4 +1,4 @@
-.dashboard-page {
+.ddashboard-page {
   min-height: 100vh;
   background: #0d0d0d;
   padding: 60px 20px;
@@ -6,7 +6,7 @@
   color: #fff;
 }
 
-.dashboard-page h1 {
+.ddashboard-page h1 {
   text-align: center;
   font-size: 2.2rem;
   margin-bottom: 50px;
@@ -14,7 +14,7 @@
   color: #ffffff;
 }
 
-.dashboard-grid {
+.ddashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 30px;
@@ -22,7 +22,7 @@
   margin: 0 auto;
 }
 
-.dashboard-card {
+.ddashboard-card {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -36,7 +36,7 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.dashboard-card::before {
+.ddashboard-card::before {
   content: "";
   position: absolute;
   inset: -2px;
@@ -51,31 +51,31 @@
   100% { filter: hue-rotate(360deg); }
 }
 
-.dashboard-card:hover {
+.ddashboard-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
 }
 
-.dashboard-card h3 {
+.ddashboard-card h3 {
   margin-bottom: 15px;
   color: #af2626;
   font-size: 1.4rem;
 }
 
-.dashboard-points {
+.ddashboard-points {
   list-style-type: disc;
   padding-left: 20px;
   margin-bottom: 20px;
   color: #000000;
 }
 
-.dashboard-points li {
+.ddashboard-points li {
   margin-bottom: 8px;
   font-size: 0.95rem;
   line-height: 1.4;
 }
 
-.dashboard-card button {
+.ddashboard-card button {
   align-self: flex-end;
   padding: 10px 25px;
   border-radius: 30px;
@@ -88,7 +88,7 @@
   transition: 0.3s ease;
 }
 
-.dashboard-card button:hover {
+.ddashboard-card button:hover {
   background: #ffffff;
   color: #000000;
   border: 1px solid black;
@@ -97,15 +97,15 @@
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-  .dashboard-page {
+  .ddashboard-page {
     padding: 50px 15px;
   }
 
-  .dashboard-grid {
+  .ddashboard-grid {
     gap: 20px;
   }
 
-  .dashboard-card {
+  .ddashboard-card {
     padding: 25px 20px;
   }
 }

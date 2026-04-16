@@ -66,6 +66,24 @@ public class ArtistInvitationService {
                 .collect(Collectors.toList());
     }
 
+    public List<ArtistInvitationResponseDTO> getFinalizedByEvent(Long eventId) {
+        return artistInvitationRepository.findByEventId(eventId).stream()
+                .filter(inv -> inv.getStatus() == InvitationStatus.FINALIZED)
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ArtistInvitationResponseDTO> getInvitationsByArtist(Long artistId) {
+        Artist artist = artistRepository.findById(artistId)
+                .orElseThrow(() -> new RuntimeException("Artist not found: " + artistId));
+        return artistInvitationRepository.findAll().stream()
+                .filter(inv -> inv.getArtistLead() != null &&
+                        inv.getArtistLead().getArtistName()
+                                .equalsIgnoreCase(artist.getArtistName()))
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
+    }
+
     public ArtistInvitationResponseDTO respondToInvitation(Long invitationId, ArtistInvitationActionDTO actionDTO) {
         ArtistInvitation invitation = artistInvitationRepository.findById(invitationId)
                 .orElseThrow(() -> new RuntimeException("Invitation not found with id: " + invitationId));

@@ -22,16 +22,16 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="dashboard-page">
+    <div className="ddashboard-page">
       <h1>Welcome, {user?.faculty || user?.role || "Guest"}!</h1>
-      <div className="dashboard-grid">
+      <div className="ddashboard-grid">
         {sections.map((section, index) => (
           <div
             key={index}
-            className="dashboard-card"
+            className="ddashboard-card"
           >
             <h3>{section.title}</h3>
-            <ul className="dashboard-points">
+            <ul className="ddashboard-points">
               {section.points.map((point, idx) => (
                 <li key={idx}>{point}</li>
               ))}

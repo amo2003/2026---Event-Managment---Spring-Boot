@@ -12,6 +12,7 @@ const EventDetail = () => {
 
   const [event, setEvent] = useState(null);
   const [society, setSociety] = useState(null);
+  const [finalizedArtists, setFinalizedArtists] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -20,6 +21,14 @@ const EventDetail = () => {
         setLoading(true);
         const res = await axios.get(`http://localhost:8080/api/public/events/${id}`);
         setEvent(res.data);
+
+        // Fetch finalized artists for this event
+        try {
+          const artistRes = await axios.get(`http://localhost:8080/api/artist-invitations/event/${id}/finalized`);
+          setFinalizedArtists(artistRes.data || []);
+        } catch {
+          setFinalizedArtists([]);
+        }
 
         // Fetch related society
         if (res.data.societyId) {
@@ -133,8 +142,21 @@ const EventDetail = () => {
             </div>
           )}
 
-          {/* ── Artists ── */}
-          {event.artists && (
+          {/* ── Artists ── show finalized if available, else show form artists ── */}
+          {finalizedArtists.length > 0 ? (
+            <div className="ed-card">
+              <h2 className="ed-card-title">🎤 Performing Artists</h2>
+              <p className="ed-card-subtitle">Officially confirmed artists for this event.</p>
+              <div className="ed-artists-list">
+                {finalizedArtists.map((artist, i) => (
+                  <div key={i} className="ed-artist-item ed-artist-item--finalized">
+                    <span className="ed-artist-num ed-artist-num--finalized">{i + 1}</span>
+                    <span className="ed-artist-name">{artist.artistName}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : event.artists && (
             <div className="ed-card">
               <h2 className="ed-card-title">🎤 Performing Artists</h2>
               <div className="ed-artists-list">

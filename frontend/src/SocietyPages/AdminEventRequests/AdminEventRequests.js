@@ -4,6 +4,7 @@ import "./AdminEventRequests.css";
 import { useNavigate } from "react-router-dom";
 import ChatPanel from "../../components/ChatPanel/ChatPanel";
 import useUnreadCounts from "../../components/ChatPanel/useUnreadCounts";
+import invitationService from "../../services/invitationService";
 
 const AdminPendingEvents = () => {
   const [events, setEvents] = useState([]);
@@ -12,7 +13,8 @@ const AdminPendingEvents = () => {
   const [detailEvent, setDetailEvent] = useState(null);
   const [descEvent, setDescEvent] = useState(null);
   const [searchDate, setSearchDate] = useState("");
-  const [editArtists, setEditArtists] = useState(null); // array when editing
+  const [editArtists, setEditArtists] = useState(null);
+  const [finalizedMap, setFinalizedMap] = useState({}); // eventId -> artistName[]
   const navigate = useNavigate();
 
   const eventIds = events.map(e => e.id);
@@ -22,7 +24,22 @@ const AdminPendingEvents = () => {
 
   const fetchEvents = () => {
     axios.get("http://localhost:8080/api/admin/events")
-      .then((res) => setEvents(res.data))
+      .then((res) => {
+        setEvents(res.data);
+        // For each event, fetch finalized artists
+        res.data.forEach(ev => {
+          invitationService.getInvitationsByEvent(ev.id)
+            .then(r => {
+              const finalized = (r.data || [])
+                .filter(inv => inv.status === "FINALIZED")
+                .map(inv => inv.artistName);
+              if (finalized.length > 0) {
+                setFinalizedMap(prev => ({ ...prev, [ev.id]: finalized }));
+              }
+            })
+            .catch(() => {});
+        });
+      })
       .catch((err) => console.error(err));
   };
 
@@ -118,6 +135,7 @@ const AdminPendingEvents = () => {
                   <th>Time</th>
                   <th>Venue</th>
                   <th>Artists</th>
+                  <th>Finalized Artists</th>
                   <th>Description</th>
                   <th>Image</th>
                   <th>Status</th>
@@ -138,6 +156,13 @@ const AdminPendingEvents = () => {
                             <div key={i}>{i + 1}) {a.trim()}</div>
                           ))
                         : <span className="aer-no-artist">No artists — event without artists</span>}
+                    </td>
+                    <td>
+                      {finalizedMap[event.id]?.length > 0
+                        ? finalizedMap[event.id].map((name, i) => (
+                            <div key={i} className="aaer-finalized-name">🎤 {name}</div>
+                          ))
+                        : <span className="aaer-no-finalized">—</span>}
                     </td>
                     <td
                       className="aer-desc-cell"
@@ -273,6 +298,22 @@ const AdminPendingEvents = () => {
                     </div>
                   )}
                 </div>
+
+                {/* Finalized Artists */}
+                {finalizedMap[detailEvent.id]?.length > 0 && (
+                  <div className="aer-detail-field aer-detail-full">
+                    <span className="aer-detail-label">🎤 Finalized Artists</span>
+                    <div className="aer-detail-value">
+                      {finalizedMap[detailEvent.id].map((name, i) => (
+                        <div key={i} className="aer-finalized-detail-row">
+                          <span className="aer-finalized-num">{i + 1}</span>
+                          {name}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {detailEvent.adminMessage && (
                   <div className="aer-detail-field aer-detail-full">
                     <span className="aer-detail-label">Admin Note</span>

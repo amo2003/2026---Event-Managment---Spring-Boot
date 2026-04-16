@@ -201,6 +201,8 @@ const Home = () => {
             <>
               <button className="menu-link" onClick={() => handleNavigate("/login")}>Society Login</button>
               <button className="menu-link" onClick={() => handleNavigate("/slogin")}>Stall Owner's Login</button>
+              <button className="menu-link" onClick={() => handleNavigate("/artist-register")}>Artist Portal</button>
+
             </>
           )}
 

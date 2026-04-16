@@ -606,3 +606,45 @@
   padding: 4px 10px;
   display: inline-block;
 }
+
+/* ── Finalized Artists column ── */
+.aaer-finalized-name {
+  font-size: 1.1rem;
+  color: #002aff;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.aaer-no-finalized {
+  color: #475569;
+  font-size: 0.78rem;
+}
+
+/* ── Finalized Artists detail modal ── */
+.aer-finalized-detail-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 12px;
+  background: rgba(34,197,94,0.07);
+  border: 1px solid rgba(34,197,94,0.18);
+  border-radius: 8px;
+  margin-bottom: 6px;
+  font-size: 0.88rem;
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+.aer-finalized-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
