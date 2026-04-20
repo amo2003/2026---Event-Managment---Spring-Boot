@@ -6,6 +6,8 @@ const peerConnections = {};
 const dataChannels = {};
 const pendingCandidates = {};
 let locationCallback = null;
+let latestLocation = null;
+
 
 function ensurePending(userId) {
   if (!pendingCandidates[userId]) {
@@ -17,8 +19,22 @@ function setupDataChannel(remoteUserId, channel) {
   dataChannels[remoteUserId] = channel;
 
   channel.onopen = () => {
-    console.log(`P2P DataChannel connected with user ${remoteUserId}`);
-  };
+  console.log(`P2P DataChannel connected with user ${remoteUserId}`);
+  
+
+  // 🔥 IMPORTANT: send last known location immediately
+  if (latestLocation) {
+    try {
+      channel.send(JSON.stringify({
+        type: "location",
+        lat: latestLocation.lat,
+        lng: latestLocation.lng
+      }));
+    } catch (error) {
+      console.error(`Failed to send latest location to ${remoteUserId}:`, error);
+    }
+  }
+};
 
   channel.onclose = () => {
     console.log(`P2P DataChannel closed with user ${remoteUserId}`);
@@ -44,10 +60,30 @@ function setupDataChannel(remoteUserId, channel) {
     }
   };
 }
-
 function setupPeerConnection(remoteUserId, sendSignal) {
-  if (peerConnections[remoteUserId]) {
-    return peerConnections[remoteUserId];
+  const existing = peerConnections[remoteUserId];
+
+  if (existing) {
+    const isDead =
+      existing.connectionState === "closed" ||
+      existing.connectionState === "failed" ||
+      existing.iceConnectionState === "closed" ||
+      existing.iceConnectionState === "failed" ||
+      existing.iceConnectionState === "disconnected";
+
+    if (!isDead) {
+      return existing;
+    }
+
+    try {
+      existing.close();
+    } catch (e) {
+      console.error(`Error closing stale peer ${remoteUserId}:`, e);
+    }
+
+    delete peerConnections[remoteUserId];
+    delete dataChannels[remoteUserId];
+    delete pendingCandidates[remoteUserId];
   }
 
   const pc = new RTCPeerConnection(configuration);
@@ -83,9 +119,18 @@ export function initializeWebRTC(onLocationReceived) {
 }
 
 export function hasPeerConnection(remoteUserId) {
-  return !!peerConnections[remoteUserId];
-}
+  const pc = peerConnections[remoteUserId];
 
+  if (!pc) return false;
+
+  return (
+    pc.connectionState !== "closed" &&
+    pc.connectionState !== "failed" &&
+    pc.iceConnectionState !== "closed" &&
+    pc.iceConnectionState !== "failed" &&
+    pc.iceConnectionState !== "disconnected"
+  );
+}
 export function createPeerForRemoteUser(remoteUserId, sendSignal) {
   const pc = setupPeerConnection(remoteUserId, sendSignal);
 
@@ -188,6 +233,9 @@ async function flushPendingCandidates(remoteUserId) {
 }
 
 export function sendLocationToAll(lat, lng) {
+  // 🔥 store latest location globally
+  latestLocation = { lat, lng };
+
   const payload = JSON.stringify({
     type: "location",
     lat,

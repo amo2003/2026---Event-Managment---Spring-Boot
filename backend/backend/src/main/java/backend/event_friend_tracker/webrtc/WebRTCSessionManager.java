@@ -49,13 +49,17 @@ public class WebRTCSessionManager {
     }
 
     public void removeSession(WebSocketSession session) {
-        Long userId = sessionUserMap.remove(session.getId());
-        Long groupId = sessionGroupMap.remove(session.getId());
+    Long userId = sessionUserMap.remove(session.getId());
+    Long groupId = sessionGroupMap.remove(session.getId());
 
-        if (userId == null || groupId == null) return;
+    if (userId == null || groupId == null) return;
 
-        Map<Long, WebSocketSession> members = groupSessions.get(groupId);
-        if (members != null) {
+    Map<Long, WebSocketSession> members = groupSessions.get(groupId);
+    if (members != null) {
+        WebSocketSession currentSession = members.get(userId);
+
+        // remove only if this closed session is still the active session
+        if (currentSession != null && currentSession.getId().equals(session.getId())) {
             members.remove(userId);
 
             if (members.isEmpty()) {
@@ -63,4 +67,5 @@ public class WebRTCSessionManager {
             }
         }
     }
+}
 }
