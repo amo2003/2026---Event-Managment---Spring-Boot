@@ -13,7 +13,7 @@ import {
   handleAnswerFromUser,
   addCandidateFromUser,
   sendLocationToAll,
-  getConnectedPeerCount,
+  removePeerConnection,
   closeAllPeerConnections
 } from "../../services/friendTracker/webrtcService";
 import {
@@ -352,7 +352,7 @@ function FriendTrackerPage() {
   const [currentUserId, setCurrentUserId] = useState("");
   const [myLocation, setMyLocation] = useState(null);
   const [memberLocations, setMemberLocations] = useState({});
-  const [connectedPeerCount, setConnectedPeerCount] = useState(0);
+  const [onlineUserIds, setOnlineUserIds] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState("");
   const [members, setMembers] = useState([]);
   const [pendingRequests, setPendingRequests] = useState([]);
@@ -424,7 +424,7 @@ function FriendTrackerPage() {
   }
 
   function refreshConnectedPeerCount() {
-    setConnectedPeerCount(getConnectedPeerCount());
+    //setConnectedPeerCount(getConnectedPeerCount());
   }
 
   function addNotification(message, placeName, remoteUserId) {
@@ -485,71 +485,80 @@ function FriendTrackerPage() {
   console.log("Signal received:", msg);
 
   if (msg.type === "online-users") {
-    const onlineUsers = Array.isArray(msg.data) ? msg.data : [];
+  const onlineUsers = Array.isArray(msg.data) ? msg.data.map(Number) : [];
+  const localId = Number(currentUserIdRef.current);
 
+  setOnlineUserIds(onlineUsers);
+
+  // IMPORTANT: clear stale peer connections on resync/reconnect
+  onlineUsers.forEach((remoteUserId) => {
+    const remoteId = Number(remoteUserId);
+    if (remoteId !== localId) {
+      removePeerConnection(remoteId);
+    }
+  });
+
+  // clear old live locations so only fresh streams appear
+  setMemberLocations({});
+
+  setTimeout(() => {
     onlineUsers.forEach((remoteUserId) => {
-      const localId = Number(currentUserIdRef.current);
       const remoteId = Number(remoteUserId);
 
       if (remoteId === localId) return;
 
-      // create only once, and only one side creates offer
-      if (!hasPeerConnection(remoteId) && localId < remoteId) {
+      // keep your original one-side-offer rule
+      if (localId < remoteId) {
         createOfferForUser(remoteId, sendSignalToUser);
       }
     });
+  }, 300);
 
-    setTimeout(() => {
-      setConnectedPeerCount(getConnectedPeerCount());
-    }, 300);
-
-    return;
-  }
+  setStatusMessage("Online users synced. Rebuilding peer connections...");
+  return;
+}
 
   if (msg.type === "user-joined") {
-    if (!msg.groupId || String(msg.groupId) !== String(selectedGroupRef.current)) {
-      return;
-    }
-
-    const localId = Number(currentUserIdRef.current);
-    const remoteId = Number(msg.data ?? msg.fromUserId);
-
-    if (remoteId === localId) return;
-
-    // create only once, and only one side creates offer
-    if (!hasPeerConnection(remoteId) && localId < remoteId) {
-      createOfferForUser(remoteId, sendSignalToUser);
-      setStatusMessage(`User ${remoteId} joined. Negotiating...`);
-    }
-
-    setTimeout(() => {
-      setConnectedPeerCount(getConnectedPeerCount());
-    }, 300);
-
+  if (!msg.groupId || String(msg.groupId) !== String(selectedGroupRef.current)) {
     return;
   }
 
+  const localId = Number(currentUserIdRef.current);
+  const remoteId = Number(msg.data ?? msg.fromUserId);
+
+  if (remoteId === localId) return;
+
+  setOnlineUserIds((prev) => {
+  return prev.includes(remoteId) ? prev : [...prev, remoteId];
+});
+
+  if (!hasPeerConnection(remoteId) && localId < remoteId) {
+    createOfferForUser(remoteId, sendSignalToUser);
+    setStatusMessage(`User ${remoteId} joined. Negotiating...`);
+  }
+
+  return;
+}
   if (msg.type === "user-left") {
-    if (!msg.groupId || String(msg.groupId) !== String(selectedGroupRef.current)) {
-      return;
-    }
-
-    const remoteId = Number(msg.data ?? msg.fromUserId);
-
-    setMemberLocations((prev) => {
-      const updated = { ...prev };
-      delete updated[remoteId];
-      return updated;
-    });
-
-    setStatusMessage(`User ${remoteId} left the group.`);
-
-    setTimeout(() => {
-      setConnectedPeerCount(getConnectedPeerCount());
-    }, 300);
-
+  if (!msg.groupId || String(msg.groupId) !== String(selectedGroupRef.current)) {
     return;
   }
+
+  const remoteId = Number(msg.data ?? msg.fromUserId);
+
+  removePeerConnection(remoteId);
+
+  setOnlineUserIds((prev) => prev.filter((id) => id !== remoteId));
+
+  setMemberLocations((prev) => {
+    const updated = { ...prev };
+    delete updated[remoteId];
+    return updated;
+  });
+
+  setStatusMessage(`User ${remoteId} left the group.`);
+  return;
+}
 
   if (!msg.groupId || String(msg.groupId) !== String(selectedGroupRef.current)) {
     return;
@@ -564,7 +573,7 @@ function FriendTrackerPage() {
     setStatusMessage(`Offer received from user ${msg.fromUserId}. Negotiating...`);
 
     setTimeout(() => {
-      setConnectedPeerCount(getConnectedPeerCount());
+      //setConnectedPeerCount(getConnectedPeerCount());
     }, 300);
 
     return;
@@ -576,7 +585,7 @@ function FriendTrackerPage() {
     setStatusMessage(`Answer received from user ${msg.fromUserId}.`);
 
     setTimeout(() => {
-      setConnectedPeerCount(getConnectedPeerCount());
+      //setConnectedPeerCount(getConnectedPeerCount());
     }, 300);
 
     return;
@@ -586,7 +595,7 @@ function FriendTrackerPage() {
     addCandidateFromUser(msg.fromUserId, msg.data);
 
     setTimeout(() => {
-      setConnectedPeerCount(getConnectedPeerCount());
+      //setConnectedPeerCount(getConnectedPeerCount());
     }, 300);
   }
 }
@@ -849,7 +858,7 @@ function FriendTrackerPage() {
     setMembersLoaded(false);
     setConnectionStarted(false);
     setMemberLocations({});
-    setConnectedPeerCount(0);
+    setOnlineUserIds([]);
     setNotifications([]);
     previousPlaceStateRef.current = {};
     setStatusMessage("Waiting for user action...");
@@ -870,7 +879,7 @@ function FriendTrackerPage() {
       setMembersLoaded(false);
       setConnectionStarted(false);
       setMemberLocations({});
-      setConnectedPeerCount(0);
+      setOnlineUserIds([]);
       setNotifications([]);
       previousPlaceStateRef.current = {};
       setEventCenter(null);
@@ -937,21 +946,25 @@ function FriendTrackerPage() {
   }
 
   function startConnection() {
-    if (!validateGroupInput()) return;
+  if (!validateGroupInput()) return;
 
-    if (!membersLoaded || members.length === 0) {
-      setStatusMessage("Load a valid group first.");
-      return;
-    }
+  if (!membersLoaded || members.length === 0) {
+    setStatusMessage("Load a valid group first.");
+    return;
+  }
 
-    if (!currentUserId.trim() || !/^\d+$/.test(currentUserId.trim())) {
-      setStatusMessage("Enter a valid current user ID first.");
-      return;
-    }
+  if (!currentUserId.trim() || !/^\d+$/.test(currentUserId.trim())) {
+    setStatusMessage("Enter a valid current user ID first.");
+    return;
+  }
 
+  connectSocket(handleSignalMessage);
+
+  setTimeout(() => {
     joinGroup(Number(selectedGroup), Number(currentUserId));
     setStatusMessage("Joined signaling group. Waiting for peer negotiation...");
-  }
+  }, 500);
+}
 
   async function loadPendingRequests() {
     if (!validateGroupInput()) return;
@@ -999,6 +1012,9 @@ function FriendTrackerPage() {
   const isError = ["fail", "unable", "not supported"].some((w) =>
     statusMessage.toLowerCase().includes(w)
   );
+  const connectedMemberCount = onlineUserIds.filter(
+  (id) => id !== Number(currentUserId)
+).length;
 
   const uniqueMembers = members.filter(
     (m, i, s) =>
@@ -1364,9 +1380,9 @@ function FriendTrackerPage() {
 
                   <div className="ft-coord-card">
                     <div className="clabel">🔴 Group Members Live</div>
-                    <div className={`cval${connectedPeerCount === 0 ? " dim" : ""}`}>
-                      {connectedPeerCount > 0
-                        ? `${connectedPeerCount} member(s) connected`
+                    <div className={`cval${connectedMemberCount === 0 ? " dim" : ""}`}>
+                      {connectedMemberCount > 0
+                        ? `${connectedMemberCount} member(s) connected`
                         : connectionStarted
                         ? "Waiting..."
                         : "Start P2P"}
@@ -1393,11 +1409,13 @@ function FriendTrackerPage() {
                 )}
 
                 <MapView
-                  myLocation={myLocation}
-                  memberLocations={memberLocations}
-                  eventCenter={eventCenter}
-                  eventRadius={eventRadius}
-                />
+  myLocation={myLocation}
+  memberLocations={Object.values(memberLocations).filter((loc) =>
+    uniqueMembers.some((m) => Number(m.userId) === Number(loc.userId))
+  )}
+  eventCenter={eventCenter}
+  eventRadius={eventRadius}
+/>
 
                 <div className="ft-notification-list">
                   <div className="ft-sh" style={{ marginTop: "16px", marginBottom: "10px" }}>
