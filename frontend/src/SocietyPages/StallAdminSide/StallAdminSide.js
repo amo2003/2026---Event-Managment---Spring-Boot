@@ -186,9 +186,7 @@ const PendingPayments = () => {
                         alt="Payment Slip"
                         className="slip-img"
                         onClick={() =>
-                          setModalImage(
-                            `http://localhost:8080${stall.slipUrl}`
-                          )
+                          setModalImage(`http://localhost:8080${stall.slipUrl}`)
                         }
                       />
                     ) : (
@@ -198,22 +196,26 @@ const PendingPayments = () => {
 
                   <td>{stall.slipNote || "-"}</td>
 
-                  <td
-                    className={`status-${stall.paymentStatus?.toLowerCase()}`}
-                  >
+                  <td className={`status-${stall.paymentStatus?.toLowerCase()}`}>
                     {stall.paymentStatus}
                   </td>
 
                   <td>
                     {stall.paymentStatus === "PENDING" ? (
-                      <>
-                        <button onClick={() => approve(stall.id)}>
+                      <div className="action-btn-group">
+                        <button
+                          className="approve-btn"
+                          onClick={() => approve(stall.id)}
+                        >
                           Approve
                         </button>
-                        <button onClick={() => reject(stall.id)}>
+                        <button
+                          className="reject-btn"
+                          onClick={() => reject(stall.id)}
+                        >
                           Reject
                         </button>
-                      </>
+                      </div>
                     ) : (
                       "-"
                     )}
