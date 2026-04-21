@@ -53,7 +53,7 @@ import "./RiskManagePages/styles/form.css";
 import "./RiskManagePages/styles/layout.css";
 import "./RiskManagePages/styles/detail.css";
 import "./RiskManagePages/styles/table.css";
-
+import "./RiskManagePages/styles/chat.css";
 
 function App() {
   return (

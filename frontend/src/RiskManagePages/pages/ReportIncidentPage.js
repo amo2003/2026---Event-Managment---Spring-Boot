@@ -4,7 +4,14 @@ import { getPlaceAreas } from "../api/placeAreaApi";
 import Loader from "../components/common/Loader";
 import { validateReportIncidentForm } from "../utils/validation";
 
-const initialForm = { incidentType:"", priority:"", description:"", reportedBy:"", placeAreaId:"", exactLocation:"" };
+const initialForm = {
+  incidentType: "",
+  priority: "",
+  description: "",
+  reportedBy: "",
+  placeAreaId: "",
+  exactLocation: "",
+};
 
 const ReportIncidentPage = () => {
   const [form, setForm] = useState(initialForm);
@@ -15,97 +22,271 @@ const ReportIncidentPage = () => {
   const [error, setError] = useState("");
   const [errors, setErrors] = useState({});
   const [createdIncident, setCreatedIncident] = useState(null);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    getPlaceAreas().then(setPlaceAreas).catch(() => setError("Failed to load place areas")).finally(() => setPlacesLoading(false));
+    const loadPlaces = async () => {
+      try {
+        const data = await getPlaceAreas();
+        setPlaceAreas(data);
+      } catch {
+        setError("Failed to load place areas");
+      } finally {
+        setPlacesLoading(false);
+      }
+    };
+
+    loadPlaces();
   }, []);
 
-  const handleChange = (e) => { setForm({...form,[e.target.name]:e.target.value}); setErrors({...errors,[e.target.name]:""}); };
-  const handleFileChange = (e) => { setSelectedFile(e.target.files?.[0]||null); setErrors({...errors,file:""}); };
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" });
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0] || null;
+    setSelectedFile(file);
+    setErrors({ ...errors, file: "" });
+  };
+
+  const handleCopyTrackingCode = async () => {
+    const code = createdIncident?.trackingCode;
+    if (!code) return;
+
+    try {
+      await navigator.clipboard.writeText(code);
+    } catch {
+      const textArea = document.createElement("textarea");
+      textArea.value = code;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textArea);
+    }
+
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 1500);
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); setLoading(true); setError(""); setCreatedIncident(null);
-    const ve = validateReportIncidentForm(form, selectedFile); setErrors(ve);
-    if (Object.keys(ve).length > 0) { setLoading(false); return; }
+    e.preventDefault();
+
+    setLoading(true);
+    setError("");
+    setCreatedIncident(null);
+    setCopied(false);
+
+    const validationErrors = validateReportIncidentForm(form, selectedFile);
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length > 0) {
+      setLoading(false);
+      return;
+    }
+
     try {
-      const incident = await createIncident({...form, priority:form.priority||null, placeAreaId:Number(form.placeAreaId)});
+      const payload = {
+        ...form,
+        priority: form.priority || null,
+        placeAreaId: Number(form.placeAreaId),
+      };
+
+      const incident = await createIncident(payload);
+
       let uploadWarning = "";
+
       if (selectedFile && incident?.id) {
-        try { await uploadEvidence(incident.id, selectedFile, form.reportedBy); }
-        catch { uploadWarning = "Incident submitted, but evidence upload failed."; }
+        try {
+          await uploadEvidence(incident.id, selectedFile, form.reportedBy);
+        } catch {
+          uploadWarning = "Incident submitted, but evidence upload failed.";
+        }
       }
-      setCreatedIncident({...incident, uploadWarning});
-      setForm(initialForm); setSelectedFile(null); setErrors({});
-    } catch (err) { setError(err.response?.data?.message || "Failed to submit incident"); }
-    finally { setLoading(false); }
+
+      setCreatedIncident({
+        ...incident,
+        uploadWarning,
+      });
+
+      setForm(initialForm);
+      setSelectedFile(null);
+      setErrors({});
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to submit incident");
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (placesLoading) return <Loader />;
 
   return (
-    <div className="rm-scene-page">
-      <div className="rm-scene-form-card">
-        <div className="rm-scene-heading">
+    <div className="scene-page">
+      <div className="scene-form-card">
+        <div className="scene-heading">
           <h2>REPORT INCIDENT</h2>
           <p>Submit an incident for immediate recording and response.</p>
         </div>
-        {error && <div className="rm-message-box rm-error">{error}</div>}
+
+        {error && <div className="message-box error">{error}</div>}
+
         {createdIncident && (
-          <div className="rm-message-box rm-success">
-            <strong>Incident submitted successfully.</strong><br />
-            Tracking Code: <strong>{createdIncident.trackingCode}</strong><br />
-            Status: <strong>{createdIncident.status}</strong>
-            {createdIncident.uploadWarning && <><br /><span>{createdIncident.uploadWarning}</span></>}
+          <div className="message-box success">
+            <strong>Incident submitted successfully.</strong>
+
+            <div className="tracking-code-copy-row">
+              <span>
+                Tracking Code: <strong>{createdIncident.trackingCode}</strong>
+              </span>
+
+              <button
+                type="button"
+                className={`copy-code-btn ${copied ? "copied" : ""}`}
+                onClick={handleCopyTrackingCode}
+              >
+                {copied ? "Copied" : "Copy"}
+              </button>
+            </div>
+
+            <div>
+              Status: <strong>{createdIncident.status}</strong>
+            </div>
+
+            {createdIncident.uploadWarning && (
+              <div className="upload-warning-text">
+                {createdIncident.uploadWarning}
+              </div>
+            )}
           </div>
         )}
-        <form onSubmit={handleSubmit} className="rm-form-grid rm-compact-form">
-          <div className="rm-form-group">
+
+        <form onSubmit={handleSubmit} className="form-grid compact-form">
+          <div className="form-group">
             <label>Incident Type</label>
-            <select name="incidentType" value={form.incidentType} onChange={handleChange} className={errors.incidentType ? "rm-input-error" : ""}>
+            <select
+              name="incidentType"
+              value={form.incidentType}
+              onChange={handleChange}
+              className={errors.incidentType ? "input-error" : ""}
+            >
               <option value="">Select incident type</option>
-              {["FIGHT","MEDICAL","FIRE","SECURITY","CROWD_CONTROL","TECHNICAL","OTHER"].map(v => <option key={v} value={v}>{v}</option>)}
+              <option value="FIGHT">Fight</option>
+              <option value="MEDICAL">Medical</option>
+              <option value="FIRE">Fire</option>
+              <option value="SECURITY">Security</option>
+              <option value="CROWD_CONTROL">Crowd Control</option>
+              <option value="TECHNICAL">Technical</option>
+              <option value="OTHER">Other</option>
             </select>
-            {errors.incidentType && <small className="rm-field-error">{errors.incidentType}</small>}
+            {errors.incidentType && (
+              <small className="field-error">{errors.incidentType}</small>
+            )}
           </div>
-          <div className="rm-form-group">
+
+          <div className="form-group">
             <label>Priority</label>
-            <select name="priority" value={form.priority} onChange={handleChange}>
+            <select
+              name="priority"
+              value={form.priority}
+              onChange={handleChange}
+              className={errors.priority ? "input-error" : ""}
+            >
               <option value="">Auto suggest</option>
-              {["LOW","MEDIUM","HIGH","CRITICAL"].map(v => <option key={v} value={v}>{v}</option>)}
+              <option value="LOW">Low</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="HIGH">High</option>
+              <option value="CRITICAL">Critical</option>
             </select>
+            {errors.priority && (
+              <small className="field-error">{errors.priority}</small>
+            )}
           </div>
-          <div className="rm-form-group">
+
+          <div className="form-group">
             <label>Reported By</label>
-            <input name="reportedBy" value={form.reportedBy} onChange={handleChange} placeholder="Reporter Name" className={errors.reportedBy ? "rm-input-error" : ""} />
-            {errors.reportedBy && <small className="rm-field-error">{errors.reportedBy}</small>}
+            <input
+              name="reportedBy"
+              value={form.reportedBy}
+              onChange={handleChange}
+              placeholder="Reporter Name"
+              className={errors.reportedBy ? "input-error" : ""}
+            />
+            {errors.reportedBy && (
+              <small className="field-error">{errors.reportedBy}</small>
+            )}
           </div>
-          <div className="rm-form-group">
+
+          <div className="form-group">
             <label>Place Area</label>
-            <select name="placeAreaId" value={form.placeAreaId} onChange={handleChange} className={errors.placeAreaId ? "rm-input-error" : ""}>
+            <select
+              name="placeAreaId"
+              value={form.placeAreaId}
+              onChange={handleChange}
+              className={errors.placeAreaId ? "input-error" : ""}
+            >
               <option value="">Select place area</option>
-              {placeAreas.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+              {placeAreas.map((place) => (
+                <option key={place.id} value={place.id}>
+                  {place.name}
+                </option>
+              ))}
             </select>
-            {errors.placeAreaId && <small className="rm-field-error">{errors.placeAreaId}</small>}
+            {errors.placeAreaId && (
+              <small className="field-error">{errors.placeAreaId}</small>
+            )}
           </div>
-          <div className="rm-form-group rm-full-span">
+
+          <div className="form-group full-span">
             <label>Exact Location</label>
-            <input name="exactLocation" value={form.exactLocation} onChange={handleChange} placeholder="Exact Location" className={errors.exactLocation ? "rm-input-error" : ""} />
-            {errors.exactLocation && <small className="rm-field-error">{errors.exactLocation}</small>}
+            <input
+              name="exactLocation"
+              value={form.exactLocation}
+              onChange={handleChange}
+              placeholder="Exact Location"
+              className={errors.exactLocation ? "input-error" : ""}
+            />
+            {errors.exactLocation && (
+              <small className="field-error">{errors.exactLocation}</small>
+            )}
           </div>
-          <div className="rm-form-group rm-full-span">
+
+          <div className="form-group full-span">
             <label>Description</label>
-            <textarea name="description" value={form.description} onChange={handleChange} placeholder="Describe the incident" rows="5" className={errors.description ? "rm-input-error" : ""} />
-            {errors.description && <small className="rm-field-error">{errors.description}</small>}
+            <textarea
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+              placeholder="Describe the incident"
+              rows="5"
+              className={errors.description ? "input-error" : ""}
+            />
+            {errors.description && (
+              <small className="field-error">{errors.description}</small>
+            )}
           </div>
-          <div className="rm-form-group rm-full-span">
+
+          <div className="form-group full-span">
             <label>Evidence Image</label>
-            <input type="file" accept="image/*" onChange={handleFileChange} className={errors.file ? "rm-input-error" : ""} />
-            {errors.file && <small className="rm-field-error">{errors.file}</small>}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className={errors.file ? "input-error" : ""}
+            />
+            {errors.file && <small className="field-error">{errors.file}</small>}
           </div>
-          <button type="submit" className="rm-btn rm-btn-light rm-wide-btn rm-full-span" disabled={loading}>{loading ? "Submitting..." : "SUBMIT"}</button>
+
+          <button type="submit" className="btn btn-light wide-btn" disabled={loading}>
+            {loading ? "Submitting..." : "SUBMIT"}
+          </button>
         </form>
       </div>
     </div>
   );
 };
+
 export default ReportIncidentPage;
