@@ -1,6 +1,6 @@
-package backend.Society_Stall.Service.controller;
+package backend.Society_Stall.controller;
 
-import backend.Society_Stall.Service.dto.EventDTO;
+import backend.Society_Stall.dto.EventDTO;
 import backend.Society_Stall.Service.EventService;
 import org.springframework.web.bind.annotation.*;
 

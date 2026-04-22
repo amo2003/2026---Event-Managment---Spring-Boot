@@ -1,7 +1,7 @@
-package backend.Society_Stall.Service.repository;
+package backend.Society_Stall.repository;
 
-import backend.Society_Stall.Service.model.EventModel;
-import backend.Society_Stall.Service.enums.EventStatus;
+import backend.Society_Stall.model.EventModel;
+import backend.Society_Stall.enums.EventStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;

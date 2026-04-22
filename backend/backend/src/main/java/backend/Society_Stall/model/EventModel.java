@@ -1,6 +1,6 @@
-package backend.Society_Stall.Service.model;
+package backend.Society_Stall.model;
 
-import backend.Society_Stall.Service.enums.EventStatus;
+import backend.Society_Stall.enums.EventStatus;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -43,6 +43,9 @@ public class EventModel {
     private Boolean paymentDone = false;
 
     private String imageUrl;
+
+    @Column(columnDefinition = "TEXT")
+    private String artists;
 
     public EventModel() {}
 
@@ -106,4 +109,7 @@ public class EventModel {
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public String getArtists() { return artists; }
+    public void setArtists(String artists) { this.artists = artists; }
 }

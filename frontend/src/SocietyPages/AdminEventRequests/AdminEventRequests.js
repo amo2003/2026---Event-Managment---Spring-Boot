@@ -4,6 +4,7 @@ import "./AdminEventRequests.css";
 import { useNavigate } from "react-router-dom";
 import ChatPanel from "../../components/ChatPanel/ChatPanel";
 import useUnreadCounts from "../../components/ChatPanel/useUnreadCounts";
+import invitationService from "../../services/invitationService";
 
 const AdminPendingEvents = () => {
   const [events, setEvents] = useState([]);
@@ -12,6 +13,8 @@ const AdminPendingEvents = () => {
   const [detailEvent, setDetailEvent] = useState(null);
   const [descEvent, setDescEvent] = useState(null);
   const [searchDate, setSearchDate] = useState("");
+  const [editArtists, setEditArtists] = useState(null);
+  const [finalizedMap, setFinalizedMap] = useState({}); // eventId -> artistName[]
   const navigate = useNavigate();
 
   const eventIds = events.map(e => e.id);
@@ -21,7 +24,22 @@ const AdminPendingEvents = () => {
 
   const fetchEvents = () => {
     axios.get("http://localhost:8080/api/admin/events")
-      .then((res) => setEvents(res.data))
+      .then((res) => {
+        setEvents(res.data);
+        // For each event, fetch finalized artists
+        res.data.forEach(ev => {
+          invitationService.getInvitationsByEvent(ev.id)
+            .then(r => {
+              const finalized = (r.data || [])
+                .filter(inv => inv.status === "FINALIZED")
+                .map(inv => inv.artistName);
+              if (finalized.length > 0) {
+                setFinalizedMap(prev => ({ ...prev, [ev.id]: finalized }));
+              }
+            })
+            .catch(() => {});
+        });
+      })
       .catch((err) => console.error(err));
   };
 
@@ -37,6 +55,27 @@ const AdminPendingEvents = () => {
     axios.put(`http://localhost:8080/api/admin/events/reject/${id}?message=${encodeURIComponent(msg)}`)
       .then(() => { fetchEvents(); setDetailEvent(null); })
       .catch((err) => console.error(err));
+  };
+
+  const openArtistEdit = (event) => {
+    const list = event.artists ? event.artists.split(",").map(a => a.trim()) : [""];
+    setEditArtists(list);
+  };
+
+  const saveArtists = (eventId) => {
+    const filled = (editArtists || []).filter(a => a.trim());
+    const artistStr = filled.join(", ");
+    axios.put(`http://localhost:8080/api/admin/events/${eventId}/artists`, { artists: artistStr })
+      .then((res) => {
+        const saved = res.data.artists || artistStr;
+        fetchEvents();
+        setDetailEvent(prev => ({ ...prev, artists: saved }));
+        setEditArtists(null);
+      })
+      .catch((err) => {
+        console.error("Save artists failed:", err);
+        alert("Failed to save artists: " + (err.response?.data || err.message));
+      });
   };
 
   return (
@@ -95,6 +134,8 @@ const AdminPendingEvents = () => {
                   <th>Date</th>
                   <th>Time</th>
                   <th>Venue</th>
+                  <th>Artists</th>
+                  <th>Finalized Artists</th>
                   <th>Description</th>
                   <th>Image</th>
                   <th>Status</th>
@@ -109,6 +150,20 @@ const AdminPendingEvents = () => {
                     <td>{event.eventDate}</td>
                     <td>{event.startTime} – {event.endTime}</td>
                     <td>{event.venue}</td>
+                    <td>
+                      {event.artists
+                        ? event.artists.split(",").map((a, i) => (
+                            <div key={i}>{i + 1}) {a.trim()}</div>
+                          ))
+                        : <span className="aer-no-artist">No artists — event without artists</span>}
+                    </td>
+                    <td>
+                      {finalizedMap[event.id]?.length > 0
+                        ? finalizedMap[event.id].map((name, i) => (
+                            <div key={i} className="aaer-finalized-name">🎤 {name}</div>
+                          ))
+                        : <span className="aaer-no-finalized">—</span>}
+                    </td>
                     <td
                       className="aer-desc-cell"
                       onClick={(e) => { e.stopPropagation(); if (event.description) setDescEvent(event); }}
@@ -160,9 +215,9 @@ const AdminPendingEvents = () => {
 
       {/* ── Event Detail Popup ── */}
       {detailEvent && (
-        <div className="aer-detail-overlay" onClick={() => setDetailEvent(null)}>
+        <div className="aer-detail-overlay" onClick={() => { setDetailEvent(null); setEditArtists(null); }}>
           <div className="aer-detail-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="aer-detail-close" onClick={() => setDetailEvent(null)}>✕</button>
+            <button className="aer-detail-close" onClick={() => { setDetailEvent(null); setEditArtists(null); }}>✕</button>
 
             {detailEvent.imageUrl && (
               <img
@@ -199,6 +254,66 @@ const AdminPendingEvents = () => {
                   <span className="aer-detail-label">Contact</span>
                   <span className="aer-detail-value">{detailEvent.contactNumber || "—"}</span>
                 </div>
+                {/* Artists – always shown, editable */}
+                <div className="aer-detail-field aer-detail-full">
+                  <div className="aer-artists-header">
+                    <span className="aer-detail-label">Artists</span>
+                    {editArtists === null ? (
+                      <button className="aer-edit-artists-btn" onClick={() => openArtistEdit(detailEvent)}>✏️ Edit</button>
+                    ) : (
+                      <div className="aer-artists-actions">
+                        <button className="aer-save-artists-btn" onClick={(e) => { e.stopPropagation(); saveArtists(detailEvent.id); }}>💾 Save</button>
+                        <button className="aer-cancel-artists-btn" onClick={() => setEditArtists(null)}>✕</button>
+                      </div>
+                    )}
+                  </div>
+                  {editArtists === null ? (
+                    <div className="aer-detail-value">
+                      {detailEvent.artists
+                        ? detailEvent.artists.split(",").map((a, i) => <div key={i}>{i + 1}) {a.trim()}</div>)
+                        : <span className="aer-no-artist">This event is conducted without artists</span>}
+                    </div>
+                  ) : (
+                    <div className="aer-artists-edit-list">
+                      {editArtists.map((a, i) => (
+                        <div key={i} className="aer-artist-edit-row">
+                          <span className="aer-artist-num">{i + 1})</span>
+                          <input
+                            className="aer-artist-input"
+                            value={a}
+                            onChange={(e) => {
+                              const updated = [...editArtists];
+                              updated[i] = e.target.value.replace(/[0-9]/g, "");
+                              setEditArtists(updated);
+                            }}
+                            placeholder={`Artist ${i + 1}`}
+                          />
+                          <button className="aer-remove-artist-btn" onClick={() => {
+                            if (editArtists.length === 1) return;
+                            setEditArtists(editArtists.filter((_, idx) => idx !== i));
+                          }}>✕</button>
+                        </div>
+                      ))}
+                      <button className="aer-add-artist-btn" onClick={() => setEditArtists([...editArtists, ""])}>+ Add Artist</button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Finalized Artists */}
+                {finalizedMap[detailEvent.id]?.length > 0 && (
+                  <div className="aer-detail-field aer-detail-full">
+                    <span className="aer-detail-label">🎤 Finalized Artists</span>
+                    <div className="aer-detail-value">
+                      {finalizedMap[detailEvent.id].map((name, i) => (
+                        <div key={i} className="aer-finalized-detail-row">
+                          <span className="aer-finalized-num">{i + 1}</span>
+                          {name}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {detailEvent.adminMessage && (
                   <div className="aer-detail-field aer-detail-full">
                     <span className="aer-detail-label">Admin Note</span>
@@ -224,7 +339,7 @@ const AdminPendingEvents = () => {
         </div>
       )}
 
-      {/* ── Description Popup ── */}
+      {/*  Description Popup  */}
       {descEvent && (
         <div className="aer-detail-overlay" onClick={() => setDescEvent(null)}>
           <div className="aer-desc-modal" onClick={(e) => e.stopPropagation()}>
@@ -235,14 +350,14 @@ const AdminPendingEvents = () => {
         </div>
       )}
 
-      {/* ── Image Modal ── */}
+      {/*  Image Modal  */}
       {modalImage && (
         <div className="aer-image-modal" onClick={() => setModalImage(null)}>
           <img src={modalImage} alt="Preview" />
         </div>
       )}
 
-      {/* ── Chat Panel ── */}
+      {/*  Chat Panel  */}
       {chatEventId && (
         <ChatPanel
           eventId={chatEventId}

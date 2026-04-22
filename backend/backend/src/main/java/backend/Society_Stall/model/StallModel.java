@@ -1,4 +1,4 @@
-package backend.Society_Stall.Service.model;
+package backend.Society_Stall.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

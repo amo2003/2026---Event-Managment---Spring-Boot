@@ -57,7 +57,7 @@ function SoceityLogin() {
 
   return (
     <div className="login-page">
-      <button className="back-btnn" onClick={() => navigate(-1)}>←</button>
+      <button className="back-btnn" onClick={() => navigate("/")}>←</button>
       <div className="login-container">
         <h1 className="login-title">Society Login</h1>
 
@@ -80,7 +80,7 @@ function SoceityLogin() {
           <button type="submit" className="loginl-btn">Login</button>
         </form>
 
-        <p className="forgot-password-link">
+        <p className="s-forgot-password-link">
           <span onClick={() => navigate("/forgot-password")}>Forgot Password?</span>
         </p>
       </div>

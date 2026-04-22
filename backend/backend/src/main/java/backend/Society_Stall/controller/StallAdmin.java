@@ -1,9 +1,11 @@
-package backend.Society_Stall.Service.controller;
+package backend.Society_Stall.controller;
 
 import backend.Society_Stall.Service.EmailService;
 import backend.Society_Stall.Service.QRCodeService;
-import backend.Society_Stall.Service.model.StallRegistration;
-import backend.Society_Stall.Service.repository.StallRegistrationRepository;
+import backend.Society_Stall.model.StallOwner;
+import backend.Society_Stall.model.StallRegistration;
+import backend.Society_Stall.repository.StallOwnerRepository;
+import backend.Society_Stall.repository.StallRegistrationRepository;
 import com.google.zxing.WriterException;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,15 +22,24 @@ import java.util.UUID;
 public class StallAdmin {
 
     private final StallRegistrationRepository stallRepo;
+    private final StallOwnerRepository ownerRepo;
     private final EmailService emailService;
     private final QRCodeService qrCodeService;
 
     public StallAdmin(StallRegistrationRepository stallRepo,
+                      StallOwnerRepository ownerRepo,
                       EmailService emailService,
                       QRCodeService qrCodeService){
         this.stallRepo = stallRepo;
+        this.ownerRepo = ownerRepo;
         this.emailService = emailService;
         this.qrCodeService = qrCodeService;
+    }
+
+    // All stall owners
+    @GetMapping("/stall-owners")
+    public List<StallOwner> getAllStallOwners() {
+        return ownerRepo.findAll();
     }
 
     // All stall registrations (history)

@@ -24,7 +24,7 @@ import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class RiskAuthService {
 
     private final AppUserRepository appUserRepository;
     private final OfficerRepository officerRepository;

@@ -1,4 +1,4 @@
-package backend.Society_Stall.Service.config;
+package backend.Society_Stall.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -37,6 +37,10 @@ public class WebConfig implements WebMvcConfigurer {
             // Serve generated QR codes under /uploads/qrcodes/**
             registry.addResourceHandler("/uploads/qrcodes/**")
                     .addResourceLocations("file:" + projectRoot + File.separator + "uploads" + File.separator + "qrcodes" + File.separator);
+
+            // Serve chat images under /uploads/chat/**
+            registry.addResourceHandler("/uploads/chat/**")
+                    .addResourceLocations("file:" + projectRoot + File.separator + "uploads" + File.separator + "chat" + File.separator);
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -348,7 +348,43 @@
   .ed-card { padding: 22px 20px; }
 }
 
-/* ===== RISK MANAGEMENT CARD ===== */
+/* ── Artists Section ── */
+.ed-artists-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.ed-artist-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+}
+
+.ed-artist-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.ed-artist-name {
+  font-size: 15px;
+  color: #e2e8f0;
+  font-weight: 500;
+}
 .ed-risk-card {
   display: flex;
   align-items: center;
@@ -382,4 +418,20 @@
 @media (max-width: 640px) {
   .ed-risk-card { flex-direction: column; align-items: flex-start; }
   .ed-risk-btn  { width: 100%; text-align: center; }
+}
+
+.ed-card-subtitle {
+  font-size: 0.82rem;
+  color: #64748b;
+  margin: -8px 0 12px;
+  line-height: 1.5;
+}
+
+.ed-artist-item--finalized {
+  background: rgba(34,197,94,0.06);
+  border-color: rgba(34,197,94,0.15);
+}
+
+.ed-artist-num--finalized {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
 }

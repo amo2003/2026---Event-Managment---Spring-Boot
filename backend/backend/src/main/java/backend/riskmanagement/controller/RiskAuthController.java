@@ -7,18 +7,19 @@ import backend.riskmanagement.dto.ForgotPasswordResponse;
 import backend.riskmanagement.dto.LoginRequest;
 import backend.riskmanagement.dto.OfficerRegisterRequest;
 import backend.riskmanagement.dto.ResetPasswordRequest;
-import backend.riskmanagement.service.AuthService;
+import backend.riskmanagement.service.RiskAuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class RiskAuthController {
 
-    private final AuthService authService;
+    private final RiskAuthService authService;
 
     @PostMapping("/officer/register")
     public String registerOfficer(@Valid @RequestBody OfficerRegisterRequest request) {

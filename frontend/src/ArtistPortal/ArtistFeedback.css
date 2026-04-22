@@ -1,0 +1,256 @@
+.artist-feedback-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0b0415 0%, #140822 50%, #090312 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+  font-family: "Poppins", sans-serif;
+}
+
+.artist-feedback-back {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: 0.2s ease;
+}
+
+.artist-feedback-back:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.artist-feedback-shell {
+  width: 100%;
+  max-width: 560px;
+}
+
+.artist-feedback-panel {
+  background: #ffffff;
+  color: #111827;
+  border-radius: 24px;
+  padding: 36px 32px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+}
+
+.artist-feedback-eyebrow {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #a21caf;
+}
+
+.artist-feedback-panel h1 {
+  margin: 0 0 10px;
+  font-size: 30px;
+  line-height: 1.1;
+}
+
+.artist-feedback-subtitle {
+  margin: 0 0 20px;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.artist-feedback-summary {
+  margin-bottom: 22px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+
+.artist-feedback-summary-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9ca3af;
+  margin-bottom: 6px;
+}
+
+.artist-feedback-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.artist-feedback-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.artist-feedback-field label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.artist-feedback-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.artist-feedback-rating-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: #a21caf;
+}
+
+.artist-feedback-rating-wrap {
+  padding: 12px 0 6px;
+}
+
+.artist-feedback-rating-wrap input[type="range"] {
+  width: 100%;
+  accent-color: #c026d3;
+  cursor: pointer;
+}
+
+.artist-feedback-rating-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 8px;
+}
+
+.artist-feedback-field textarea {
+  min-height: 140px;
+  border-radius: 14px;
+  border: 1px solid #d1d5db;
+  padding: 14px;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s ease;
+  background: #fff;
+  color: #111827;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.artist-feedback-field textarea:focus {
+  border-color: #c026d3;
+  box-shadow: 0 0 0 3px rgba(192, 38, 211, 0.12);
+}
+
+.artist-feedback-field textarea.has-error {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.08);
+}
+
+.artist-feedback-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.artist-feedback-hint {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.artist-feedback-count {
+  font-size: 12px;
+  color: #6b7280;
+  white-space: nowrap;
+}
+
+.artist-feedback-check {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+
+.artist-feedback-check-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+}
+
+.artist-feedback-check-label input {
+  accent-color: #c026d3;
+  width: 16px;
+  height: 16px;
+}
+
+.artist-feedback-field-error {
+  font-size: 12px;
+  color: #dc2626;
+  margin: 0;
+}
+
+.artist-feedback-button {
+  margin-top: 4px;
+  height: 50px;
+  border: none;
+  border-radius: 14px;
+  background: #111827;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.artist-feedback-button:hover {
+  opacity: 0.92;
+}
+
+.artist-feedback-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.artist-feedback-success {
+  margin-top: 16px;
+  color: #15803d;
+  font-size: 14px;
+}
+
+.artist-feedback-error {
+  margin-top: 16px;
+  color: #dc2626;
+  font-size: 14px;
+}
+
+@media (max-width: 560px) {
+  .artist-feedback-panel {
+    padding: 28px 20px;
+    border-radius: 20px;
+  }
+
+  .artist-feedback-panel h1 {
+    font-size: 26px;
+  }
+
+  .artist-feedback-back {
+    top: 16px;
+    left: 16px;
+  }
+
+  .artist-feedback-meta-row,
+  .artist-feedback-label-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

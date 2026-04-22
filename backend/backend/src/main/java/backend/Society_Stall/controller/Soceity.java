@@ -1,10 +1,12 @@
-package backend.Society_Stall.Service.controller;
+package backend.Society_Stall.controller;
 
-import backend.Society_Stall.Service.dto.LoginResponse;
-import backend.Society_Stall.Service.exception.SoceityNotFoundException;
-import backend.Society_Stall.Service.model.SocietyModel;
-import backend.Society_Stall.Service.repository.SocietyRepository;
-import backend.Society_Stall.Service.security.JwtUtil;
+import backend.Society_Stall.Service.EmailService;
+import backend.Society_Stall.Service.OtpService;
+import backend.Society_Stall.dto.LoginResponse;
+import backend.Society_Stall.exception.SoceityNotFoundException;
+import backend.Society_Stall.model.SocietyModel;
+import backend.Society_Stall.repository.SocietyRepository;
+import backend.Society_Stall.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,12 @@ public class Soceity {
 
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private OtpService otpService;
 
     // REGISTER
     @PostMapping("/register")
@@ -107,7 +115,33 @@ public class Soceity {
         return ResponseEntity.ok("Society deleted successfully.");
     }
 
-    // FORGOT PASSWORD - Reset password by email
+    // STEP 1 — Send OTP
+    @PostMapping("/send-otp")
+    public ResponseEntity<?> sendOtp(@RequestBody java.util.Map<String, String> body) {
+        String email = body.get("email");
+        SocietyModel society = societyRepository.findByEmail(email).orElse(null);
+        if (society == null) return ResponseEntity.status(404).body("Email not found!");
+        String otp = otpService.generateAndStore(email);
+        emailService.sendOtpEmail(email, otp, society.getName());
+        return ResponseEntity.ok("OTP sent to " + email);
+    }
+
+    // STEP 2 — Verify OTP + reset password
+    @PostMapping("/verify-otp-reset")
+    public ResponseEntity<?> verifyOtpReset(@RequestBody java.util.Map<String, String> body) {
+        String email = body.get("email");
+        String otp   = body.get("otp");
+        String newPw = body.get("password");
+        if (!otpService.verify(email, otp)) return ResponseEntity.status(400).body("Invalid or expired OTP!");
+        SocietyModel society = societyRepository.findByEmail(email).orElse(null);
+        if (society == null) return ResponseEntity.status(404).body("Email not found!");
+        society.setPassword(newPw);
+        societyRepository.save(society);
+        otpService.invalidate(email);
+        return ResponseEntity.ok("Password reset successfully!");
+    }
+
+    // FORGOT PASSWORD - kept for backward compat
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestBody SocietyModel resetData) {
         try {

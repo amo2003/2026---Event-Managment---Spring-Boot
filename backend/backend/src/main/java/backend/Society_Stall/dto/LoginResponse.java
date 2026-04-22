@@ -1,4 +1,4 @@
-package backend.Society_Stall.Service.dto;
+package backend.Society_Stall.dto;
 
 public class LoginResponse {
     private String name;

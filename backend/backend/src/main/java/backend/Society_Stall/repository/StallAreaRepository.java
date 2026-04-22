@@ -1,6 +1,6 @@
-package backend.Society_Stall.Service.repository;
+package backend.Society_Stall.repository;
 
-import backend.Society_Stall.Service.model.StallModel;
+import backend.Society_Stall.model.StallModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

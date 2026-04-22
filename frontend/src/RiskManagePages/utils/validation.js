@@ -1,7 +1,7 @@
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const nameRegex = /^[A-Za-z\s.'-]{2,60}$/;
-const phoneRegex = /^\+?[0-9]{10,15}$/;
-const trackingCodeRegex = /^RISK-\d{4}-[A-Z0-9]{6}$/;
+const phoneRegex = /^\+?[0-9]{10,15}$/; // eslint-disable-line no-unused-vars
+const trackingCodeRegex = /^RISK-\d{4}-[A-Z0-9]{6}$/; // eslint-disable-line no-unused-vars
 const imageTypes = ["image/jpeg", "image/png", "image/jpg", "image/webp"];
 const maxImageSize = 5 * 1024 * 1024;
 
@@ -58,7 +58,7 @@ export const validateOfficerRegisterForm = (values) => {
 
   if (!values.phoneNumber?.trim()) {
     errors.phoneNumber = "Phone number is required";
-  } else if (!phoneRegex.test(values.phoneNumber.trim())) {
+  } else if (!/^\+?[\d\s-]{7,20}$/.test(values.phoneNumber.trim())) {
     errors.phoneNumber = "Enter a valid phone number";
   }
 
@@ -122,8 +122,6 @@ export const validateTrackIncidentForm = (trackingCode) => {
 
   if (!trackingCode?.trim()) {
     errors.trackingCode = "Tracking code is required";
-  } else if (!trackingCodeRegex.test(trackingCode.trim().toUpperCase())) {
-    errors.trackingCode = "Tracking code must look like RISK-2026-ABC123";
   }
 
   return errors;

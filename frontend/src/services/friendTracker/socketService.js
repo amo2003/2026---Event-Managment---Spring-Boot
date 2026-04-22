@@ -1,6 +1,12 @@
 let socket = null;
+let currentOnMessage = null;
+let reconnectTimeout = null;
+let currentGroupId = null;
+let currentUserId = null;
 
 export function connectSocket(onMessage) {
+  currentOnMessage = onMessage;
+
   if (socket && (socket.readyState === WebSocket.OPEN || socket.readyState === WebSocket.CONNECTING)) {
     return;
   }
@@ -9,6 +15,16 @@ export function connectSocket(onMessage) {
 
   socket.onopen = () => {
     console.log("Connected to signaling server");
+
+    // auto rejoin after reconnect
+    if (currentGroupId != null && currentUserId != null) {
+      sendMessage({
+        type: "join",
+        groupId: Number(currentGroupId),
+        fromUserId: Number(currentUserId)
+      });
+      console.log("Rejoined group after reconnect:", currentGroupId, currentUserId);
+    }
   };
 
   socket.onmessage = (event) => {
@@ -20,7 +36,7 @@ export function connectSocket(onMessage) {
 
       console.log("Socket received:", data);
 
-      if (onMessage) onMessage(data);
+      if (currentOnMessage) currentOnMessage(data);
     } catch (error) {
       console.error("Failed to parse socket message:", error);
     }
@@ -33,6 +49,14 @@ export function connectSocket(onMessage) {
   socket.onclose = () => {
     console.log("Disconnected from signaling server");
     socket = null;
+
+    if (!reconnectTimeout) {
+      reconnectTimeout = setTimeout(() => {
+        reconnectTimeout = null;
+        console.log("Reconnecting to signaling server...");
+        connectSocket(currentOnMessage);
+      }, 2000);
+    }
   };
 }
 
@@ -46,6 +70,9 @@ export function sendMessage(message) {
 }
 
 export function joinGroup(groupId, userId) {
+  currentGroupId = Number(groupId);
+  currentUserId = Number(userId);
+
   sendMessage({
     type: "join",
     groupId: Number(groupId),

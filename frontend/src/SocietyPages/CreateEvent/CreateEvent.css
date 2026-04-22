@@ -8,7 +8,7 @@
   font-family: 'Poppins', sans-serif;
 }
 
-/* ===== GLASS CARD ===== */
+/*  GLASS CARD  */
 
 .event-create-container {
   width: 100%;
@@ -38,7 +38,7 @@
   100% { filter: hue-rotate(360deg); }
 }
 
-/* ===== TITLE ===== */
+/*  TITLE  */
 
 .event-create-title {
   text-align: center;
@@ -49,7 +49,7 @@
   color: rgb(4, 4, 4);
 }
 
-/* ===== FORM ===== */
+/*  FORM  */
 
 .event-create-form {
   display: flex;
@@ -62,9 +62,9 @@
 .event-select {
   padding: 14px 18px;
   border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.44);
   background: rgba(255,255,255,0.1);
-  color: rgba(0, 0, 0, 0.829);
+  color: rgba(0, 0, 0, 0.844);
   font-size: 14px;
   outline: none;
   transition: 0.3s ease;
@@ -72,7 +72,8 @@
 
 .event-input::placeholder,
 .event-textarea::placeholder {
-  color: rgba(0, 0, 0, 0.699);
+  color: rgba(0, 0, 0, 0.813);
+  font-weight: 600;
 }
 
 .event-input:focus,
@@ -87,7 +88,7 @@
   height: 100px;
 }
 
-/* ===== FILE UPLOAD ===== */
+/*  FILE UPLOAD  */
 
 .image-upload-wrapper {
   text-align: center;
@@ -128,7 +129,7 @@
   border: 1px solid rgba(255,255,255,0.2);
 }
 
-/* ===== BUTTON ===== */
+/*  BUTTON */
 
 .event-submit-btn {
   margin-top: 20px;
@@ -149,7 +150,7 @@
   box-shadow: 0 0 30px rgba(255,255,255,0.8);
 }
 
-/* ===== CUSTOM DROPDOWN ICON ===== */
+/*  CUSTOM DROPDOWN ICON  */
 
 .event-select {
   appearance: none;
@@ -180,14 +181,14 @@
   background-color: rgba(255,255,255,0.2);
 }
 
-/* ===== FIELD WRAPPER ===== */
+/*  FIELD WRAPPER  */
 .ce-field {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-/* ===== INLINE ERROR ===== */
+/*  INLINE ERROR  */
 .ce-field-error {
   font-size: 0.72rem;
   color: #ef4444;
@@ -195,7 +196,7 @@
   padding-left: 6px;
 }
 
-/* ===== DESCRIPTION FOOTER ===== */
+/*  DESCRIPTION FOOTER  */
 .ce-desc-footer {
   display: flex;
   justify-content: space-between;
@@ -211,5 +212,88 @@
 
 .ce-char-warn {
   color: #ef4444;
+  font-weight: 600;
+}
+
+/* ARTISTS */
+.ce-artists-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ce-artist-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ce-artist-input {
+  flex: 1;
+}
+
+.ce-artist-remove {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.08);
+  color: #ef4444;
+  font-size: 0.8rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: 0.2s;
+}
+
+.ce-artist-remove:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.ce-artist-add {
+  align-self: flex-start;
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 47, 202, 0.668);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(0, 29, 145, 0.8);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: 0.2s;
+  font-family: 'Poppins', sans-serif;
+}
+
+.ce-artist-add:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ── Artist toggle ── */
+.ce-artist-toggle {
+  display: flex;
+  gap: 10px;
+}
+
+.ce-toggle-btn {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.83);
+  background: rgba(58, 56, 56, 0.816);
+  color: #e3e3e3;
+  font-size: 0.88rem;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ce-toggle-btn:hover {
+  border-color: rgba(168,85,247,0.4);
+  color: #e2e8f0;
+}
+
+.ce-toggle-btn--active {
+  background: rgba(168,85,247,0.15);
+  border-color: rgba(169, 85, 247, 0.909);
+  color: #1c1c1c;
   font-weight: 600;
 }

@@ -1,7 +1,7 @@
-package backend.Society_Stall.Service.controller;
+package backend.Society_Stall.controller;
 
-import backend.Society_Stall.Service.model.SocietyListModel;
-import backend.Society_Stall.Service.repository.SocietyListRepository;
+import backend.Society_Stall.model.SocietyListModel;
+import backend.Society_Stall.repository.SocietyListRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

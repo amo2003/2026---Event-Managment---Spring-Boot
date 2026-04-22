@@ -1,4 +1,4 @@
-package backend.Society_Stall.Service.exception;
+package backend.Society_Stall.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

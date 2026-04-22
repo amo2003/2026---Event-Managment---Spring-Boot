@@ -1,7 +1,7 @@
-package backend.Society_Stall.Service.dto;
+package backend.Society_Stall.dto;
 
-import backend.Society_Stall.Service.enums.EventStatus;
-import backend.Society_Stall.Service.model.EventModel;
+import backend.Society_Stall.enums.EventStatus;
+import backend.Society_Stall.model.EventModel;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -22,6 +22,7 @@ public class EventDTO {
     private String adminMessage;
     private Boolean paymentDone;
     private String imageUrl;
+    private String artists;
 
     // Default constructor
     public EventDTO() {}
@@ -42,6 +43,7 @@ public class EventDTO {
         this.adminMessage = event.getAdminMessage();
         this.paymentDone = event.getPaymentDone();
         this.imageUrl = event.getImageUrl();
+        this.artists = event.getArtists();
     }
 
     // Getters and Setters
@@ -86,4 +88,7 @@ public class EventDTO {
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public String getArtists() { return artists; }
+    public void setArtists(String artists) { this.artists = artists; }
 }

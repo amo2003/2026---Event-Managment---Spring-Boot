@@ -1,4 +1,4 @@
-/* ===== PAGE BACKGROUND ===== */
+/*  PAGE BACKGROUND  */
 .login-page {
   min-height: 100vh;
   background: #000;
@@ -9,7 +9,7 @@
   padding: 20px;
 }
 
-/* ===== CONTAINER ===== */
+/*  CONTAINER  */
 .login-container {
   width: 100%;
   max-width: 420px;
@@ -23,7 +23,7 @@
   animation: fadeIn 0.6s ease forwards;
 }
 
-/* ===== TITLE ===== */
+/*  TITLE  */
 .login-title {
   font-size: 26px;
   font-weight: 600;
@@ -32,14 +32,14 @@
   letter-spacing: 0.05em;
 }
 
-/* ===== FORM ===== */
+/*  FORM  */
 .login-form {
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
-/* ===== INPUTS ===== */
+/*  INPUTS */
 .login-form input {
   padding: 14px 16px;
   border-radius: 12px;
@@ -61,7 +61,7 @@
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
 }
 
-/* ===== BUTTON ===== */
+/*  BUTTON  */
 .loginl-btn {
   margin-top: 10px;
   padding: 14px;
@@ -80,7 +80,7 @@
   box-shadow: 0 10px 25px rgba(255, 0, 204, 0.4);
 }
 
-/* ===== SUCCESS / ERROR ===== */
+/*  SUCCESS / ERROR  */
 .error-msg {
   color: #ff4d4d;
   margin-bottom: 15px;
@@ -93,7 +93,7 @@
   font-size: 14px;
 }
 
-/* ===== ANIMATION ===== */
+/*  ANIMATION  */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -106,7 +106,7 @@
 }
 
 
-/* ===== BACK BUTTON ===== */
+/*  BACK BUTTON  */
 .back-btnn {
   position: absolute;
   top: 20px;
@@ -132,21 +132,21 @@
 
 
 /* Forgot Password Link */
-.forgot-password-link {
+.s-forgot-password-link {
   text-align: center;
   margin-top: 20px;
   font-size: 13px;
   color: rgba(255, 255, 255, 0.7);
 }
 
-.forgot-password-link span {
+.s-forgot-password-link span {
   color: white;
   text-decoration: underline;
   cursor: pointer;
   transition: 0.3s ease;
 }
 
-.forgot-password-link span:hover {
+.s-forgot-password-link span:hover {
   color: #4caf50;
 }
 

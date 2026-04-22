@@ -1,4 +1,4 @@
-package backend.Society_Stall.Service.config;
+package backend.Society_Stall.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

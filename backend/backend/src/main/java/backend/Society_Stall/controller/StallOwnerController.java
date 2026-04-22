@@ -1,12 +1,13 @@
-package backend.Society_Stall.Service.controller;
+package backend.Society_Stall.controller;
 
 import backend.Society_Stall.Service.EmailService;
+import backend.Society_Stall.Service.OtpService;
 import backend.Society_Stall.Service.QRCodeService;
-import backend.Society_Stall.Service.config.PayHereConfig;
-import backend.Society_Stall.Service.model.StallOwner;
-import backend.Society_Stall.Service.model.StallRegistration;
-import backend.Society_Stall.Service.repository.StallOwnerRepository;
-import backend.Society_Stall.Service.repository.StallRegistrationRepository;
+import backend.Society_Stall.config.PayHereConfig;
+import backend.Society_Stall.model.StallOwner;
+import backend.Society_Stall.model.StallRegistration;
+import backend.Society_Stall.repository.StallOwnerRepository;
+import backend.Society_Stall.repository.StallRegistrationRepository;
 import com.google.zxing.WriterException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,17 +31,20 @@ public class StallOwnerController {
     private final StallOwnerRepository ownerRepo;
     private final StallRegistrationRepository stallRepo;
     private final EmailService emailService;
+    private final OtpService otpService;
     private final QRCodeService qrCodeService;
     private final PayHereConfig payHereConfig;
 
     public StallOwnerController(StallOwnerRepository ownerRepo,
                                 StallRegistrationRepository stallRepo,
                                 EmailService emailService,
+                                OtpService otpService,
                                 QRCodeService qrCodeService,
                                 PayHereConfig payHereConfig) {
         this.ownerRepo = ownerRepo;
         this.stallRepo = stallRepo;
         this.emailService = emailService;
+        this.otpService = otpService;
         this.qrCodeService = qrCodeService;
         this.payHereConfig = payHereConfig;
     }
@@ -143,6 +147,33 @@ public class StallOwnerController {
 
         return ResponseEntity.status(401).build();
     }
+    // STEP 1 — Send OTP
+    @PostMapping("/send-otp")
+    public ResponseEntity<?> sendOtp(@RequestBody Map<String, String> body) {
+        String email = body.get("email");
+        List<StallOwner> owners = ownerRepo.findByEmail(email);
+        if (owners.isEmpty()) return ResponseEntity.status(404).body(Map.of("message", "Email not found!"));
+        String otp = otpService.generateAndStore(email);
+        emailService.sendOtpEmail(email, otp, owners.get(0).getOwnerName());
+        return ResponseEntity.ok(Map.of("message", "OTP sent to " + email));
+    }
+
+    // STEP 2 — Verify OTP + reset password
+    @PostMapping("/verify-otp-reset")
+    public ResponseEntity<?> verifyOtpReset(@RequestBody Map<String, String> body) {
+        String email = body.get("email");
+        String otp   = body.get("otp");
+        String newPw = body.get("password");
+        if (!otpService.verify(email, otp)) return ResponseEntity.status(400).body(Map.of("message", "Invalid or expired OTP!"));
+        List<StallOwner> owners = ownerRepo.findByEmail(email);
+        if (owners.isEmpty()) return ResponseEntity.status(404).body(Map.of("message", "Email not found!"));
+        StallOwner owner = owners.get(0);
+        owner.setPassword(newPw);
+        ownerRepo.save(owner);
+        otpService.invalidate(email);
+        return ResponseEntity.ok(Map.of("message", "Password reset successfully!"));
+    }
+
     // Forgot Password - Reset password by email
     @PostMapping("/forgot-password")
     public ResponseEntity<Map<String, String>> forgotPassword(@RequestBody Map<String, String> resetData) {

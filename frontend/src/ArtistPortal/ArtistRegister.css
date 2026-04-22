@@ -1,0 +1,302 @@
+.artist-register-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0b0415 0%, #140822 50%, #090312 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+  font-family: "Poppins", sans-serif;
+}
+
+.artist-register-back {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: 0.2s ease;
+}
+
+.artist-register-back:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.artist-register-shell {
+  width: 100%;
+  max-width: 500px;
+}
+
+.artist-register-panel {
+  background: #ffffff;
+  color: #111827;
+  border-radius: 24px;
+  padding: 36px 32px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+}
+
+.artist-register-eyebrow {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #a21caf;
+}
+
+.artist-register-panel h1 {
+  margin: 0 0 10px;
+  font-size: 30px;
+  line-height: 1.1;
+}
+
+.artist-register-subtitle {
+  margin: 0 0 24px;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.artist-register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.artist-register-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.artist-register-field label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.artist-register-field input {
+  height: 48px;
+  border-radius: 14px;
+  border: 1px solid #d1d5db;
+  padding: 0 14px;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s ease;
+  background: #fff;
+  color: #111827;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.artist-register-field input:focus {
+  border-color: #c026d3;
+  box-shadow: 0 0 0 3px rgba(192, 38, 211, 0.12);
+}
+
+.artist-register-field input.has-error {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.08);
+}
+
+.artist-password-wrap {
+  position: relative;
+}
+
+.artist-password-wrap input {
+  padding-right: 78px;
+}
+
+.artist-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 6px 8px;
+}
+
+.artist-password-toggle:hover {
+  color: #111827;
+}
+
+.password-hint {
+  font-size: 11px;
+  color: #9ca3af;
+  margin: 0;
+}
+
+.password-strength {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.password-strength-track {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.password-strength-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  transition: 0.25s ease;
+}
+
+.password-strength-fill.level-0 {
+  width: 0%;
+}
+
+.password-strength-fill.level-1 {
+  width: 33%;
+  background: #ef4444;
+}
+
+.password-strength-fill.level-2 {
+  width: 66%;
+  background: #f59e0b;
+}
+
+.password-strength-fill.level-3 {
+  width: 100%;
+  background: #22c55e;
+}
+
+.password-strength-label {
+  min-width: 80px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.password-strength-label.level-0 {
+  color: #9ca3af;
+}
+
+.password-strength-label.level-1 {
+  color: #ef4444;
+}
+
+.password-strength-label.level-2 {
+  color: #d97706;
+}
+
+.password-strength-label.level-3 {
+  color: #15803d;
+}
+
+.password-checklist {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 10px;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.password-checklist div {
+  position: relative;
+  padding-left: 16px;
+}
+
+.password-checklist div::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.password-checklist div.met {
+  color: #15803d;
+  font-weight: 600;
+}
+
+.field-error {
+  font-size: 12px;
+  color: #dc2626;
+  margin: 0;
+}
+
+.artist-register-button {
+  margin-top: 8px;
+  height: 50px;
+  border: none;
+  border-radius: 14px;
+  background: #111827;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.artist-register-button:hover {
+  opacity: 0.92;
+}
+
+.artist-register-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.artist-register-success {
+  margin-top: 16px;
+  color: #15803d;
+  font-size: 14px;
+}
+
+.artist-register-error {
+  margin-top: 16px;
+  color: #dc2626;
+  font-size: 14px;
+}
+
+.artist-register-switch {
+  margin: 22px 0 0;
+  font-size: 14px;
+  color: #6b7280;
+  text-align: center;
+}
+
+.artist-register-switch span {
+  color: #111827;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.artist-register-switch span:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 520px) {
+  .artist-register-panel {
+    padding: 28px 20px;
+    border-radius: 20px;
+  }
+
+  .artist-register-panel h1 {
+    font-size: 26px;
+  }
+
+  .artist-register-back {
+    top: 16px;
+    left: 16px;
+  }
+
+  .password-checklist {
+    grid-template-columns: 1fr;
+  }
+}
