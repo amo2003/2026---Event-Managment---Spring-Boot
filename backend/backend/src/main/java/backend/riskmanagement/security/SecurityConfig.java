@@ -49,6 +49,55 @@ public class SecurityConfig {
     @Order(1)
     public SecurityFilterChain riskSecurityFilterChain(HttpSecurity http) throws Exception {
         http
+                .securityMatcher(
+                        "/api/auth/**",
+                        "/api/incidents/**",
+                        "/api/alerts/**",
+                        "/api/analytics/**",
+                        "/api/officers/**",
+                        "/api/place-areas/**",
+                        "/api/resolution-reports/**",
+                        "/api/chat/**"
+                )
+                .csrf(csrf -> csrf.disable())
+                .cors(Customizer.withDefaults())
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authenticationProvider(authenticationProvider())
+                .authorizeHttpRequests(auth -> auth
+                        // Preflight
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // Public auth endpoints
+                        .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/officer/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/forgot-password").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/reset-password").permitAll()
+
+                        // Public incident endpoints
+                        .requestMatchers(HttpMethod.POST, "/api/incidents").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/incidents/track").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/incidents/*/evidence").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/place-areas").permitAll()
+
+                        // Public reporter chat endpoints
+                        .requestMatchers(HttpMethod.GET, "/api/chat/public/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/chat/public/**").permitAll()
+
+                        // Officer chat endpoints
+                        .requestMatchers("/api/chat/officer/**").hasRole("OFFICER")
+
+                        // Officer-only risk module endpoints
+                        .requestMatchers("/api/analytics/**").hasRole("OFFICER")
+                        .requestMatchers("/api/alerts/**").hasRole("OFFICER")
+                        .requestMatchers("/api/resolution-reports/**").hasRole("OFFICER")
+                        .requestMatchers("/api/incidents/**").hasRole("OFFICER")
+                        .requestMatchers("/api/officers/**").hasRole("OFFICER")
+
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
             .securityMatcher(
                 "/api/auth/**",
                 "/api/incidents/**",

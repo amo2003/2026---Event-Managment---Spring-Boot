@@ -60,6 +60,31 @@ import ArtistPortalDashboard from "./ArtistPortal/ArtistPortalDashboard";
 import ArtistFeedback from "./ArtistPortal/ArtistFeedback";
 import ArtistForgotPassword from './ArtistPortal/ArtistForgotPassword';
 
+import ProtectedRoute from "./RiskManagePages/components/auth/ProtectedRoute";
+import MainLayout from "./RiskManagePages/components/layout/MainLayout";
+import PublicLayout from "./RiskManagePages/components/layout/PublicLayout";
+import AlertPage from "./RiskManagePages/pages/AlertPage";
+import ChangePasswordPage from "./RiskManagePages/pages/ChangePasswordPage";
+import DashboardPage from "./RiskManagePages/pages/DashboardPage";
+import ForgotPasswordPage from "./RiskManagePages/pages/ForgotPasswordPage";
+import IncidentDetailsPage from "./RiskManagePages/pages/IncidentDetailsPage";
+import IncidentListPage from "./RiskManagePages/pages/IncidentListPage";
+import LoginPage from "./RiskManagePages/pages/LoginPage";
+import PublicHomePage from "./RiskManagePages/pages/PublicHomePage";
+import ReportIncidentPage from "./RiskManagePages/pages/ReportIncidentPage";
+import ResetPasswordPage from "./RiskManagePages/pages/ResetPasswordPage";
+import TrackIncidentPage from "./RiskManagePages/pages/TrackIncidentPage";
+import { AuthProvider as RiskAuthProvider } from "./RiskManagePages/context/AuthContext";
+import "./RiskManagePages/styles/public.css";
+import "./RiskManagePages/styles/auth.css";
+import "./RiskManagePages/styles/dashboard.css";
+import "./RiskManagePages/styles/app.css";
+import "./RiskManagePages/styles/form.css";
+import "./RiskManagePages/styles/layout.css";
+import "./RiskManagePages/styles/detail.css";
+import "./RiskManagePages/styles/table.css";
+import "./RiskManagePages/styles/chat.css";
+
 
 // ── Risk Management ──
 import ProtectedRoute from './RiskManagePages/components/auth/ProtectedRoute';
