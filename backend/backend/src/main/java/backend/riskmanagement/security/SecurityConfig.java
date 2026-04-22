@@ -98,40 +98,6 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-            .securityMatcher(
-                "/api/auth/**",
-                "/api/incidents/**",
-                "/api/alerts/**",
-                "/api/analytics/**",
-                "/api/officers/**",
-                "/api/place-areas/**",
-                "/api/resolution-reports/**"
-            )
-            .csrf(csrf -> csrf.disable())
-            .cors(Customizer.withDefaults())
-            .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            .authenticationProvider(authenticationProvider())
-            .authorizeHttpRequests(auth -> auth
-                // Public endpoints — no token needed
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/auth/officer/register").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/auth/forgot-password").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/auth/reset-password").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/incidents").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/incidents/track").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/place-areas").permitAll()
-                // Officer-only
-                .requestMatchers("/api/analytics/**").hasRole("OFFICER")
-                .requestMatchers("/api/alerts/**").hasRole("OFFICER")
-                .requestMatchers("/api/resolution-reports/**").hasRole("OFFICER")
-                .requestMatchers("/api/incidents/**").hasRole("OFFICER")
-                .requestMatchers("/api/officers/**").hasRole("OFFICER")
-                .anyRequest().authenticated()
-            )
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
