@@ -61,33 +61,109 @@ const IncidentListPage = () => {
   return (
     <div className="rm-page-stack">
       <div className="rm-page-card">
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
         <div className="rm-section-head"><h2>Incident List</h2><p>View, filter, and update incident workflow in one place.</p></div>
         {error && <div className="rm-message-box rm-error">{error}</div>}
         <form onSubmit={handleFilter} className="rm-form-grid">
           <div className="rm-form-group"><label>Status</label>
             <select value={filterForm.status} onChange={e => setFilterForm({...filterForm,status:e.target.value})}>
+<<<<<<< Updated upstream
+=======
+=======
+        <div className="rm-section-head">
+          <h2>Incident List</h2>
+          <p>Filter incidents, update assigned work, and open reporter chats.</p>
+        </div>
+
+        {error && <div className="rm-message-box rm-error">{error}</div>}
+
+        <form onSubmit={handleFilter} className="rm-form-grid">
+          <div className="rm-form-group">
+            <label>Status</label>
+            <select
+              value={filterForm.status}
+              onChange={(e) => setFilterForm({ ...filterForm, status: e.target.value })}
+            >
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
               <option value="">All statuses</option>
               {["REPORTED","ASSIGNED","IN_ACTION","RESOLVED","CLOSED"].map(v => <option key={v} value={v}>{v}</option>)}
             </select>
           </div>
+<<<<<<< Updated upstream
           <div className="rm-form-group"><label>Priority</label>
             <select value={filterForm.priority} onChange={e => setFilterForm({...filterForm,priority:e.target.value})}>
+=======
+<<<<<<< Updated upstream
+          <div className="rm-form-group"><label>Priority</label>
+            <select value={filterForm.priority} onChange={e => setFilterForm({...filterForm,priority:e.target.value})}>
+=======
+
+          <div className="rm-form-group">
+            <label>Priority</label>
+            <select
+              value={filterForm.priority}
+              onChange={(e) => setFilterForm({ ...filterForm, priority: e.target.value })}
+            >
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
               <option value="">All priorities</option>
               {["LOW","MEDIUM","HIGH","CRITICAL"].map(v => <option key={v} value={v}>{v}</option>)}
             </select>
           </div>
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
           <div className="rm-form-group"><label>Incident Type</label>
             <select value={filterForm.incidentType} onChange={e => setFilterForm({...filterForm,incidentType:e.target.value})}>
               <option value="">All types</option>
               {["FIGHT","MEDICAL","FIRE","SECURITY","CROWD_CONTROL","TECHNICAL","OTHER"].map(v => <option key={v} value={v}>{v}</option>)}
+<<<<<<< Updated upstream
             </select>
           </div>
           <div className="rm-form-group"><label>Place Area</label>
             <select value={filterForm.placeAreaId} onChange={e => setFilterForm({...filterForm,placeAreaId:e.target.value})}>
+=======
+            </select>
+          </div>
+          <div className="rm-form-group"><label>Place Area</label>
+            <select value={filterForm.placeAreaId} onChange={e => setFilterForm({...filterForm,placeAreaId:e.target.value})}>
+=======
+
+          <div className="rm-form-group">
+            <label>Incident Type</label>
+            <select
+              value={filterForm.incidentType}
+              onChange={(e) => setFilterForm({ ...filterForm, incidentType: e.target.value })}
+            >
+              <option value="">All incident types</option>
+              <option value="FIGHT">Fight</option>
+              <option value="MEDICAL">Medical</option>
+              <option value="FIRE">Fire</option>
+              <option value="SECURITY">Security</option>
+              <option value="CROWD_CONTROL">Crowd Control</option>
+              <option value="TECHNICAL">Technical</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </div>
+
+          <div className="rm-form-group">
+            <label>Place Area</label>
+            <select
+              value={filterForm.placeAreaId}
+              onChange={(e) => setFilterForm({ ...filterForm, placeAreaId: e.target.value })}
+            >
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
               <option value="">All places</option>
               {placeAreas.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
             </select>
           </div>
+<<<<<<< Updated upstream
           <div className="rm-form-group rm-full-span"><label>Reported By</label>
             <input value={filterForm.reportedBy} onChange={e => setFilterForm({...filterForm,reportedBy:e.target.value})} placeholder="Search by reporter name" />
           </div>
@@ -101,6 +177,63 @@ const IncidentListPage = () => {
         <div className="rm-table-wrap">
           <table className="rm-app-table">
             <thead><tr><th>ID</th><th>Type</th><th>Priority</th><th>Status</th><th>Reported By</th><th>Place</th><th>Officer</th><th>Update Status</th><th>Details</th></tr></thead>
+=======
+<<<<<<< Updated upstream
+          <div className="rm-form-group rm-full-span"><label>Reported By</label>
+            <input value={filterForm.reportedBy} onChange={e => setFilterForm({...filterForm,reportedBy:e.target.value})} placeholder="Search by reporter name" />
+          </div>
+          <div className="rm-button-row">
+            <button type="submit" className="rm-btn rm-btn-primary">Apply Filter</button>
+            <button type="button" className="rm-btn rm-btn-secondary" onClick={handleReset}>Reset</button>
+          </div>
+        </form>
+      </div>
+      <div className="rm-page-card">
+        <div className="rm-table-wrap">
+          <table className="rm-app-table">
+            <thead><tr><th>ID</th><th>Type</th><th>Priority</th><th>Status</th><th>Reported By</th><th>Place</th><th>Officer</th><th>Update Status</th><th>Details</th></tr></thead>
+=======
+
+          <div className="rm-form-group rm-full-span">
+            <label>Reported By</label>
+            <input
+              value={filterForm.reportedBy}
+              onChange={(e) => setFilterForm({ ...filterForm, reportedBy: e.target.value })}
+              placeholder="Search by reporter name"
+            />
+          </div>
+
+          <div className="rm-button-row">
+            <button type="submit" className="rm-btn rm-btn-light">
+              Apply Filter
+            </button>
+            <button type="button" className="rm-btn rm-btn-outline" onClick={handleReset}>
+              Reset
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div className="rm-page-card">
+        <div className="rm-table-wrap">
+          <table className="rm-app-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Reported By</th>
+                <th>Place</th>
+                <th>Officer</th>
+                <th>Action</th>
+                <th>Chat</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
             <tbody>
               {incidents.length === 0 ? <tr><td colSpan="9">No incidents found.</td></tr>
                 : incidents.map(item => (
